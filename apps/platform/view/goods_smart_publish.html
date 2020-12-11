@@ -26,6 +26,12 @@
 					<label class="layui-form-label">年化率(%)</label>
 					<div class="layui-col-sm2">
 						<div class="layui-input-inline">
+							<input type="text" name="apr_0" autocomplete="off" class="layui-input" value="{:isset($rows['apr_0']) ? $rows['apr_0'] : ''}">
+						</div>
+						<div class="layui-form-mid layui-word-aux">1天</div>
+					</div>
+					<div class="layui-col-sm2">
+						<div class="layui-input-inline">
 							<input type="text" name="apr_3" autocomplete="off" class="layui-input" value="{:isset($rows['apr_3']) ? $rows['apr_3'] : ''}">
 						</div>
 						<div class="layui-form-mid layui-word-aux">30天</div>

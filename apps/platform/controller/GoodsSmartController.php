@@ -47,7 +47,7 @@ class GoodsSmartController extends BaseController
         $total = $this->model->where($map)->count();
         if ($result) {
             foreach ($result as $k => $v) {
-                $result[$k]['apr'] = "{$v['apr_3']}% - {$v['apr_12']}%";
+                $result[$k]['apr'] = "{$v['apr_0']}% - {$v['apr_12']}%";
                 $result[$k]['zhouqi'] = $v['zhouqi'] . '天';
                 $result[$k]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
                 $result[$k]['cover'] = $v['cover']
@@ -78,6 +78,7 @@ class GoodsSmartController extends BaseController
             $validate = new \think\Validate([
                 ['name', 'require', '名称不能为空'],
                 ['cover', 'require', '封面图不能为空'],
+                ['apr_0', 'require', '请填写年化利率'],
                 ['apr_3', 'require', '请填写年化利率'],
                 ['apr_6', 'require', '请填写年化利率'],
                 ['apr_9', 'require', '请填写年化利率'],

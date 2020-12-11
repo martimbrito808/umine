@@ -21,10 +21,11 @@ class MoneyController extends BaseController
         $data['token'] = $param['token'];
         $money = Db::name('goods_wealth')
             ->where('type',2)
+            ->where('status', 1)
             ->order('create_time desc')
             ->select();
         $money = transArray($money);
-        $zhouqi = ['30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+        $zhouqi = ['1' => 'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
         foreach($money as $k=>$v){
             $money[$k]['apr'] = $v[$zhouqi[$v['zhouqi']]];
         }
@@ -54,7 +55,7 @@ class MoneyController extends BaseController
             $money['buy'] = false;
         }
 
-        $rengou_end = strtotime($money['rengou_end']);
+        $rengou_end = strtotime($money['rengou_end'].' + 1 day');
         $money['day'] = date('Y',$rengou_end).'年'.date('m',$rengou_end).'月'.date('d',$rengou_end).'日起';
         $money['rengou_begin'] = date('m-d H:i',strtotime($money['rengou_begin']));
         $money['get_time'] = date('m-d H:i',strtotime($money['rengou_end']) + $money['zhouqi']*60*60*24);
@@ -70,7 +71,7 @@ class MoneyController extends BaseController
             return $this->fetch('money_money_management_1', compact('money','data'));
         }else{
             $money = transArray($money);
-            $zhouqi = ['30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+            $zhouqi = ['1' => 'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
             $money['apr'] = $money[$zhouqi[$money['zhouqi']]];
             $this->assign('data',$data);
             $this->assign('money',$money);

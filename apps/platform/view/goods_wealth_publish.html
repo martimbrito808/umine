@@ -27,6 +27,7 @@
 					<div class="layui-input-block">
 						<select name="zhouqi" lay-verify="required">
 							<option value=""> 请选择</option>
+							<option {if condition="1 eq $rows['zhouqi']"} selected {/if} value="1"> 1天</option>
 							<option {if condition="30 eq $rows['zhouqi']"} selected {/if} value="30"> 30天</option>
 							<option {if condition="60 eq $rows['zhouqi']"} selected {/if} value="60"> 60天</option>
 							<option {if condition="90 eq $rows['zhouqi']"} selected {/if} value="90"> 90天</option>

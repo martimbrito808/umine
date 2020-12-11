@@ -47,7 +47,7 @@ class GoodsWealthController extends BaseController
         $total = $this->model->where($map)->count();
         if ($result) {
             foreach ($result as $k => $v) {
-                $v['apr_zhouqi'] = $v['zhouqi'] / 10;
+                $v['apr_zhouqi'] = intval($v['zhouqi'] / 10);
                 $result[$k]['apr'] = $v["apr_{$v['apr_zhouqi']}"] . '%';
                 $result[$k]['zhouqi'] = $v['zhouqi'] . '天';
                 $result[$k]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
@@ -89,6 +89,9 @@ class GoodsWealthController extends BaseController
             }
 
             switch($this->param['zhouqi']) {
+                case '1' :
+                    $this->param['apr_0'] = $this->param['apr'];
+                    break;
                 case '30' :
                     $this->param['apr_3'] = $this->param['apr'];
                     break;
@@ -119,7 +122,7 @@ class GoodsWealthController extends BaseController
 
         if (!empty($id)) {
             $rows = $this->model->get($id);
-            $rows['apr_zhouqi'] = $rows['zhouqi'] / 10;
+            $rows['apr_zhouqi'] = intval($rows['zhouqi'] / 10);
             $rows['apr'] = $rows["apr_{$rows['apr_zhouqi']}"];
         } else {
             $rows['status'] = 1;
