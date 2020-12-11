@@ -1,0 +1,294 @@
+{include file="public:header" /}
+<style>
+	.layui-form-item .layui-form-label {
+		width: 187px;
+	}
+	.layui-form-item .layui-input-block {
+		margin-left: 187px;
+	}
+</style>
+<form class="layui-form layui-form-pane container-fluid">
+	<div class="layui-tab layui-tab-card">
+		<ul class="layui-tab-title">
+			<li class="layui-this">基本信息</li>
+			<li>矿机 / 收益介绍</li>
+		</ul>
+		<div class="layui-tab-content" >
+			<div class="layui-tab-item layui-show">
+				<div class="layui-form-item">
+					<label class="layui-form-label">分类：</label>
+					<div class="layui-input-block">
+						<select name="type" lay-verify="required">
+							<option value=""> 请选择</option>
+							<option {if condition="1 eq $rows['type']"} selected {/if} value="1"> 现货</option>
+							<option {if condition="2 eq $rows['type']"} selected {/if} value="2"> 预售</option>
+						</select>
+					</div>
+				</div>
+
+				<blockquote class="layui-elem-quote layui-quote-nm">
+					<small>预售填写</small>
+					<hr>
+					<div class="layui-form-item">
+						<label class="layui-form-label">售卖结束时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="jieshu_time" id="jieshu_time" value="{:isset($rows['jieshu_time']) && strtotime($rows['jieshu_time']) != -62170012800 ? $rows['jieshu_time'] : ''}" readonly="readonly" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">预计上架时间：</label>
+						<div class="layui-input-inline">
+							<input type="text" name="shangjia_time" id="shangjia_time" value="{:isset($rows['shangjia_time']) && strtotime($rows['shangjia_time']) != -62170012800 ? $rows['shangjia_time'] : ''}" readonly="readonly" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</blockquote>
+				<blockquote class="layui-elem-quote layui-quote-nm">
+					<small>现货填写</small>
+					<hr>
+					<div class="layui-form-item">
+						<label class="layui-form-label">简介：</label>
+						<div class="layui-input-block">
+							<textarea name="intro" cols="69" rows="6" >{:isset($rows['intro']) ? $rows['intro'] : ''}</textarea>
+						</div>
+					</div>
+				</blockquote>
+
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="name" required lay-verify="required" value="{:isset($rows['name']) ? $rows['name'] : ''}" placeholder="请输入名称" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">位置：</label>
+					<div class="layui-input-block">
+						<input type="text" name="location" required lay-verify="required" value="{:isset($rows['location']) ? $rows['location'] : ''}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">价格（USDT）：</label>
+					<div class="layui-input-block">
+						<input type="text" name="price" required lay-verify="required" value="{:isset($rows['price']) ? $rows['price'] : ''}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">库存 ：</label>
+					<div class="layui-input-block">
+						<input type="text" name="stock" required lay-verify="required" value="{:isset($rows['stock']) ? $rows['stock'] : ''}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">购买赠送算力：</label>
+					<div class="layui-input-block">
+						<input type="text" name="suanli" required lay-verify="required" value="{:isset($rows['suanli']) ? $rows['suanli'] : ''}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态：</label>
+					<div class="layui-input-inline">
+						<input type="checkbox" name="status" title="上架" {notempty name="$rows['status']"}checked{/notempty}>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="height:136px;line-height:100px;">封面上传：</label>
+					<div class="layui-input-block">
+						<div class="imgbox">
+							<ul id="cover">
+								{notempty name="rows['cover']"}
+								<li>
+									<input type="hidden" name="cover" value="{$rows['cover']}" />
+									<img src="{:getFile($rows['cover'])}" alt="{$rows['name']}" />
+									<div class="imgsBtn">
+										<a href="javascript:;" class="delfile" alt="{$rows['cover']}" title="删除"><i class="layui-icon">&#xe640;</i></a>
+									</div>
+								</li>
+								{/notempty}
+							</ul>
+							<ul>
+								<li style="padding:0;border:none;">							
+									<div class="layui-upload-drag" onclick="showAlbum('cover')">
+										<i class="layui-icon">&#xe67c;</i>
+										<p>选择封面</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="height:136px;line-height:100px;">详情页大图上传：</label>
+					<div class="layui-input-block">
+						<div class="imgbox">
+							<ul id="cover_2">
+								{notempty name="rows['cover_2']"}
+								<li>
+									<input type="hidden" name="cover_2" value="{$rows['cover_2']}" />
+									<img src="{:getFile($rows['cover_2'])}" alt="{$rows['name']}" />
+									<div class="imgsBtn">
+										<a href="javascript:;" class="delfile" alt="{$rows['cover_2']}" title="删除"><i class="layui-icon">&#xe640;</i></a>
+									</div>
+								</li>
+								{/notempty}
+							</ul>
+							<ul>
+								<li style="padding:0;border:none;">							
+									<div class="layui-upload-drag" onclick="showAlbum('cover')">
+										<i class="layui-icon">&#xe67c;</i>
+										<p>选择封面</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">电费（元/度）：</label>
+							<div class="layui-input-block">
+								<input type="text" name="dianfei" required lay-verify="required" value="{:isset($rows['dianfei']) ? $rows['dianfei'] : ''}" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">管理费（%日产出）：</label>
+							<div class="layui-input-block">
+								<input type="text" name="guanlifei" required lay-verify="required" value="{:isset($rows['guanlifei']) ? $rows['guanlifei'] : ''}"  autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">保险费（元）：</label>
+							<div class="layui-input-block">
+								<input type="text" name="baoxianfei" required lay-verify="required" value="{:isset($rows['baoxianfei']) ? $rows['baoxianfei'] : ''}"  autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">功耗比（W/M）：</label>
+							<div class="layui-input-block">
+								<input type="text" name="gonghaobi" required lay-verify="required" value="{:isset($rows['gonghaobi']) ? $rows['gonghaobi'] : ''}" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">预计回报率：</label>
+							<div class="layui-input-block">
+								<input type="text" name="huibaolv" required lay-verify="required" value="{:isset($rows['huibaolv']) ? $rows['huibaolv'] : ''}" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="layui-form-item">
+							<label class="layui-form-label">每日产出（BTC）：</label>
+							<div class="layui-input-block">
+								<input type="text" name="richanchu" required lay-verify="required" value="{:isset($rows['richanchu']) ? $rows['richanchu'] : ''}" autocomplete="off" class="layui-input">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="layui-tab-item">
+				矿机介绍 ( 详细参数 )
+				<hr />
+				<div class="layui-form-item">
+					<label class="layui-form-label">矿机型号：</label>
+					<div class="layui-input-block">
+						<input type="text" autocomplete="off" name="x_1" value="{:isset($rows['x_1']) ? $rows['x_1'] : '' }" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">矿机算力：</label>
+					<div class="layui-input-block">
+						<input type="text" autocomplete="off" name="x_2" value="{:isset($rows['x_2']) ? $rows['x_2'] : '' }" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">矿机功率：</label>
+					<div class="layui-input-block">
+						<input type="text" autocomplete="off" name="x_3" value="{:isset($rows['x_3']) ? $rows['x_3'] : '' }" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">支持算法：</label>
+					<div class="layui-input-block">
+						<input type="text" autocomplete="off" name="x_4" value="{:isset($rows['x_4']) ? $rows['x_4'] : '' }" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">显存容量：</label>
+					<div class="layui-input-block">
+						<input type="text" autocomplete="off" name="x_5" value="{:isset($rows['x_5']) ? $rows['x_5'] : '' }" class="layui-input">
+					</div>
+				</div>
+
+				收益介绍
+				<hr/>
+				<div class="layui-form-item">
+					<label class="layui-form-label">收益结算公式：</label>
+					<div class="layui-input-inline">
+						<textarea name="s_1"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_1']) ? $rows['s_1'] : ''}</textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">结算时间：</label>
+					<div class="layui-input-inline">
+						<textarea name="s_2"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_2']) ? $rows['s_2'] : ''}</textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">电费：</label>
+					<div class="layui-input-inline">
+						<textarea name="s_3"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_3']) ? $rows['s_3'] : ''}</textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">保险费：</label>
+					<div class="layui-input-inline">
+						<textarea name="s_4"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_4']) ? $rows['s_4'] : ''}</textarea>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">管理费：</label>
+					<div class="layui-input-inline">
+						<textarea name="s_5"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_5']) ? $rows['s_5'] : ''}</textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item" style="padding-left: 10px;">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+			<a class="layui-btn layui-btn-primary" onclick="closeWin()">关闭并返回列表</a>
+		</div>
+	</div>
+	<input type="hidden" id="rowsID" name="id" value="{:isset($rows['id']) ? $rows['id'] : ''}">
+</form>
+
+{include file="public:script" /}
+{include file="public:footer" /}

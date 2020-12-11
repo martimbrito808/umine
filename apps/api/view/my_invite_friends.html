@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>邀请好友</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <style>
+        .mui-toast-container {
+            bottom: 40%;
+        }
+    </style>
+
+</head>
+<!-- 邀请好友 -->
+
+<body style="background: #F5F5F5">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>邀请好友</h3>
+        <a href="javascript:void(0)" class="share-font" id="open">
+            邀请返佣规则
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <ul class="invite_module">
+            <li>
+                <ul class="invite_msgList">
+                    <li>
+                        <p class="invite_msgRow">
+                            <img src="../../public/static/images/icon7.png" alt="">
+                            已推荐的好友
+                        </p>
+                        <span class="invite_msg">{$list.count}人</span>
+                    </li>
+                    <li>
+                        <p class="invite_msgRow">
+                            <img src="../../public/static/images/icon6.png" alt="">
+                            我的返佣
+                        </p>
+                        <span class="invite_msg">{$list.money}USDT</span>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <div class="invite_row-between">
+                    <div class="invite_row-column">
+                        <span class="invite_name">我的邀请码</span>
+                        <p class="invite_row-align">
+                            <span>{$list.code}</span>
+                            <button class="copy-button" data-clipboard-text="{$list.code}"><img src="../../public/static/images/icon5.png"
+                                    alt=""></button>
+                        </p>
+                    </div>
+                    <button class="generate-btn" data-code="{$list.code}" data-qr_code="{$list.qr_code}">生成海报</button>
+                </div>
+                <div class="invite_row-column">
+                    <span class="invite_name">邀请链接</span>
+                    <p class="invite_row-align">
+                        <span>{$list.link}</span>
+                        <button class="copy-button" data-clipboard-text="{$list.link}"><img src="../../public/static/images/icon5.png"
+                                alt=""></button>
+                    </p>
+                </div>
+            </li>
+            <li>
+                <img src="../../public/static/images/label.png" alt="" class="invite_label">
+                <ul class="invite_record">
+                    <li>
+                        <span>好友</span>
+                        <span>矿机数量</span>
+                        <span>注册时间</span>
+                    </li>
+                    {volist name="list.user" id="vo"}
+                        <li>
+                            <span>{$vo.tel}</span>
+                            <span>{$vo.num}</span>
+                            <span>{$vo.create_time}</span>
+                        </li>
+                    {/volist}
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="mask-layer"></div>
+    <!-- 购物车 -->
+    <div class="open_window">
+        <p class="rules-title">邀请返佣规则</p>
+        <p class="rules-msg">
+            {:htmlspecialchars_decode($content)} 
+        </p>
+        <button class="rules-btn" id="confirm">确定</button>
+    </div>
+    <script src="../../public/static/common/clipboard/clipboard.min.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //复制
+        var clipboard = new ClipboardJS('.copy-button');
+        clipboard.on('success', function (e) {
+            mui.toast(
+                '复制成功',
+            )
+            e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+            mui.toast(
+                '复制失败',
+            )
+        });
+        //弹框-邀请返佣规则
+        $('#open').click(function () {
+            $('.open_window,.mask-layer').fadeIn(200).css('display', 'flex');
+        })
+        $('.generate-btn').click(function () {
+            var code = $(".generate-btn").data("code")
+            var qr_code = $(".generate-btn").data("qr_code")
+            var token = localStorage.getItem('token');
+            window.location.href = "/api/my/business_card?token="+token+'&code='+code+'&qr_code='+qr_code;
+        })
+        $('.mask-layer,#confirm').click(function () {
+            $('.open_window,.mask-layer').fadeOut(200).css('display', 'flex');
+        })
+    </script>
+
+</body>
+
+</html>

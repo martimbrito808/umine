@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>法币交易</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <style>
+        .warm-prompt{
+            padding: 0 0.3rem;
+            box-sizing: border-box;
+            line-height: 0.55rem;
+        }
+    </style>
+</head> 
+<!-- 法币交易 -->
+
+<body style="background: #F5F5F5">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>法币交易</h3>
+        <a href="javascript:void(0)" class="share-font" id="open">
+            交易记录
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <ul class="deal-tab">
+            <li>
+                <a data-key="first" href="javascript:void(0)" class="active">购买</a>
+            </li>
+            <li>
+                <a data-key="second" href="javascript:void(0)">出售</a>
+            </li>
+        </ul>
+        <div class="deal-box deal-box-active" id="first">
+            <p class="deal-label">汇率：6.7CNY/USDT </p>
+            <ul class="deal-form-row">
+                <li>
+                    <label>数量：</label>
+                    <input type="text" placeholder="请填写购买数量">
+                    <span>USDT</span>
+                </li>
+                <li>
+                    <label>价格：</label>
+                    <input type="text" value="0.00">
+                    <span>CNY</span>
+                </li>
+            </ul>
+            <div class="deal-btn-row">
+                <button>确定</button>
+            </div>
+            <p class="warm-prompt">
+                <span>温馨提示：</span>
+                购买步骤：下单购买-线下支付-点击已完成付款-等待放币
+                本服务由第三方承兑商提供，灰度超算智能为您匹配最优承兑商，保障双方资产安全<br />
+                1.请务必使用本人实名银行卡进行收付款，否则承兑商不予承兑。<br />
+                2.承兑商为平台认证商户，并有数字资产抵押，请放心兑换。<br />
+                3.承兑服务暂不支持支付宝转银行卡、他人代付、ATM及柜台转账等转账方式。<br />
+                4.购买限制：单笔最小购买数量25USDT，单笔最大购买数量25000USDT。<br />
+                5.承兑商提供24小时服务，视网络和银行系统情况，到账时间一般在20分钟至24小时。<br />
+                6.17：00至次日8：00期间跨行转账单笔不得超过5万，金额如大于5万请分笔转<br />
+                7.转账时请不要备注任何信息，否则承兑商可能不予承兑。
+            </p>
+        </div>
+        <div class="deal-box" id="second">
+            <p class="deal-label">汇率：6.7CNY/USDT </p>
+            <ul class="deal-form-row">
+                <li>
+                    <label>数量：</label>
+                    <input type="text" placeholder="请填写出售数量">
+                    <span>USDT</span>
+                </li>
+                <li>
+                    <label>价格：</label>
+                    <input type="text" value="0.00">
+                    <span>CNY</span>
+                </li>
+            </ul>
+            <p class="deal-row">
+                可用 0 USDT <button class="all-font">全部出售</button>
+            </p>
+            <div class="deal-btn-row">
+                <button>确定</button> 
+            </div>
+            <p class="warm-prompt">
+                <span>温馨提示：</span>
+                出售步骤：下单出售-等待商户付款-点击确认收款放币-等待放币<br />
+                本服务由第三方承兑商提供，灰度超算智能为您匹配最优承兑商，保障双方资产安全<br />
+                1.提现金额将转账到您绑定的银行卡。<br />
+                2.承兑商为平台认证商户，并有数字资产抵押，请放心兑换。<br />
+                3.出售限制：单笔最小出售数量1USDT，单笔最大出售数量15000USDT。（邀请活动期间1USDT起售）。<br />
+                4.承兑商提供24小时服务，视网络和银行系统情况，到账时间一般在20分钟至12小时（活动期间订单可能延迟至24小时）。<br />
+                6.如订单产生纠纷，请立即联系微信客服灰度超算客服协助解决。
+            </p>
+        </div>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //选项卡
+        $('.deal-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.deal-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.deal-box').removeClass('deal-box-active');
+            $('#' + key).addClass('deal-box-active');
+        });
+    </script>
+</body>
+
+</html>

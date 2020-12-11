@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>我的矿机</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <style>
+        body{
+    
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .my-ltc-list{
+            margin: .3rem .3rem 0 .3rem;
+        }
+        .my-ltc-item{
+            position: relative;
+            height: 2.57rem;
+            margin-top: .2rem;
+            display: flex;
+            align-items: center;
+            background: #3D3F4C;
+            border-radius: .2rem;
+        }
+        .my-ltc-item .my-ltc-item-img{
+            width: 1.21rem;
+            height: 1.03rem;
+            margin: 0 .45rem;
+        }
+        .my-ltc-item-title{
+            display: inline-block;
+            font-size: .34rem;
+            font-family: Arial-BoldMT;
+            color: #FFFFFF;
+            opacity: 1;
+            margin-bottom: .48rem;
+        }
+        .my-ltc-item-num,.my-ltc-item-money{
+            font-size: .24rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #AEAFB5;
+            opacity: 1;
+        }
+        .my-ltc-item-money{
+            margin-top: .12rem;
+        }
+        .my-ltc-item-flag{
+            position: absolute;
+            right: 0;
+            top:.15rem;
+            width: 1.2rem;
+            height: .46rem;
+            background: #70737C;
+            display: flex;
+            align-items: center;
+            padding-left: .16rem;
+            border-radius: .46rem 0 0 .46rem;
+        }
+        .my-ltc-item-flag img{
+            width: .22rem;
+            height: .22rem;
+        }
+        .my-ltc-item-flag span{
+            font-size: .2rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<script>
+    var width = document.documentElement.clientWidth;
+    document.documentElement.style.fontSize = width/7.5 + 'px';
+</script>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">我的矿机</div>
+</div>
+<div class="container">
+    <ul class="my-ltc-list">
+        {volist name="list" id='ll'}
+            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                <li class="my-ltc-item">
+                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                    <div class="my-ltc-item-right">
+                        <p class="my-ltc-item-title">{$ll.name}</p>
+                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                    </div>
+                    <div class="my-ltc-item-flag">
+                        <img class="bz" src="../../public/static/images/bz.png" alt="">
+                        <span>保障中</span>
+                    </div>
+                </li>
+            </a>
+        {/volist}
+    </ul>
+</div>
+</body>
+</html>

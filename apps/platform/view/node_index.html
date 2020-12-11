@@ -1,0 +1,54 @@
+{include file="public:header" /}
+<div class="main-layout" id="main-layout">
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container clearfix">
+				<div class="column-content-detail">
+					<div class="layui-form-item">
+					    
+				    	<div class="layui-inline">
+							<select id="type" class="layui-select">
+								<option value="0">节点类型</option>
+								<option value="1"> 普通节点  </option>
+								<option value="2"> 超级节点  </option>
+							</select>
+						</div>
+					    
+						<div class="layui-inline">
+							<input type="text" id="keys" value="{$keys}" placeholder="会员电话 | 节点名称" autocomplete="off" class="layui-input" style="width:280px">
+						</div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" id="search">搜索</button></div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" onclick="$('#keys').val(''); return false;">清除</button></div>
+					</div>
+					<div class="layui-form" id="table-list">
+						<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'ajaxData\')}', page:true, limit:20, height:'full-170'}" lay-filter="ajaxData">
+							<thead>
+								<tr>
+						            <th lay-data="{field:'id'}">ID</th>
+							        <th lay-data="{field:'title'}">节点名称</th>
+						            <th lay-data="{field:'cover'}">封面图</th>
+					        		<th lay-data="{field:'type_msg'}">节点类型</th>
+									<th lay-data="{field:'username'}">创建人昵称</th>
+									<th lay-data="{field:'tel'}">创建人手机</th>
+									<th lay-data="{field:'vote'}">票数</th>
+									<th lay-data="{field:'create_time'}">创建时间</th>
+									<th lay-data="{field:'statusbar', width:150}">赠送矿机</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+{include file="public:script" /}
+{include file="public:footer" /}

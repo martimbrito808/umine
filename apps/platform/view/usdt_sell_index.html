@@ -1,0 +1,48 @@
+{include file="public:header" /}
+<div class="main-layout" id="main-layout">
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container clearfix">
+				<div class="column-content-detail">
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<input type="text" id="keys" value="{$keys}" placeholder="会员电话 | 充值单号" autocomplete="off" class="layui-input" style="width:280px">
+						</div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" id="search">搜索</button></div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" onclick="$('#keys').val(''); return false;">清除</button></div>
+					</div>
+					<div class="layui-form" id="table-list">
+						<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'ajaxData\')}', page:true, limit:20, height:'full-170'}" lay-filter="ajaxData">
+							<thead>
+								<tr>
+									<th lay-data="{type:'checkbox'}"></th>
+									<th lay-data="{field:'username'}">会员昵称</th>
+									<th lay-data="{field:'tel'}">会员手机</th>
+									<th lay-data="{field:'order_sn'}">订单编号</th>
+									<th lay-data="{field:'num',width:150}">出售USDT数量</th>
+									<th lay-data="{field:'price', width:100}">汇率</th>
+							    	<th lay-data="{field:'pay_price',width:140}">应支付CNY</th>
+				    			    <th lay-data="{field:'bindname',width:100}">实名姓名</th>
+									<th lay-data="{field:'bankname'}">收款银行名称</th>
+									<th lay-data="{field:'banknum',width:180}">收款卡号</th>
+									<th lay-data="{field:'checkstatus', width:150}">审核</th>
+									<th lay-data="{field:'create_time'}">申请时间</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+{include file="public:script" /}
+{include file="public:footer" /}

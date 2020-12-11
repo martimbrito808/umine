@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>灰度超算---消息</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .news-list{
+            margin: .3rem .3rem 0 .3rem;
+        }
+        .news-item{
+            margin-top: .2rem;
+            padding: .3rem;
+            background: #fff;
+            border-radius: .2rem;
+        }
+        .news-item-t1{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: .4rem;
+        }
+        .news-item-message{
+            font-size: .3rem;
+            font-weight: bold;
+            font-family: SourceHanSansCN-Bold;
+            color: #2B2A3C;
+            opacity: 1;
+        }
+        .news-item-time{
+            font-size: .24rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #AAAAB0;
+        }
+        .news-item-text{
+            font-size: .26rem;
+            font-family: SourceHanSansCN-Regular;
+            color: #333333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+        <div class="title">消息</div>
+    </div>
+    <div class="container">
+        <ul class="news-list">
+            {volist name="message" id="vo"}
+                <li class="news-item" id="details{$vo.id}" data-id="{$vo.id}">
+                    <div class="news-item-t1">
+                        <span class="news-item-message">{$vo.title}</span>
+                        <span class="news-item-time">{$vo.create_time}</span>
+                    </div>
+                    <p class="news-item-text">
+                        {$vo.content}
+                    </p>
+                </li>
+            {/volist}
+        </ul>
+    </div>
+     <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script type="text/javascript">
+        // 第三种 通过方法响应点击事件
+        $('.news-item').click(function() {
+            var token = localStorage.getItem('token');
+            var id = $(this).data('id');
+             window.location.href = "/api/my/message_details?token="+token+'&id='+id;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>提现</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 提现 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>提现</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="form-wrap">
+            <div class="form-box">
+                <p class="form-box-title">提现地址</p>
+                <p class="form-row">
+                    <input type="text" id='address' placeholder="请输入{$type}提现地址" />
+                    <button><img src="../../public/static/images/head_icon.png" alt=""></button>
+                </p>
+            </div>
+            <div class="form-box">
+                <p class="form-box-title">
+                    <span>提现数量</span>
+                    <span>余额：<span class="brown">{$money.selfmoney} {$type}</span></span>
+                </p>
+                <p class="form-row">
+                    <input type="text" id='money' placeholder="提现数量" />
+                </p>
+            </div>
+            <label class="form-box-label">手续费：{$money.withdrawal_fee} {$type}</label>
+            <div class="form-btnBox">
+                <button id='sub'>确定</button>
+            </div>
+            <p class="warm-prompt">
+                温馨提示：<br />
+                · 最小提币数量为：{$money.mincash} {$type}<br />
+                · 每笔提现提现手续费为：{$money.withdrawal_fee} {$type}<br />
+            </p>
+        </div>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script charset="utf-8">
+        let lock = false;
+        $('#sub').click(function() {
+            let address, money, type, token;
+            token = localStorage.getItem('token');
+            address = $('#address').val();
+            money = $('#money').val();
+            type = "{$type}";
+            if(address == undefined || address == '' ) {
+                mui.toast(
+                    '请输入账户地址',
+                )
+                return false;
+            }
+            if(money == undefined || money == '') {
+                 mui.toast(
+                    '请输入提现数量',
+                )
+                return false;
+            }
+       
+            if(lock == true) {
+                return false;
+            }
+            lock = true;
+            
+             $.ajax({
+                type : "POST",
+                contentType: "application/json;charset=UTF-8",
+                url : "/api/money/withdraw_deposit_up",
+                data : JSON.stringify({
+                    money: money,
+                    address: address,
+                    type: type,
+                    token: token
+                }),
+                success : function(result) {
+                    if(result.code == 200) {
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+                    }else{
+                        lock = false;
+                    }
+                    mui.toast(
+                        result.msg
+                    )
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    lock = false;
+                    mui.toast(
+                        '出错啦，请稍后再试',
+                    )
+                }
+            })
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资产</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 资产 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>资产</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="property-wrap">
+            <div class="property-card">
+                <span>资产(BTC)</span>
+                <h3>0.000000</h3>
+                <h3>≈¥0.00</h3>
+            </div>
+            <ul class="property-list">
+                <li>
+                    <p class="property-row">
+                        <img src="../../public/static/images/type4.png" alt="">
+                        <span>BTC</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>0</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                <li>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon15.png" alt="">
+                        <span>ETH</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>0</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                <li>
+                    <p class="property-row">
+                        <img src="../../public/static/images/type3.png" alt="">
+                        <span>USDT</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>0</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                <li>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon16.png" alt="">
+                        <span>FIL</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>0</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                <li>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon14.png" alt="">
+                        <span>ER</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>0</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div> 
+    <div class="mask_layer"></div>
+    <div class="open_menu">
+        <button class="bottom-btn">充值</button>
+        <button class="bottom-btn">提现</button>
+        <button class="bottom-btn">资金记录</button>
+        <button class="cancel-btn2">取消</button>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //底部弹框
+        $('.property-list li').click(function () {
+            $('.open_menu,.mask_layer').slideDown(200).css('display', 'flex');
+        })
+        $('.mask_layer,.cancel-btn2').click(function () {
+            $('.open_menu,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+    </script>
+</body>
+
+</html>

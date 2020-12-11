@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>闪兑</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 闪兑 -->
+
+<body style="background: #fff">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>闪兑</h3>
+        <a href="/api/my/exchange_record?token={$data.token}" class="share-font" id="open">
+            兑换记录
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <div class="gray-bg">
+            <form>
+                <div class="white-bg-box">
+                <div class="exchange-top">
+                    <p class="exchange-row">
+                        <img src="../../public/static/images/type4.png" alt="">
+                        BTC
+                    </p>
+                    <span class="exchange-span">兑换</span>
+                    <p class="exchange-row">
+                        <img src="../../public/static/images/type3.png" alt="">
+                        USDT
+                    </p>
+                </div>
+                <div class="exchange-bar">
+                    <span class="exchange-label">闪兑BTC数量</span>
+                    <input class="exchange-input" type="text" name="num" placeholder="0.00">
+                    <span class="exchange-font">BTC</span>
+                </div>
+                <p class="available-quantity">可用数量：{$btc}BTC</p>
+                <p class="exchange-rate">
+                    <span>汇率</span>
+                    <span>1BTC≈{$convert_exchange_rate}USDT</span>
+                </p>
+            </div>
+                <button type="button" class="change-button" id="exchange">立即兑换</button>
+            </form>
+            <p class="exchange-rows">
+                <span>手续费</span>
+                <span>每笔闪兑交易收取{$convert_service_charge}%交易手续费。</span>
+            </p>
+            <p class="exchange-rows">
+                <span>交易限额</span>
+                <span>目前闪兑交易单笔最高限额为{$convert_max_price}BTC</span>
+                <span>目前闪兑交易单笔最低限额为{$convert_min_price}BTC</span>
+            </p>
+            <p class="exchange-rows">
+                <span>交易金额</span>
+                <span>因BTC波动较大，最终交易金额以实际成交价格为准</span>
+            </p>
+        </div>
+    </div>
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script type="text/javascript">
+        // 第三种 通过方法响应点击事件
+        $('#exchange').click(function() {
+            var d = {};
+            var t = $('form').serializeArray();
+            //t的值为[{name: "a1", value: "xx"},
+            //{name: "a2", value: "xx"}...]
+            $.each(t, function() {
+                d[this.name] = this.value;
+            });
+            d['token'] = localStorage.getItem('token');
+            var data = d;
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/api/my/exchange",
+                data: data,
+                dataType: 'json',
+                success: function (res) {
+                    if(res.code===200){
+                        layer.msg(res.msg);
+                        window.location.reload();
+                        return false;
+                    }else{
+                        layer.msg(res.msg);
+                        return false;
+                    }
+                }
+            });
+        });
+    </script>
+    
+</body>
+
+</html>

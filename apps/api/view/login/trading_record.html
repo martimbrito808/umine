@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>交易记录</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 交易记录 -->
+
+<body style="background: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>交易记录</h3>
+    </header>
+    <div class="unified-wrapper">
+        <ul class="details-tab">
+            <li>
+                <a data-key="first" class="active" href="javascript:void(0)">购买</a>
+            </li>
+            <li>
+                <a data-key="second" href="javascript:void(0)" class="">出售</a>
+            </li>
+        </ul>
+        <ul class="system-list system-list-active" id="first">
+            
+        </ul>
+        <ul class="system-list" id="second">
+            
+        </ul>
+    </div> 
+
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //选项卡
+        $('.details-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.details-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.system-list').removeClass('system-list-active');
+            $('#' + key).addClass('system-list-active');
+        });
+    </script>
+</body>
+
+</html>

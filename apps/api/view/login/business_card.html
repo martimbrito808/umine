@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个性名片</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="css/news.css">
+</head>
+<!-- 个性名片 -->
+
+<body style="background: #FFCD5C url(../../public/static/images/bg3.png) no-repeat;background-size: 100%;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>个性名片</h3>
+        <a href="javascript:void(0)" class="share-font" id="open">
+            分享
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <div class="card-wrap">
+            <img src="../../public/static/images/logo3.png" alt="" class="business_card-img">
+            <p class="business_card-row">
+                <span>定投BTC新风尚</span>
+                <span>综合购买成本为二级市场一半</span>
+                <span>实体投资，矿机保本，收益稳定，本金安全，
+                    操作简便，综合收益高达200%-500%！</span>
+            </p>
+            <div class="business_card-box">
+                <span class="card-font">我的邀请码</span>
+                <span class="card-label">25JNHG</span>
+                <input class="card-input" type="text" placeholder="好友注册灰度超算时填写邀请码" />
+                <div class="card-code">
+
+                </div>
+                <span class="card-text">扫码注册，开始挖矿</span>
+            </div>
+            <span class="card-bottom-text">全球领先的一站式实体矿机算力服务平台</span>
+        </div>
+    </div>
+    <div class="mask_layer"></div>
+    <div class="open_menu">
+        <span class="share-posters">分享海报到</span>
+        <img src="../../public/static/images/img2.png" alt="" class="posters-img">
+        <div class="share-row-between">
+            <button>
+                <img src="../../public/static/images/type1.png" alt="">
+                分享给好友
+            </button>
+            <button>
+                <img src="../../public/static/images/type2.png" alt="">
+                分享到朋友圈
+            </button>
+        </div>
+        <button class="cancel-btn">取消</button>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //底部弹框
+        $('#open').click(function () {
+            $('.open_menu,.mask_layer').slideDown(200).css('display', 'flex');
+        })
+        $('.mask_layer,.cancel-btn').click(function () {
+            $('.open_menu,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+
+    </script>
+</body>
+
+</html>

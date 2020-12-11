@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的矿机</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link rel="stylesheet" href="../../public/static/common/mui/css/mui.min.css">
+    <style>
+        .unified-header {
+            background: #F3F3F5!important;
+        }
+        .unified-wrapper{
+            padding: 0.9rem 0.3rem 1.1rem!important;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<!-- 我的矿机 -->
+
+<body style="background-color: #F3F3F5;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>{$info.name}</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="mill-card-head">
+            <p class="safeguard-label">
+                <span class="circle"></span>
+                保障中
+            </p>
+            <ul class="mill-card-list">
+                <li>
+                    <span>昨日收益</span>
+                    <span>{:showprice($info.yesterday_earnings)}</span>
+                    <span>≈¥{:showprice($info.yesterday_earnings_cny)}</span>
+                </li>
+                <li>
+                    <span>累计收益</span>
+                    <span>{:showprice($info.count_earnings)}</span>
+                    <span>≈¥{:showprice($info.count_earnings_cny)}</span>
+                </li>
+            </ul>
+            <!--<p class="mill-card-text">AI Mine收益提升<span> +0.88%</span></p>-->
+        </div>
+        <div class="mill-box">
+            <ul class="mill-msg-list">
+                <li> 
+                    <span>{$info.suanli}Th/s</span>
+                    <span>我的算力</span>
+                </li>
+                <li>
+                    <span>{$info.mill_num}台</span>
+                    <span>矿机数量</span>
+                </li>
+                <li>
+                    <span>{$info.location}</span>
+                    <span>矿场位置</span>
+                </li>
+            </ul>
+        </div>
+        <div class="mill-box">
+            <ul class="mill-column-list">
+                <li>
+                    <span>预计今日产出</span>
+                    <span>{:showprice($info.shouyi_format)}</span>
+                </li>
+                <li>
+                    <span>电费</span>
+                    <span>{:showprice($info.dianfei)}USDT</span>
+                </li>
+                <li>
+                    <span>管理费</span>
+                    <span>{$info.guanlifei}%日产出</span>
+                </li>
+            </ul>
+            <a href="/api/my/cost?token={$token}" class="deductions-way">
+                抵扣方式
+                <img src="../../public/static/images/right_icon5.png" alt="">
+            </a>
+        </div>
+        <div class="mill-box">
+            <h3 class="mill-top-title">收益记录</h3>
+            <p class="mill-top-msg">
+                <span>时间</span>
+                <span>收益/收益提升</span>
+            </p>
+            <ul class="gain-recording">
+                {if count($shouyilist) > 0 }
+                    {volist name='shouyilist' id='sl'} 
+                        <li>
+                            <span>{$sl.earnings_date}</span>
+                            <span>{:showprice($sl.price)} 
+                            {if !empty($sl.yesterday_earnings)}
+                                /{if $sl.price > $sl.yesterday_earnings && $sl.yesterday_earnings != 0 }+{else/}-{/if}{$sl.earnings_up}%
+                            {/if}
+                            </span>
+                        </li>
+                    {/volist}
+                {else/}
+                    <!-- 暂无数据时显示 -->
+                    <div class="no_data">
+                        <img src="images/null2.png" alt="">
+                        暂无数据
+                    </div>
+                {/if}
+            </ul>
+        </div>
+    </div>
+    <footer class="mill-footer">
+        <button id='up' {if $info.status ==1 }  disabled style='color:#B4B4B6' {/if}>一键上架</button>
+        <button id='down' {if $info.status ==0 } disabled style='color:#B4B4B6' {/if}>一键下架</button>
+    </footer>
+</body>
+<script src="../../public/static/js/jquery-3.2.1.js"></script>
+<script src="../../public/static/common/mui/js/mui.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    let token = "{$token}";
+    let user_mill_id = "{$info.id}";
+    
+    $('#up').click(function() {
+        $.ajax({
+            url:"/api/index/millChange",
+            data: {'token':token,'id':user_mill_id,type:'1'},
+            success:function(res){
+                mui.toast(res.msg);
+                setTimeout(function(){
+                    window.location.reload();
+                },2000)
+            }
+        });
+    })
+    $('#down').click(function() {
+         $.ajax({
+            url:"/api/index/millChange",
+            data: {'token':token,'id':user_mill_id,type:'0'},
+            success:function(res){
+                mui.toast(res.msg);
+                setTimeout(function(){
+                    window.location.reload();
+                },2000)
+            }
+        });
+    })
+</script>
+</html>

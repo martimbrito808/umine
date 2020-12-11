@@ -1,0 +1,7 @@
+/thinkphp/
+/vendor/
+/runtime/*
+/public/uploads/*
+/public/attached/image*
+.idea
+composer.lock

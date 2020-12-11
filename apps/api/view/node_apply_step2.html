@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>申请{$data.title}</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            /*background: #fff;*/
+            margin-top: .3rem;
+        }
+        .input-item{
+            width: 7.5rem;
+            height: 1.19rem;
+            background: #FFFFFF;
+            opacity: 1;
+            display: flex;
+            align-items: center;
+            padding: 0 .3rem;
+        }
+        .input-label,.upload-label{
+            flex: .5;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+        }
+        .upload-label{
+            display: block;
+        }
+        .input-text{
+            flex: 2;
+            height: 1.19rem;
+            background: #FFFFFF;
+            border: none;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            color: #999999;
+        }
+        .text-content,.tip{
+            padding: .25rem .3rem .4rem .3rem;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #999999;
+            line-height: .34rem;
+        }
+        .tip{
+            display: block;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-top: .4rem;
+        }
+        .upload-content{
+            padding: .45rem .3rem .27rem .3rem;
+            background: #fff;
+        }
+        .upload-btn{
+            position: relative;
+            margin-top: .4rem;
+            display: inline-block;
+            width: 2.08rem;
+            height: 2.08rem;
+            background: none;
+        }
+        .upload-btn img{
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .money{
+            flex: 2;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #E3B874;
+        }
+        .sub-btn{
+            display: block;
+            margin: 0 auto;
+            margin-top: 2.47rem;
+            width: 5.91rem;
+            height: .94rem;
+            background: #E3B874;
+            opacity: 1;
+            border-radius: 2rem;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            line-height: .94rem;
+            color: #FFFFFF;
+        }
+        .image-input{
+            position: absolute;
+            width: 2.08rem;
+            height: 2.08rem;
+            display: block;
+            opacity: 0;
+            z-index: 100;
+        }
+        .img-del {
+            width: 100%;
+            height: 100%;
+            background: url(../../public/static/images/del.png) no-repeat top right;
+            background-size: 20% 20%;
+            position: absolute;
+            top: 0.1rem;
+            right: 0rem;
+            z-index: 999999;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/api/node/apply_step1.html?token={$auth.token}" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+        <div class="title">申请{$data.title}</div>
+    </div>
+    <div class="container">
+        <form action="">
+            <div class="input-item">
+                <span class="input-label">节点名称:</span>
+                <input type="text" id='title' class="input-text" placeholder="请输入节点名称">
+            </div>
+            <div class="text-content">
+                先为自己的节点取个有趣的名称吧，审核通过后，名称自动
+                生成，一旦设置不再更改。
+            </div>
+            <div class="upload-content">
+                <span class="upload-label">节点图标:</span>
+                <button class="upload-btn" >
+                    <ul class="upload-list">
+                        <li id='up-img-li'>
+                            <input type="file" accept="image/png,image/gif,image/jpeg" class="image-input uploadFileBtn">
+                            <img src="../../public/static/images/upload-img.png" alt="">
+                        </li>
+                    </ul>
+                </button>
+                <span class="tip">设置一个专属于你自己的节点图标。</span>
+            </div>
+            <div class="input-item">
+                <span class="input-label">应付:</span>
+                <span class="money" id='money'>{$data.money}{$data.money_type}</span>
+            </div>
+            <button type="button" class="sub-btn" id='sub-btn'>提交</button>
+        </form>
+    </div>
+    
+    <script>
+        //图片预览
+        var uploadFileBtn = document.getElementsByClassName('uploadFileBtn');
+     
+        for (var i = 0; i < uploadFileBtn.length; i++) {
+            uploadFileBtn[i].addEventListener('change', function (e) {
+                var self = this;
+                // 需要上传的文件对象，单文件
+                var file = e.target.files[0];
+                // 未选择文件时停止执行
+                if (!file) {
+                    return;
+                }
+                // 此部分为设置预览图片方法【本地图片路径】
+                var settingPreview = function () {
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(file);
+                    oFReader.onloadend = function (oFRevent) {
+                        var src = oFRevent.target.result;
+                        var li =
+                            '\t\t\t\t<li id="baseimg">\n' +
+                            '\t\t\t\t\t<div class="selected">\n' +
+                            '\t\t\t\t\t\t<img class="base64img" src="' + src + '" /><span class="img-del"></span>\n' +
+                            '\t\t\t\t\t</div>\n' +
+                            '\t\t\t\t</li>';
+                        $('.upload-list').prepend(li);
+                        $.ajax({
+                            type : "POST",
+                            contentType: "application/json;charset=UTF-8",
+                            url : "/api/public/baseimg_upload",
+                            data : JSON.stringify({img:src}),
+                            success : function(result) {
+                                if(result.status == 1) {
+                                    $('.base64img').attr('data-img', result.data.url);
+                                }
+                            },
+                            //请求失败，包含具体的错误信息
+                            error : function(e){
+                                mui.toast(
+                                    '图片上传失败，请重新上传',
+                                )
+                            }
+                        });
+                    }
+                }
+                
+               if($('.upload-list li').length >= 1) {
+                    $('#up-img-li').hide();
+                }
+                settingPreview();
+            })
+        }
+        $('body').on('click', '.img-del', function () {
+            $('#baseimg').remove();
+            $('#up-img-li').show();
+            return false;
+        })
+        
+        let lock = false;
+        $('#sub-btn').click(function() {
+            let type, title, cover, token;
+            type = "{:input('type')}";
+            title = $('#title').val();
+            token = localStorage.getItem('token');
+            cover = $('.base64img').attr('data-img');
+            if(title == undefined || title == '') {
+                layer.msg('请输入节点名称');
+                return false;
+            }
+            if(cover == undefined || cover == '' ) {
+                layer.msg('请上传节点图标');
+                return false;
+            }
+            
+            if(lock == true) {
+                return false;
+            }
+            lock = true;
+            
+            $.ajax({
+                type : "POST",
+                contentType: "application/json;charset=UTF-8",
+                url : "/api/node/apply_step2",
+                data : JSON.stringify({
+                    type: type,
+                    title: title,
+                    token: token,
+                    cover: cover,
+                }),
+                success : function(result) {
+                    if(result.code == 200) {
+                        setTimeout(function(){
+                            window.location.href="/api/node/index?token="+token;
+                        },2000);
+                    }else{
+                        lock = false;
+                    }
+                    layer.msg(result.msg);
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    lock = false;
+                    layer.msg('出错了,请稍后再试');
+                }
+            });
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>资产</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 资产 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>资产</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="property-wrap">
+            <div class="property-card">
+                <span>资产(BTC)</span>
+                <h3>{:showprice($info.btc, 6)}</h3>
+                <h3>≈¥{$info.btc_cny}</h3>
+            </div>
+            <ul class="property-list">
+                <li data-type='btc'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/type4.png" alt="">
+                        <span>BTC</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.btc,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                <li data-type='usdt'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/type3.png" alt="">
+                        <span>USDT</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.usdt,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                
+                <li data-type='eth'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon15.png" alt="">
+                        <span>ETH</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.eth,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                
+                <li data-type='ethu'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon17.png" alt="">
+                        <span>ETHU</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.ethu,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                
+                 <li data-type='euf'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon18.png" alt="">
+                        <span>EUF</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.euf,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+                
+                <li data-type='er'>
+                    <p class="property-row">
+                        <img src="../../public/static/images/icon14.png" alt="">
+                        <span>ER</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>可用</span>
+                        <span>{:showprice($info.er,6)}</span>
+                    </p>
+                    <p class="property-msg">
+                        <span>冻结</span>
+                        <span>0</span>
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div> 
+    <div class="mask_layer"></div>
+    <div class="open_menu">
+        <button class="bottom-btn" id="recharge">充值</button>
+        <button class="bottom-btn" id="deposit">提现</button>
+        <button class="bottom-btn" id="mingxi"> 资金记录</button>
+        <button class="cancel-btn2">取消</button>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //底部弹框
+        $('.property-list li').click(function () {
+            let thatType = $(this).data('type');
+            switch(thatType)
+            {
+                case 'btc':
+                    $('#recharge').attr('type','btc');
+                    $('#deposit').attr('type','btc');
+                    $('#mingxi').attr('type','btc');
+                    break;
+                case 'usdt':
+                    $('#recharge').attr('type','usdt');
+                    $('#deposit').attr('type','usdt');
+                    $('#mingxi').attr('type','usdt');
+                    break;
+                case 'eth':
+                    $('#recharge').attr('type','eth');
+                    $('#deposit').attr('type','eth');
+                    $('#mingxi').attr('type','eth');
+                    break;
+                case 'ethu':
+                    $('#recharge').attr('type','ethu');
+                    $('#deposit').attr('type','ethu');
+                    $('#mingxi').attr('type','ethu');
+                    break;
+                case 'euf':
+                    $('#recharge').attr('type','euf');
+                    $('#deposit').attr('type','euf');
+                    $('#mingxi').attr('type','euf');
+                    break;
+                case 'er':
+                    $('#recharge').attr('type','er');
+                    $('#deposit').attr('type','er');
+                    $('#mingxi').attr('type','er');
+                    break;
+            }
+            // if(thatType == 'btc' || thatType == 'usdt' || thatType=='eth' || thatType=='ethu' || thatType=='euf') {
+            //     $('#recharge').show();
+            //     $('#deposit').show();
+            // }else{
+            //     $('#recharge').hide();
+            //     $('#deposit').hide();
+            // }
+        
+            $('.open_menu,.mask_layer').slideDown(200).css('display', 'flex');
+        })
+        $('.mask_layer,.cancel-btn2').click(function () {
+            $('.open_menu,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+        $('#recharge').click(function () {
+            var token = localStorage.getItem('token');
+            var type = $(this).attr('type');
+            console.log(type);
+            window.location.href = "/api/money/recharge?token="+token+"&type="+type;
+        })
+        $('#deposit').click(function () {
+            var token = localStorage.getItem('token');
+            var type = $(this).attr('type');
+            window.location.href = "/api/money/withdraw_deposit?token="+token+"&type="+type;
+        })
+        $('#mingxi').click(function () {
+            var token = localStorage.getItem('token');
+            var type = $(this).attr('type');
+            window.location.href = "/api/index/money_record?token="+token+"&class="+type;
+        })
+    </script>
+</body>
+
+</html>

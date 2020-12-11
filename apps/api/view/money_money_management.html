@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$money.name}</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- USDT生币宝定期理财 -->
+<style>
+    .layui-layer-btn a {
+    height: 28px;
+    line-height: 28px;
+    margin: 5px 5px 0;
+    padding: 0 15px;
+    border: 1px solid #dedede;
+    background-color: #fff;
+    color: #333;
+    border-radius: 2px;
+    font-weight: 400;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+ body .demo-class .layui-layer-btn0{
+  border-color: #E6E3E6;
+  background-color: #FFF;
+  color: black;
+ }
+ body .demo-class .layui-layer-btn1{
+  border-color: #DEAF5F;
+  background-color: #DEAF5F;
+  color: #fff;
+ }
+</style>
+<body style="background-color: #fff;">
+    <header class="money-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return2.png" alt="" class="return-icon">
+        </a>
+        <h3>{$money.name}</h3>
+    </header> 
+    <div class="money-wrapper">
+        <div class="management-head">
+            <div class="management-box">
+                <img src="{:getfile($money['cover'])}" alt="" class="management-icon">
+                <span class="management-label">{$money.name}</span>
+                <ul class="management-list">
+                    <li>
+                        <span class="percent">{$money.apr}%</span>
+                        <span class="management-name">年化收益率</span>
+                    </li>
+                    <li>
+                        <span class="period">{$money.zhouqi}天</span>
+                        <span class="management-name">产品周期</span>
+                    </li>
+                </ul>
+                <span class="management-tag">{$money.intro}</span>
+                {if $money.type == 1}
+                    <ul class="data-tab">
+                        <li>
+                            <a data-key="first" href="javascript:void(0)" class="active">
+                                30天
+                                <span class="border-active"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-key="second" href="javascript:void(0)" class="">
+                                60天
+                                <span class="border-active"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-key="third" href="javascript:void(0)" class="">
+                                90天
+                                <span class="border-active"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a data-key="third" href="javascript:void(0)" class="">
+                                120天
+                                <span class="border-active"></span>
+                            </a>
+                        </li>
+                    </ul>
+                {/if}
+                
+            </div>
+        </div> 
+        <ul class="timeline-new">
+            <li class="timeline-round">
+                <span>{$money.rengou_begin}</span>
+            </li>
+            <li class="timeline-line">
+                <span>认购期</span>
+            </li>
+            <li class="timeline-round">
+                <span>{$money.rengou_end}</span>
+            </li>
+            <li class="timeline-line" style="padding-left: 1rem;">
+                <span>收益期</span>
+            </li>
+            <li class="timeline-round">
+                <span>{$money.get_time}</span>
+            </li>
+        </ul>
+        <div class="product-presentation">
+            <h3>产品介绍</h3>
+            <p>
+                项目方：{$money.xiangmufang}<br />
+                租赁额度：{:showprice($money.rengouedu)}USDT起；<br />
+                开挖日期：{$money.day}<br />
+                租赁
+				周期：{$money.zhouqi}天<br />
+                年化收益：{$money.apr}%<br />
+                开挖货币：{$money.fanxihuobi}<br />
+                返还本金：从开挖之日开始，{$money.zhouqi}天后到期。本期到期后，3个工作日返还到用户账户。
+            </p>
+        </div>
+    </div>
+    <footer class="foot-box">
+        {if $money.buy == 1 }
+           <button  type="button" class="buy_now pay-btn" data-id="{$money.id}" style="width: 100%!important;
+            height: 0.95rem!important;
+            background: #DEAF5F;
+            border-radius: 0.04rem;
+            border: none!important;
+            color: #FFFFFF;
+            font-size: 0.3rem;
+            margin-bottom: 0.7rem!important;'">立即购买</button>
+        {else/}
+            <button>立即购买</button>
+        {/if}
+    </footer>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        //选项卡
+        $('.data-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.data-tab li a').removeClass('active');
+            that.addClass('active');
+        });
+        //底部弹框
+        $('.pay-btn').click(function () {
+            var id =  $('.pay-btn').data('id');
+            layer.open({
+                  type: 1
+                  ,skin: 'demo-class'
+                  ,offset: 'auto' 
+                  ,id: 'layerDemoAuto2'
+                  ,title: '请输入购买数量' //不显示标题
+                  ,content: '<span style="font-size:14px; margin-left:25px; margin-right:10px;">购买数量:</span><input class="num" name="num"/>'
+                  ,area:["300px","200px"]
+                  ,btn: ['取消', '确认']
+                  ,btnAlign: 'c'
+                  ,shade: 0.5
+                  ,yes: function () {
+                        layer.closeAll();
+                  },btn2: function(index, layero){
+                      var num = $('.num').val();
+                      var token = localStorage.getItem('token');
+                        if(num > 0){
+                            $.ajax({
+                                url: '/api/money/purchaseFinancing/',
+                                data: {token:token,num:num,id:id},
+                                type:'post',
+                                dataType: 'json',
+                                success:function (json) {
+                                    if(json.code === 200){
+                                        layer.closeAll();
+                                        layer.msg(json.msg,function () {
+                                            // parent.layer.closeAll();
+                                            // parent.layui.table.reload('test');
+                                            //window.location.reload();
+                                        });
+                                    }else{
+                                       layer.closeAll();
+                                       layer.msg(json.msg,function () {
+                                            // parent.layer.closeAll();
+                                            // parent.layui.table.reload('test');
+                                            //window.location.reload();
+                                        });
+                                    }
+                                }
+                            });
+                        }else{
+                            layer.msg('请输入购买数量');
+                        }
+                        return false //开启该代码可禁止点击该按钮关闭
+                    }
+            
+            });
+        });
+    </script>
+</body>
+
+</html>

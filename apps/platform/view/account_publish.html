@@ -1,0 +1,63 @@
+{include file="public:header" /}
+<form class="layui-form layui-form-pane container-fluid">
+	<div class="layui-tab layui-tab-card">
+		<ul class="layui-tab-title">
+			<li class="layui-this">基本信息</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">地址详情：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows['name']}" class="layui-input" disabled>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">收款地址：</label>
+					<div class="layui-input-block">
+						<input type="text" name="title" required lay-verify="required" value="{:isset($rows['title']) ? $rows['title'] : ''}" placeholder="请输入标题" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="height:136px;line-height:100px;">收款码：</label>
+					<div class="layui-input-block">
+						<div class="imgbox">
+							<ul id="cover">
+								{notempty name="rows['value']"}
+								<li>
+									<input type="hidden" name="value" value="{$rows['value']}" />
+									<img src="{:getFile($rows['value'])}" />
+									<div class="imgsBtn">
+										<a href="javascript:;" class="delfile" title="删除"><i class="layui-icon">&#xe640;</i></a>
+									</div>
+								</li>
+								{/notempty}
+							</ul>
+							<ul>
+								<li style="padding:0;border:none;">
+									<div class="layui-upload-drag" onclick="showAlbum('cover')">
+										<i class="layui-icon">&#xe67c;</i>
+										<p>选择封面图</p>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="layui-form-item" style="padding-left: 10px;">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+			<a class="layui-btn layui-btn-primary" onclick="closeWin()">关闭并返回列表</a>
+		</div>
+	</div>
+	<input type="hidden" id="rowsID" name="variable" value="{:isset($rows['variable']) ? $rows['variable'] : ''}">
+</form>
+{include file="public:script" /}
+{include file="public:footer" /}

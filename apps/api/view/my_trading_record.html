@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>交易记录</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            margin-top: .2rem;
+            /*padding:0 .3rem;*/
+            /*height: calc(100vh - 1.15rem);*/
+        }
+        .tab-content{
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .tab{
+            width: 2.75rem;
+            height: .96rem;
+            text-align: center;
+            line-height: .96rem;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+        }
+        .tab-select{
+            height: .9rem;
+            border-bottom: .06rem solid #E3B874;;
+        }
+        .record-list{
+
+        }
+        .record-item{
+            height: 1.95rem;
+            background: #fff;
+            margin-bottom: .2rem;
+            padding: .35rem .3rem;
+        }
+        .record-item-t1{
+            display: flex;
+            align-items: center;
+            margin-bottom: .24rem;
+        }
+        .item-text{
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #10925E;
+            margin-right: .28rem;
+        }
+        .item-time,.record-item-label,.item-status{
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #999999;
+        }
+        .record-item-label{
+            margin-right: .05rem;
+        }
+        .item-status{
+            margin-left: auto;
+        }
+        .record-item-b1{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .record-item-b1-l1{
+            margin-bottom: .2rem;
+        }
+        .record-item-text{
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">交易记录</div>
+</div>
+<div class="container">
+    <div class="tab-content">
+        <a href="#" data-key="buy" class="tab buy tab-select">购买</a>
+        <a href="#" data-key="sell" class="tab sell">出售</a>
+    </div>
+    <div class="record-list buy-details" style="display:block">
+        {volist name="buy" id="vo"}
+            <div class="record-item" data-id="{$vo.id}" data-details="buy">
+                <div class="record-item-t1">
+                    <span class="item-text">买入USDT</span>
+                    <span class="item-time">{$vo.create_time}</span>
+                    <span class="item-status">{$vo.status_name}</span>
+                </div>
+                <div class="record-item-b1">
+                    <div>
+                        <div class="record-item-b1-l1"><span class="record-item-label">价格</span><span class="record-item-text">{$vo.price}</span></div>
+                        <div class="record-item-b1-l1"><span class="record-item-label">数量</span><span class="record-item-text">{$vo.num}</span></div>
+                    </div>
+                    <div>
+                        <div class="record-item-b1-l1 record-item-label">总净额</div>
+                        <div class="record-item-text">{$vo.pay_price}  CNY</div>
+                    </div>
+                    <img src="../../public/static/images/record-icon.png" alt="">
+                </div>
+            </div>
+        {/volist}
+    </div>
+    <div class="record-list sell-details" style="display:none">
+         {volist name="sell" id="vo"}
+            <div class="record-item" data-id="{$vo.id}" data-details="sell">
+                <div class="record-item-t1">
+                    <span class="item-text">卖出USDT</span>
+                    <span class="item-time">{$vo.create_time}</span>
+                    <span class="item-status">{$vo.status_name}</span>
+                </div>
+                <div class="record-item-b1">
+                    <div>
+                        <div class="record-item-b1-l1"><span class="record-item-label">价格</span><span class="record-item-text">{$vo.price}</span></div>
+                        <div class="record-item-b1-l1"><span class="record-item-label">数量</span><span class="record-item-text">{$vo.num}</span></div>
+                    </div>
+                    <div>
+                        <div class="record-item-b1-l1 record-item-label">总净额</div>
+                        <div class="record-item-text">{$vo.pay_price}  CNY</div>
+                    </div>
+                    <img src="../../public/static/images/record-icon.png" alt="">
+                </div>
+            </div>
+        {/volist}
+    </div>
+</div>
+<script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //选项卡
+        $('.tab-content a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.tab').removeClass('tab-select');
+            $('.' + key).addClass('tab-select');
+            if(key == 'buy'){
+                $('.sell-details').css('display','none');
+                $('.buy-details').css('display','block');
+            }else{
+                $('.buy-details').css('display','none');
+                $('.sell-details').css('display','block');
+            }
+        });
+        $('.record-item').click(function () {
+            var that = $(this);
+            var id = that.data('id');
+            var details = that.data('details');
+            var token = localStorage.getItem('token');//token.登录状态保持
+            if(details == 'buy'){
+                window.location.href = "/api/my/buy_details?token="+token+'&id='+id;
+            }else{
+                window.location.href = "/api/my/sell_details?token="+token+'&id='+id;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{include file="public:header" /}
+<div class="main-layout" id="main-layout">
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container clearfix">
+				<div class="column-content-detail">
+					<div class="layui-form-item">
+					    <div class="layui-inline">
+							<select id="type" class="layui-select">
+								<option value="0">提现类型</option>
+								<option value="1"> BTC  </option>
+								<option value="2"> USDT  </option>
+								<option value="3"> ETH  </option>
+								<option value="4"> ETHU  </option>
+								<option value="5"> EUF  </option>
+							</select>
+						</div>
+						<div class="layui-inline">
+							<input type="text" id="keys" value="{$keys}" placeholder="账户开户名 | 电话" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" id="search">搜索</button></div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" onclick="$('#keys').val('');return false;">清除</button></div>
+					</div>
+					<div class="layui-form" id="table-list">
+						<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'ajaxData\')}', page:true, limit:20, height:'full-170'}" lay-filter="ajaxData">
+							<thead>
+								<tr>
+									<th lay-data="{type:'checkbox'}"></th>
+									<th lay-data="{field:'toolbar',width:80}">操作</th>
+									<th lay-data="{field:'username'}">用户名</th>
+									<th lay-data="{field:'tel'}">用户手机号</th>
+									<th lay-data="{field:'create_time'}">申请时间</th>
+									<th lay-data="{field:'money'}">申请金额</th>
+									<th lay-data="{field:'rate_num'}">扣除手续费</th>
+									<th lay-data="{field:'pay_num'}">实际到账金额</th>
+									<th lay-data="{field:'statusbar'}">状态</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+{include file="public:script" /}
+{include file="public:footer" /}

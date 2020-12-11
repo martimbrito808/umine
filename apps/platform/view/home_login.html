@@ -1,0 +1,81 @@
+{include file="public:header" /}
+<link rel="stylesheet" type="text/css" href="__CSS__/login.css" />
+<div class="m-login-bg">
+	<div class="m-login">
+		<h3>平台总后台登录</h3>
+		<div class="m-login-warp">
+			<form class="layui-form" id="databox" method="post">
+				<div class="layui-form-item">
+					<input type="text" name="account" required lay-verify="account" placeholder="用户名" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-form-item">
+					<input type="password" name="password" required lay-verify="password" placeholder="密码" autocomplete="off" class="layui-input">
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-inline">
+						<input type="text" name="verify" id="verify" required lay-verify="required" placeholder="验证码" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-inline">
+						<img class="verifyImg" id="captcha" src="{:captcha_src()}" onclick="this.src='{:captcha_src()}?seed='+Math.random()" />
+					</div>
+				</div>
+				<div class="layui-form-item m-login-btn">
+					<div class="layui-inline">
+						<button class="layui-btn layui-btn-normal" id="login" lay-submit lay-filter="login">登录</button>
+					</div>
+					<div class="layui-inline">
+						<button type="reset" class="layui-btn layui-btn-primary">取消</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>	
+layui.use(['form'], function(){
+	var form = layui.form;
+	form.verify({
+		account: function(value, item){ //value：表单的值，item：表单的DOM对象
+			if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+				return '用户名不能有特殊字符';
+			}
+			if(/(^\_)|(\__)|(\_+$)/.test(value)){
+				return '用户名首尾不能出现下划线\'_\'';
+			}
+			//if(/^\d+\d+\d$/.test(value)){
+				//return '用户名不能全为数字';
+			//}
+		},
+		password: [/^[\S]{4,12}$/, '密码必须4到12位，且不能出现空格'],
+	}); 
+
+	form.on('submit(login)', function(data){
+		$.ajax({
+			url:"{:url('home/login')}",
+			data:$('#databox').serialize(),
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('登录中，请稍后...');
+			},
+			success:function(res) {
+				msg(res.msg);
+				if(res.error == 0) {
+					setTimeout(function() {
+						location.href = '{:url("index")}';
+					}, 1500);
+				} else {
+					$('#verify').val('');
+					$('#captcha').click();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>
+</body>
+</html>

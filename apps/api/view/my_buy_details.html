@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购买USDT</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            /*padding:0 .3rem;*/
+            /*height: calc(100vh - 1.15rem);*/
+        }
+        .content-top{
+            display: flex;
+            align-items: center;
+            height: .86rem;
+            border-bottom: 1px solid #E6E6E6;
+        }
+        .top-tip{
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+            margin-right: .2rem;
+        }
+        .tip-text{
+
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #3C7EEF;
+        }
+        .tip-mark{
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #F9930E;
+            margin-right: auto;
+        }
+        .content-text-item{
+            display: flex;
+            align-items: center;
+            height: .6rem;
+        }
+        .content-text-item-label{
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #999999;
+            margin-right: .4rem;
+        }
+        .content-text-item-text{
+            font-size: .28rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #333333;
+
+        }
+        .content-text-item-copy{
+            margin-left: .2rem;
+            width: .4rem;
+            height: .4rem;
+        }
+        .content-item{
+            background: #fff;
+            margin-bottom: .2rem;
+        }
+        .btn-content{
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            height: 1.21rem;
+            background: #FFFFFF;
+            opacity: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .btn{
+            width: 3rem;
+            height: .9rem;
+            opacity: 1;
+            border-radius: 2rem;
+            text-align: center;
+            padding: 0;
+        }
+        .cancel-btn{
+            background: #FFFFFF;
+            border: 1px solid #E6E6E6;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #999999;
+        }
+        .ok-btn{
+            background: #5993F6;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+        .layui-layer-hui .layui-layer-content {
+            padding: 50px 50px!important;
+            text-align: center!important;
+            font-size: 30px!important;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">购买USDT</div>
+</div>
+<div class="container">
+        <div class="content-item">
+            <div style="padding:0 .3rem;">
+                <div class="content-top">
+                    <span class="top-tip">订单信息</span>
+                </div>
+                <div class="content-body">
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">订单编号:</span>
+                        <span class="content-text-item-text">{$data.order_sn}</span>
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">价格:</span>
+                        <span class="content-text-item-text">{$data.price}</span>
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">购买数量:</span>
+                        <span class="content-text-item-text">{$data.num}</span>
+                        <img class="content-text-item-copy" src="../../public/static/images/copy-icon.png" alt="">
+                        <input type="hidden">
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">购买金额:</span>
+                        <span class="content-text-item-text">{$data.pay_price} CNY</span>
+                        <img class="content-text-item-copy" src="../../public/static/images/copy-icon.png" alt="">
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">下单时间:</span>
+                        <span class="content-text-item-text">{$data.create_time}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content-item">
+            <div  style="padding:0 .3rem;">
+                <div class="content-top">
+                    <span class="top-tip">订单信息</span>
+                    <span class="tip-text">银行支付</span>
+                    <span class="tip-mark">过期时间：{$data.over_time}</span>
+                </div>
+                <div class="content-body">
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">收款银行:</span>
+                        <span class="content-text-item-text">{$data.collection_bank}</span>
+                        <img  class="content-text-item-copy" src="../../public/static/images/copy-icon.png" alt="">
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">姓名:</span>
+                        <span class="content-text-item-text">{$data.collection_name}</span>
+                        <img class="content-text-item-copy" src="../../public/static/images/copy-icon.png" alt="">
+                    </div>
+                    <div class="content-text-item">
+                        <span class="content-text-item-label">卡号:</span>
+                        <span class="content-text-item-text">{$data.collection_num}</span>
+                        <img class="content-text-item-copy" src="../../public/static/images/copy-icon.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
+<div class="btn-content">
+    {if condition="$data.status==1"}
+        <button class="btn cancel-btn" data-id="{$data.id}">取消订单</button>
+        <button class="btn ok-btn" data-id="{$data.id}">已付款</button>
+    {/if}
+</div>
+<script src="../../public/static/layer/layer.js"></script>
+<script>
+    //复制
+    $(".content-text-item-copy").click(function(){
+        var ssrsss = $(this).prev().text();//获取文本
+        var flag = copyText(ssrsss); //传递文本
+        layer.msg('复制成功');
+    })
+    //取消订单
+    $(".cancel-btn").click(function(){
+        var that = $(this);
+        var id = that.data('id');
+        var token = localStorage.getItem('token');//token.登录状态保持
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/api/my/buy_cancel",
+            data:{token:token,id:id},
+            dataType: 'json',
+            success: function (res) {
+                console.log(res.data);
+                if(res.code===200){
+                    layer.msg(res.msg);
+                    setTimeout(function(){ 
+                       window.location.href = "/api/my/buy_details?token="+token+'&id='+id;
+                    }, 2000);
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    })
+    //已付款
+    $(".ok-btn").click(function(){
+        var that = $(this);
+        var id = that.data('id');
+        var token = localStorage.getItem('token');//token.登录状态保持
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/api/my/buy_paid",
+            data: {token:token,id:id},
+            dataType: 'json',
+            success: function (res) {
+                if(res.code===200){
+                    layer.msg(res.msg);
+                    setTimeout(function(){ 
+                       window.location.href = "/api/my/buy_details?token="+token+'&id='+id;
+                    }, 2000);
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        }); 
+    })
+    
+    function copyText(text) {
+        var textarea = document.createElement("input");//创建input对象
+        var currentFocus = document.activeElement;//当前获得焦点的元素
+        document.body.appendChild(textarea);//添加元素
+        textarea.value = text;
+        textarea.focus();
+        if(textarea.setSelectionRange)
+            textarea.setSelectionRange(0, textarea.value.length);//获取光标起始位置到结束位置
+        else
+            textarea.select();
+        try {
+            var flag = document.execCommand("copy");//执行复制
+        } catch(eo) {
+            var flag = false;
+        }
+        document.body.removeChild(textarea);//删除元素
+        currentFocus.focus();
+        return flag;
+    }
+</script>
+</body>
+</html>

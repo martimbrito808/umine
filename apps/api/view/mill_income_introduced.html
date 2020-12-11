@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>收益介绍</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <style>
+        /* 修改 */
+        .unified-header{
+            z-index: 99;
+        }
+    </style>
+</head>
+<!-- 收益介绍 -->
+
+<body style="background: #fff">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3 class="income-h3">{$info.name}...</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="income-imgBox">
+            <img src="{:getfile($info.cover_2)}" alt="" class="income-img">
+        </div>
+        <div class="income-box">
+            <h3 class="income-num">{:showprice($info.price)}<span class="income-font">USDT</span></h3>
+            <p class="income-row">
+                <span class="income-label">{$info.type == 1 ? '现货' : '预售'}</span>
+                <span class="income-name">{$info.name}</span>
+            </p>
+            <ul class="income-msgList">
+                <li>
+                    <span class="income-msg_name">电费</span>
+                    <span class="income-msg_text">{:showprice($info.dianfei)}元/度</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">管理费</span>
+                    <span class="income-msg_text">{$info.guanlifei}%日产出</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">保险费</span>
+                    <span class="income-msg_text">{:showprice($info.baoxianfei)}元</span>
+                    <span class="income-msg_font">(新机器免保费)</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">功耗比</span>
+                    <span class="income-msg_text">{$info.gonghaobi}W/M</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">预计回报率</span>
+                    <span class="income-msg_text">{$info.huibaolv}</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">每日产出</span>
+                    <span class="income-msg_font" style="font-weight: bold;">{:showprice($info.richanchu)} BTC</span>
+                </li>
+            </ul>
+            <ul class="income-timeList">
+                {if $info.type == 1}
+                  <li>{$info.intro}</li>
+                {else/}
+                    <li><span class="circle"></span>售卖结束时间：{$info.jieshu_time}</li>
+                    <li><span class="circle"></span>预计上架时间：{$info.shangjia_time}</li>
+                {/if}
+               
+            </ul>
+            <div class="income-bottom-box">
+                <p class="income-rowAlign">
+                    <img src="../../public/static/images/icon10.png" alt="">
+                    优惠券
+                </p>
+                <a href="/api/my/discount_coupon?token={$auth.token}" class="income-link">
+                    加灰度超算小助手领取优惠券
+                    <img src="../../public/static/images/right_icon5.png" alt="">
+                </a>
+            </div>
+            <span class="income-tag">实体矿机</span>
+        </div>
+        <ul class="introduce-tab">
+            <li>
+                <a data-key="first" href="javascript:void(0)" class="active">
+                    矿机介绍
+                    <span class="border-bottom"></span>
+                </a>
+            </li>
+            <li>
+                <a data-key="second" href="javascript:void(0)">
+                    收益介绍
+                    <span class="border-bottom"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="introduce introduce-active" id="first">
+            <div class="introduce-box">
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        实体矿机
+                    </p>
+                    <p class="introduce-msg">此矿机为<span class="emphasis">实体矿机</span>，购买后永久拥有产权。</p>
+                </div>
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        配置全面
+                    </p>
+                    <p class="introduce-msg">此产品包含矿机、电源及<span class="emphasis">机位</span>。</p>
+                </div>
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        专业服务
+                    </p>
+                    <p class="introduce-msg">购买此产品后灰度超算为您提供物流运输、矿机
+                        上架、收益分发、矿机维护及维修等<span class="emphasis">一站式
+                            服务</span>，免除您的后顾之忧。</p>
+                </div>
+            </div>
+            <div class="introduce-box2">
+                <p class="detailes-parameters">详细参数</p>
+                <p class="detailes-row">
+                    <span>矿机型号</span>
+                    <span>{$info.x_1}</span>
+                </p>
+                <p class="detailes-row">
+                    <span>矿机算力</span>
+                    <span>{$info.x_2}</span>
+                </p>
+                <p class="detailes-row">
+                    <span>矿机功率</span>
+                    <span>{$info.x_3}</span>
+                </p>
+                <p class="detailes-row">
+                    <span>支持算法</span>
+                    <span>{$info.x_4}</span>
+                </p>
+                <p class="detailes-row">
+                    <span>显存容量</span>
+                    <span>{$info.x_5}</span>
+                </p>
+            </div>
+            <div class="btn-box">
+                 {if $info.buy == true }
+                    <button class="pay-btn">立即购买</button>
+                {else/}
+                    <button class="pay-btn" style='background: #DDDDDD;'  disabled>立即购买</button>
+                {/if}
+            </div>
+        </div>
+        <div class="introduce " id="second">
+            <p class="introduce-label"><span>收益发放</span></p>
+            <ul class="income-list">
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        收益结算公式
+                    </p>
+                    <p class="income-content">
+                       {$info.s_1}
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        结算时间
+                    </p>
+                    <p class="income-content">
+                        {$info.s_2}
+                    </p>
+                </li>
+            </ul>
+            <p class="introduce-label"><span>费用收取</span></p>
+            <ul class="income-list">
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        电费
+                    </p>
+                    <p class="income-content">
+                       {$info.s_3}
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        保险费
+                    </p>
+                    <p class="income-content">
+                        {$info.s_4}
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        管理费
+                    </p>
+                    <p class="income-content">
+                        {$info.s_5}
+                    </p>
+                </li>
+            </ul>
+            <div class="btn-box">
+                <button class="pay-btn">立即购买</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="mask_layer"></div>
+    <div class="bottom_window">
+        <div class="window_top">
+            <div class="window_top_row">
+                <span class="window-tag">{$info.type == 1 ? '现货' : '预售'}</span>
+                <h3>{$info.name}</h3>
+            </div>
+            <div class="parameter-box">
+                <span class="window-label">购买数量</span>
+                <div class="parameter-row">
+                    <button data-val='1'>1</button>
+                    <button data-val='2'>2</button>
+                    <button data-val='5'>5</button>
+                    <button data-val='10'>10</button>
+                </div>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">优惠券</span>
+                <a href="javascript:void(0)" class="coupon-link">
+                    未使用优惠券
+                    <img src="../../public/static/images/right_icon2.png" alt="">
+                </a>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">订单金额</span>
+                <span class="order-amount"> <span class='danjia'>{:showprice($info.price)}</span><span class="fontSmall">USDT</span></span>
+            </div>
+        </div>
+        <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
+        <div class="window_bottom">
+            <input type="hidden" id="mill_id" value="{$info.id}" />
+            <input type="hidden" id="num" value="" />
+            <button id='buynow'>购买</button>
+        </div>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    
+    <script>
+        //选项卡
+        $('.introduce-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.introduce-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.introduce').removeClass('introduce-active');
+            $('#' + key).addClass('introduce-active');
+        });
+
+        //底部弹框
+        $('.pay-btn').click(function () {
+            $('.bottom_window,.mask_layer').slideDown(200).css('display', 'flex');
+        })
+        $('.mask_layer,.cancel-btn').click(function () {
+            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+
+        //购买数量选择
+        $('.parameter-row button').click(function () {
+            var that = $(this);
+            var num = that.data('val');
+            var money = "{:showprice($info.price)}"
+            var allmoney = money * num;
+            $('#num').val(num);
+            that.siblings().removeClass('selected');
+            that.addClass('selected');
+            $('.danjia').text(allmoney);
+        });
+        
+        let lock = false;
+        $('#buynow').click(function () {
+            let mill_id = $('#mill_id').val();
+            let num = $('#num').val();
+            let token = localStorage.getItem('token');
+ 
+            if(num == undefined || num == '') {
+                mui.toast('请选择购买数量')
+                return false;
+            }
+            if(mill_id == undefined || mill_id == '' ) {
+                mui.toast('非法请求')
+                return false;
+            }
+            if(lock == true) {
+                return false;
+            }
+            lock = true;
+            
+            $.ajax({
+                type : "POST",
+                contentType: "application/json;charset=UTF-8",
+                url : "/api/mill/buy_mill",
+                data : JSON.stringify({
+                    mill_id:mill_id,
+                    num: num,
+                    token: token
+                }),
+                success : function(result) {
+                    if(result.code == 200) {
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+                    }else{
+                        lock = false;
+                    }
+                    mui.toast(
+                        result.msg
+                    )
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    lock = false;
+                    mui.toast(
+                        '出错啦，请稍后再试',
+                    )
+                }
+            });
+        })
+        
+        
+    </script>
+</body>
+
+</html>

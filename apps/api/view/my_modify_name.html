@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>灰度超算--昵称修改</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+</head>
+<script>
+    var width = document.documentElement.clientWidth;
+    document.documentElement.style.fontSize = width/7.5 + 'px';
+</script>
+<style>
+    .header{
+        background: #fff;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: .95rem;
+    }
+    .back{
+        position: absolute;
+        left: .3rem;
+    }
+    .back img{
+        width: .5rem;
+        height: .5rem;
+    }
+    .header .title{
+        font-size: .4rem;
+        font-family: SourceHanSansCN-Medium;
+        color: #1A1826;
+    }
+    h1{
+        margin-left: .5rem;
+        margin-top: 1rem;
+        font-size: .46rem;
+        font-family: Source Han Sans CN;
+        font-weight: bold;
+        color: #333333;
+    }
+    .content{
+        width: 6.36rem;
+        margin:0 auto;
+        margin-top: 1.14rem;
+        font-size: .3rem;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        border-bottom: 1px solid #DEAF5F;
+        padding-bottom: .35rem;
+    }
+    .content input{
+        width: 100%;
+        border: none;
+    }
+    .submit-btn{
+        display: block;
+        margin: 0 auto;
+        margin-top: .94rem;
+
+        width: 6.74rem;
+        height: .95rem;
+        line-height: .95rem;
+        background: #DEAF5F;
+        opacity: 1;
+        border-radius: 4px;
+        font-size: .3rem;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        color: #FFFFFF;
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">修改昵称</div>
+</div>
+<h1>
+    修改昵称
+</h1>
+<div class="content">
+    <input type="text" id="get_name" name="name" placeholder="请输入新的昵称">
+</div>
+<button type="button" class="submit-btn">确定</button>
+<script src="../../public/static/js/jquery-3.2.1.js"></script>
+<script src="../../public/static/layer/layer.js"></script>
+<script>
+        // 第三种 通过方法响应点击事件
+        $('.submit-btn').click(function() {
+            var token = localStorage.getItem('token');
+            var name = $('#get_name').val();
+            if(name !== ''){
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/api/my/modify_name",
+                    data: {name:name,token:token},
+                    dataType: 'json',
+                    success: function (res) {
+                        if(res.code===200){
+                            window.location.href = "/api/my/my?token="+token;
+                        }else{
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+            }else{
+                layer.msg('请输入昵称');
+            }
+            
+        });
+    </script>
+</body>
+</html>

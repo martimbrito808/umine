@@ -1,0 +1,182 @@
+{include file="public:header" /}
+<style type="text/css">
+	.margin{margin:10px 10px 0px 10px;}
+	.layui-tab-content{overflow:hidden;text-align:center;height:auto;padding:30px 0;}
+	.layui-input-block{
+		text-align: left;
+		height: 38px;
+		line-height: 38px;
+	}
+	.red{color: red;}
+
+</style>
+<div class="main-layout" id='main-layout'>
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container welcome-container">
+				<div class="layui-row">
+					<div class="layui-col-xs12">
+						<div class="layui-card margin" style="padding:15px;">
+							<div class="layui-tab layui-tab-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">详情</li>
+								</ul>
+								<div class="layui-tab-content">
+									<div class="layui-tab">
+										<div class="layui-tab-content">
+											<div class="layui-tab-item layui-show">
+												<div class="layui-form-item">
+													<label class="layui-form-label">用户名：</label>
+													<div class="layui-input-block">{$rows.username} ({$rows.tel})</div>
+												</div>
+
+												<hr class="layui-bg-gray">
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">用户平台余额：</label>
+													<div class="layui-input-block"><strong class="red">
+													{switch name="$rows.type"}
+                                                        {case value="1" }{$rows['btc']}{/case}
+                                                        {case value="2" }{$rows['usdt']}{/case}
+                                                        {case value="3" }{$rows['eth']}{/case}
+                                                        {case value="4" }{$rows['ehu']}{/case}
+                                                        {case value="5" }{$rows['euf']}{/case}
+                                                        {case value="6" }{$rows.er}{/case}
+                                                    {/switch}
+
+													</strong>{$rows.type_msg}</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">申请提现金额：</label>
+													<div class="layui-input-block"><strong class="red">{$rows.money}</strong>{$rows.type_msg}</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">手续费：</label>
+													<div class="layui-input-block"><strong class="red">{$rows.rate_num}</strong>{$rows.type_msg }</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">实际到账：</label>
+													<div class="layui-input-block"><strong class="red">{$rows.pay_num}</strong>{$rows.type_msg}</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">账户地址：</label>
+													<div class="layui-input-block">{$rows.address}</div>
+												</div>
+
+												<div class="layui-form-item">
+													<label class="layui-form-label">申请时间：</label>
+													<div class="layui-input-block">{:date('Y-m-d H:i:s',$rows.create_time)}
+													</div>
+												</div>
+
+												<hr class="layui-bg-gray">
+												<form class="layui-form layui-form-pane container-fluid">
+													<input type="hidden" id="rowsID" name="id" value="{:isset($rows['id']) ? $rows['id'] : ''}">
+													<div class="layui-form-item" style="height: 100px">
+														<label class="layui-form-label">给用户看的备注：</label>
+														<div class="layui-input-block">
+															<textarea name="reply" style="resize: none;" class="layui-textarea">{$rows.reply}</textarea>
+														</div>
+													</div>
+
+													<blockquote class="layui-elem-quote" style="border-left: 5px solid rgb(255, 87, 34); text-align: left">
+														<p>提现流程: </p>
+														<p>1:用户 申请提现</p>
+														<p>2:财务转账给用户 ( 生成时自动扣除用户平台余额 )</p>
+														<p>3:转账成功,点击 `打款成功` 按钮, 转账失败或拒绝申请 输入备注后 点击 `拒绝提现` 按钮 </p>
+													</blockquote>
+
+													{eq name="$rows.status" value="0"}
+														<div class="layui-form-item" style="padding-left: 10px;">
+															<button class="layui-btn layui-btn-normal" lay-submit lay-filter="pass">打款成功</button>
+															<button class="layui-btn layui-btn-warm" lay-submit lay-filter="reject">拒绝提现</button>
+															<a href="{:url('withdraw/index')}" class="layui-btn layui-btn-primary" >关闭并返回列表</a>
+														</div>
+													{else/}
+
+													{/eq}
+												</form>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+	layui.use(['form'], function(){
+		var form = layui.form;
+		form.on('submit(pass)', function(data){
+			data.field.status = 1;
+			layer.confirm('您确定已经打款成功吗', {icon: 3, title:'提示'}, function(index) {
+				$.ajax({
+					url: "{:url(request()->action())}",
+					data: data.field,
+					type: 'post',
+					async: false,
+					beforeSend: function () {
+						loading('提交中，请稍后...');
+					},
+					success: function (res) {
+						msg(res.msg);
+						if (res.error == 0) {
+							setTimeout(function () {
+								location.href = document.referrer;
+							}, 1000);
+						}
+					}
+				});
+			});
+			return false;
+		});
+
+		form.on('submit(reject)', function(data){
+			data.field.status = 2;
+			layer.confirm('确定要拒绝用户提现吗?？', {icon: 3, title:'提示'}, function(index) {
+				$.ajax({
+					url: "{:url(request()->action())}",
+					data: data.field,
+					type: 'post',
+					async: false,
+					beforeSend: function () {
+						loading('提交中，请稍后...');
+					},
+					success: function (res) {
+						msg(res.msg);
+						if (res.error == 0) {
+							setTimeout(function () {
+								location.href = document.referrer;
+							}, 1000);
+						}
+					}
+				});
+			});
+			return false;
+		});
+	});
+</script>
+{include file="public:footer" /}
+

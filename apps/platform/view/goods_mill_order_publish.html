@@ -1,0 +1,143 @@
+{include file="public:header" /}
+<style type="text/css">
+.margin{margin:10px 10px 0px 10px;}
+.layui-tab-content{overflow:hidden;text-align:center;height:auto;padding:30px 0;}
+.normal .step_icon{padding:10px;}
+.normal .step_icon i{font-size:30px;padding-bottom:5px;}
+.on .step_icon i{color:green;}
+.normal .step_title{font-size:14px;padding-bottom:5px;}
+.on .step_title{color:green;font-weight:700;}
+.normal .step_date{font-size:14px;padding-bottom:5px;}
+.on .step_date{color:green;font-weight:700;}
+.table{width:49.5%;}
+.table table{width:100%;}
+.table table tr td{border:1px #ccc solid;padding:8px;font-size:14px;}
+.table table tr td.l{text-align:left;}
+.table table tr td.r{width:120px;text-align:right;}
+.table table tr td p{line-height:20px;}
+</style>
+<div class="main-layout" id='main-layout'>
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container welcome-container">				  
+				<div class="layui-row">
+					<div class="layui-col-xs12">
+						<div class="layui-card margin" style="padding:15px;">
+							<div class="layui-tab layui-tab-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">订单详情</li>
+								</ul>
+								<div class="layui-tab-content">
+									<div class="layui-col-xs12">
+										<div class="table" style="float:left;">
+											<table>
+												<tr>
+													<td colspan="2">订单状态</td>
+												</tr>	
+												<tr>
+													<td class="r">订单号</td>
+													<td class="l">{$rows.orderno}</td>
+												</tr>
+												<tr>
+													<td class="r">用户账号</td>
+													<td class="l">{$rows.tel}</td>
+												</tr>
+												<tr>
+													<td class="r">用户名</td>
+													<td class="l">{$rows.username}</td>
+												</tr>
+												<tr>
+													<td colspan="2">订单金额</td>
+												</tr>
+												<tr>
+													<td class="r">单价</td>
+													<td class="l">{:showprice($rows.price)}</td>
+												</tr>
+												<tr>
+													<td class="r">数量</td>
+													<td class="l">{$rows.num}</td>
+												</tr>
+												<tr>
+													<td class="r">总价</td>
+													<td class="l">{:showprice($rows.order_price)}</td>
+												</tr>
+											</table>
+										</div>
+										<div class="table" style="float:right;">
+											<form class="layui-form" method="post">
+												<table>
+													<tr>
+														<td colspan="3">商品信息</td>
+													</tr>
+													<tr>
+														<td class="r">商品名</td>
+														<td class="l">{$rows.goods_name}</td>
+													</tr>
+													<tr>
+														<td class="r">数量</td>
+														<td class="l">{$rows.num}</td>
+													</tr>
+													<tr>
+														<td class="r">商家备注</td>
+														<td class="l" colspan="2">
+															<textarea style="width:98%;height:100px;padding:5px;">{$rows.beizhu}</textarea>
+														</td>
+													</tr>
+													<tr>
+														<td colspan="3">
+															<input type="hidden" name="id" value="{$rows.id}">
+															 <input type="button" class="layui-btn" lay-submit lay-filter="dataPost" value="确认"> 
+															<a href="{:url('index')}" class="layui-btn layui-btn-danger">返回</a>
+														</td>
+													</tr>														
+												</table>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>    
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script>
+layui.use(['form'], function(){
+	var form = layui.form;
+	form.on('submit(dataPost)', function(data){
+		$.ajax({
+			url:"{:url(request()->action())}",
+			data:data.field,
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('提交中，请稍后...');
+			},
+			success:function(res) {
+				msg(res.msg);
+				if(res.error == 0) {
+					setTimeout(function() {
+						location.reload();
+					}, 1000);
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>
+{include file="public:footer" /}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票记录</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            position: relative;
+        }
+        .tab-content{
+            background: #fff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .tab{
+            width: 2.75rem;
+            height: .96rem;
+            text-align: center;
+            line-height: .96rem;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+        }
+        .tab-select{
+            height: .9rem;
+            border-bottom: .06rem solid #E3B874;;
+        }
+        .jiedian-list{
+            padding: .3rem ;
+            background: #FFFFFF;
+            height: calc(100vh - 3.07rem);
+            overflow: scroll;
+        }
+        .jiedian-item-num{
+            margin-top: .22rem;
+            display: block;
+            text-align: center;
+            font-size: .26rem;
+            font-family: Arial;
+            font-weight: bold;
+            color: #E3B874;
+        }
+        .jiedian-head-item-label{
+            margin-top: .08rem;
+            display: block;
+            text-align: center;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            line-height: 32px;
+            color: #999999;
+        }
+        .jiedian-item-btn{
+            display: block;
+            margin: 0 auto;
+            margin-top: .22rem;
+            text-align: center;
+            width: 1.12rem;
+            height: .48rem;
+            line-height: .48rem;
+            opacity: 1;
+            border-radius: 2rem;
+            font-size: .24rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            text-align: right;
+        }
+        .jiedian-item{
+            margin-top: .2rem;
+            padding: .5rem .45rem .4rem .45rem;
+            background: #FFFFFF;
+            border: 1px solid #E3B874;
+            display: flex;
+            /*justify-content: space-around;*/
+            align-items: center;
+        }
+        .jiedian-item-rank{
+            font-size: .34rem;
+            font-family: Arial;
+            font-weight: 400;
+            color: #E3B874;
+            margin-right: .33rem;
+        }
+        .jiedian-item-head{
+            width: .98rem;
+            height: .98rem;
+            margin-right: .21rem;
+        }
+        .jiedian-item-name{
+            display: block;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+            margin-bottom: .2rem;
+        }
+        .jiedian-item-label{
+            margin-right: .1rem;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+        }
+        .jiedian-item-text{
+            font-size: .26rem;
+            font-family: Arial;
+            font-weight: bold;
+            color: #E3B874;
+        }
+        .jiedian-item-myRank{
+            display: block;
+            font-size: .26rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #999999;
+            margin-bottom: .14rem;
+            text-align: center;
+        }
+        .jiedian-item-btn{
+
+            font-size: .26rem;
+            font-family: Arial;
+            font-weight: bold;
+            color: #333333;
+        }
+        .jiedian-item-l1{
+            width: 1.7rem;
+        }
+        .jiedian-item-l2{
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/api/node/index?token={$auth.token}" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">投票记录</div>
+</div>
+<div class="container">
+    <div class="tab-content">
+        <a href="/api/node/voteList?token={$auth.token}&type=1" class="tab {if input('type') == 1 || empty(input('type')) } tab-select {/if}">常规节点</a>        
+        <a href="/api/node/voteList?token={$auth.token}&type=2" class="tab {if input('type') == 2 } tab-select {/if}">超级节点</a>
+
+    </div>
+    <div class="jiedian-list">
+        {volist name='list' id='ll'}
+            <div class="jiedian-item">
+                <img class="jiedian-item-head" src="{$ll.cover}" alt="">
+                <div class="jiedian-item-l1">
+                    <span class="jiedian-item-name">{$ll.title}</span>
+                    <span class="jiedian-item-label">投票数量:</span><span class="jiedian-item-text">{$ll.vote}</span>
+                </div>
+                <div class="jiedian-item-l2">
+                    <span class="jiedian-item-myRank">我的投票</span>
+                    <span class="jiedian-item-btn">{$ll.num}</span>
+                </div>
+            </div>
+        {/volist}
+    </div>
+</div>
+</body>
+</html>

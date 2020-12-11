@@ -1,0 +1,102 @@
+{include file="public:header" /}		
+<div class="wrap-container clearfix">
+	<div class="column-content-detail">
+
+		<div class="layui-form-item">
+			<div class="layui-inline layui-col-lg3">
+				<input type="text" id="keys" value="{$keys}" placeholder="请输入卡号" autocomplete="off" class="layui-input">
+			</div>
+			<div class="layui-inline"><button class="layui-btn layui-btn-normal" id="search">搜索</button></div>
+			<div class="layui-inline"><button class="layui-btn layui-btn-normal" onclick="$('#keys').val('');return false;">清除</button></div>
+		</div>
+
+		<div class="layui-form" id="table-list">
+			<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'cardList\', array(\'coupon_id\'=>$coupon_id))}', page:true, limit:20, height:'full-170'}" lay-filter="ajaxData">
+				<thead>
+					<tr>
+						<th lay-data="{type:'checkbox'}"></th>
+						<th lay-data="{field:'id',width:100}">ID</th>
+						<th lay-data="{field:'number', width:250, sort:true}">卡号</th>
+						<th lay-data="{field:'stime', width:200, sort:true}">开始时间</th>
+						<th lay-data="{field:'etime', width:200, sort:true}">结束时间</th>
+						<th lay-data="{field:'price',width:100}">金额</th>
+						<th lay-data="{field:'user'}">领取用户</th>
+						<th lay-data="{field:'statusbar'}">状态</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	layui.use(['form', 'table'], function(){
+		var form = layui.form;
+		var table = layui.table;
+
+		//监听工具条
+		table.on('tool(ajaxData)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+			if(layEvent === 'card_del'){ //删除
+				layer.confirm('真的删除此条数据吗?', function(index){
+					$.ajax({
+						url:"{:url('coupon/cardDel')}",
+						data:{id:data.id},
+						type:'post',
+						async: false,
+						beforeSend:function(){
+							loading('删除中，请稍后...');
+						},
+						success:function(res){
+							msg(res.msg);
+							if(res.error == 0){
+								setTimeout(function() {
+									obj.del();
+									layer.close(index);
+								}, 1500);
+							}
+						}
+					});
+				});
+			}else if (layEvent === 'card_hexiao'){
+			    layer.confirm('您确定要进行核销操作吗?', function(index){
+			        $.ajax({
+			            url:"{:url('coupon/cardHexiao')}",
+			            data:{id:data.id},
+				        type:'post',
+    					async: false,
+    					beforeSend:function(){
+    					    loading('操作中，请稍后...');
+    					},
+    					success:function(res){
+    						msg(res.msg);
+    						if(res.error == 0){
+    							setTimeout(function() {
+    								obj.del();
+    								layer.close(index);
+    							}, 1500);
+    						}
+    					}
+    				});
+    			});
+    		}
+	    });
+		//搜索
+		$('#search').on('click', function(){
+			table.reload('ajaxData', {
+				where: {
+					keys: $('#keys').val(),
+				},
+				page: {
+					page: 1 //重新从第 1 页开始
+				}
+			});
+		});
+
+	});
+</script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>意见反馈</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 意见反馈 -->
+
+<body style="background-color: #F5F5F5;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>意见反馈</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="mill-wrap">
+            <form>
+                <textarea class="text-feedback" name="text" placeholder="请输入要反馈的内容"></textarea>
+                <div class="login-box">
+                    <button type="button" id="opinion">提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        $('#opinion').click(function() {
+            var d = {};
+            var t = $('form').serializeArray();
+            //t的值为[{name: "a1", value: "xx"},
+            //{name: "a2", value: "xx"}...]
+            $.each(t, function() {
+                d[this.name] = this.value;
+            });
+            var token = d['token'] = localStorage.getItem('token');
+            var data = d;
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/api/my/feedback",
+                data: data,
+                dataType: 'json',
+                success: function (res) {
+                    console.log(res.data);
+                    if(res.code===200){
+                         layer.msg('提交成功');
+                        // window.location.href = "/api/my/contact_us?token="+token;
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

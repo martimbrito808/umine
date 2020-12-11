@@ -1,0 +1,57 @@
+{include file="public:header" /}
+<form class="layui-form layui-form-pane container-fluid">
+	<div class="layui-tab layui-tab-card">
+		<ul class="layui-tab-title">
+			<li class="layui-this">基本信息</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+				<div class="layui-form-item">
+					<label class="layui-form-label">账号：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="account" required lay-verify="required" value="{:isset($rows['account']) ? $rows['account'] : ''}" placeholder="请输入账号" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">密码：</label>
+					<div class="layui-input-inline">
+						<input type="hidden" name="oldpass" value="{:isset($rows['password']) ? $rows['password'] : ''}">
+						<input type="text" name="password" placeholder="{:isset($rows['password']) ? '密码不修改留空即可' : '请输入密码'}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">姓名：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="name" value="{:isset($rows['name']) ? $rows['name'] : ''}" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">模块权限：</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="permissions_arr[]" {if condition="in_array('store', explode(',', $rows.permissions))"}checked="checked"{/if} value="store" title="商家管理" />
+						<input type="checkbox" name="permissions_arr[]" {if condition="in_array('goods', explode(',', $rows.permissions))"}checked="checked"{/if} value="goods" title="商品管理" />
+						<input type="checkbox" name="permissions_arr[]" {if condition="in_array('orders', explode(',', $rows.permissions))"}checked="checked"{/if} value="orders" title="订单管理" />
+						<input type="checkbox" name="permissions_arr[]" {if condition="in_array('user', explode(',', $rows.permissions))"}checked="checked"{/if} value="user" title="用户管理" />
+						<input type="checkbox" name="permissions_arr[]" {if condition="in_array('system', explode(',', $rows.permissions))"}checked="checked"{/if} value="system" title="系统管理" />
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态：</label>
+					<div class="layui-input-block">
+						<input type="checkbox" name="status" title="正常" {notempty name="rows['status']"}checked{/notempty}>
+					</div>
+				</div>				
+			</div>			
+		</div>
+	</div>
+	<div class="layui-form-item" style="padding-left: 10px;">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+			<a class="layui-btn layui-btn-primary" onclick="closeWin()">关闭并返回列表</a>
+		</div>
+	</div>
+	<input type="hidden" name="mold" value="{:isset($mold) ? $mold : ''}">
+	<input type="hidden" id="rowsID" name="id" value="{:isset($rows['id']) ? $rows['id'] : ''}">
+</form>
+{include file="public:script" /}
+{include file="public:footer" /}

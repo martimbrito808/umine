@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>绑定银行卡</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            margin-top: .2rem;
+            background: #fff;
+            padding:.35rem  .42rem  0  .42rem;
+            /*height: calc(100vh - 1.15rem);*/
+        }
+        .form{
+           padding: 0 .3rem;
+        }
+        .form-item{
+            height: 1.19rem;
+            border-bottom: 1px solid #E7E7E7;
+            display: flex;
+            align-items: center;
+        }
+        .item-label{
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #1A1826;
+            margin-right: .2rem;
+        }
+        .item-input{
+            height: .5rem;
+            padding: .1rem .05rem;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            border: none;
+            outline: none;
+        }
+        .submit-btn{
+            display: block;
+            margin: 0 auto;
+            margin-top: .5rem;
+            width: 5.9rem;
+            height: .94rem;
+            background: #E3B874;
+            opacity: 1;
+            border-radius: 2rem;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            line-height: .94rem;
+            text-align: center;
+            color: #FFFFFF;
+        }
+        .dialog{
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        .mask{
+            height: 100%;
+            width: 100%;
+            background: #000000;
+            opacity: 0.3;
+        }
+        .dialog-body{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-top: -1.85rem;
+            margin-left: -3.325rem;
+            width: 6.65rem;
+            height: 3.71rem;
+            background: #FFFFFF;
+            border: 1px solid #707070;
+            opacity: 1;
+            border-radius: .1rem;
+        }
+        .dialog-text{
+            display: block;
+            margin-top: .8rem;
+            text-align: center;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: bold;
+            color: #333333;
+        }
+        .dialog-footer{
+            margin-top: .9rem;
+            display: flex;
+            justify-content: space-around;
+        }
+        .dialog-btn{
+            width: 1.92rem;
+            height: .8rem;
+            opacity: 1;
+            border-radius: 2rem;
+        }
+        .cancel-btn{
+            background: #FFFFFF;
+            border: 1px solid #E3B874;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #E3B874;
+        }
+        .ok-btn{
+            background: #E3B874;
+            font-size: .3rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">绑定银行卡</div>
+</div>
+<div class="container">
+    <div class="form">
+        <div class="form-item">
+            <span class="item-label">银行:</span>
+            <input class="item-input" type="text" value="{$info.bankname}" id='bankname' placeholder="请输入银行名称">
+        </div>
+        <div class="form-item">
+            <span class="item-label">银行卡号:</span>
+            <input class="item-input" type="text" value="{$info.banknum}" id='banknum' placeholder="请填写银行卡号">
+        </div>
+        <div class="form-item">
+            <span class="item-label">姓名:</span>
+            <input class="item-input" type="text" value="{$info.bindname}" id='bindname' placeholder="请填写姓名">
+        </div>
+    </div>
+</div>
+<button class="submit-btn" id='tijiao'>绑定/换绑</button>
+</body>
+
+<div class="dialog">
+    <div class="mask"></div>
+    <div class="dialog-body">
+        <div class="dialog-content">
+            <span class="dialog-text" id='tishi'></span>
+        </div>
+        <div class="dialog-footer">
+            <button class="dialog-btn cancel-btn">取消</button>
+            <button class="dialog-btn ok-btn">确认</button>
+        </div>
+    </div>
+</div>
+
+<script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $('.bank-card-item').on({
+           click: function(e) {
+               // 长按事件触发
+               timeOutEvent = setTimeout(function() {
+                   timeOutEvent = 0;
+                   
+               });
+               //长按400毫秒
+               // e.preventDefault();
+           },
+    
+       })
+    $('.cancel-btn').click(function () {
+        $('.dialog').hide()
+        $('#tishi').text('');
+    })
+    $('.ok-btn').click(function () {
+        $('.dialog').hide();
+        $('#tishi').text('');
+    })
+    
+    let lock = false;
+    $('#tijiao').click(function() {
+        let bankname, banknum, bindname, token;
+        token = localStorage.getItem('token');
+        bankname = $('#bankname').val();
+        banknum = $('#banknum').val();
+        bindname = $('#bindname').val();
+        
+        if(bankname == undefined || bankname == '') {
+            $('.dialog').show();
+            $('#tishi').text('请填写银行名称');
+            return false;
+        }
+        if(banknum == undefined || banknum == '' ) {
+            $('.dialog').show();
+            $('#tishi').text('请填写银行卡号');
+            return false;
+        }
+        if(bindname == undefined || bindname == '' ) {
+            $('.dialog').show();
+            $('#tishi').text('请填写姓名');
+            return false;
+        }
+        
+        if(lock == true) {
+            return false;
+        }
+        lock = true;
+       
+        $.ajax({
+            type : "POST",
+            contentType: "application/json;charset=UTF-8",
+            url : "/api/my/binding_bank",
+            data : JSON.stringify({
+                token:token,
+                bankname: bankname,
+                banknum: banknum,
+                bindname: bindname,
+            }),
+            success : function(result) {
+                if(result.code == 200) {
+                    setTimeout(function(){
+                        window.history.go(-1); //返回上一页
+                    },2000);
+                }else{
+                    lock = false;
+                }
+                $('.dialog').show();
+                $('#tishi').text(result.msg);
+            },
+            //请求失败，包含具体的错误信息
+            error : function(e){
+                lock = false;
+                $('.dialog').show();
+                $('#tishi').text('出错啦，请稍后再试');
+                return false;
+            }
+        });
+    })
+</script>
+</html>

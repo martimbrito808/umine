@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>法币交易</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <style>
+        .warm-prompt{
+            padding: 0 0.3rem;
+            box-sizing: border-box;
+            line-height: 0.55rem;
+        }
+    </style>
+</head> 
+<!-- 法币交易 -->
+
+<body style="background: #F5F5F5">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>法币交易</h3>
+        <a href="/api/my/trading_record?token={$data.token}" class="share-font" id="open">
+            交易记录
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <ul class="deal-tab">
+            <li>
+                <a data-key="first" href="javascript:void(0)" class="active">购买</a>
+            </li>
+            <li>
+                <a data-key="second" href="javascript:void(0)">出售</a>
+            </li>
+        </ul>
+        <div class="deal-box deal-box-active" id="first">
+            <p class="deal-label">汇率：{$fiat_deal_in}CNY/USDT </p>
+            <ul class="deal-form-row">
+                <li>
+                    <label>数量：</label>
+                    <input class="id-input-value" type="text" placeholder="请填写购买数量">
+                    <input type="hidden" class="buy" value="{$fiat_deal_in}" placeholder="请填写购买数量">
+                    <span>USDT</span>
+                </li>
+                <li>
+                    <label>价格：</label>
+                    <input class="buy_price" type="text" value="0.00" readonly="readonly">
+                    <span>CNY</span>
+                </li>
+            </ul>
+            <div class="deal-btn-row">
+                <button type="button" id="buy_now">确定</button>
+            </div>
+            <p class="warm-prompt" style="font-size: 10px;">
+                <span>温馨提示：</span>
+                <div style="font-size: 10px; padding: 10px,10px,10px,10px">
+                    {:htmlspecialchars_decode($fiat_deal_in_rule)} 
+                </div>
+                
+            </p>
+        </div>
+        <div class="deal-box" id="second">
+            <p class="deal-label">汇率：{$fiat_deal_out}CNY/USDT </p>
+            <ul class="deal-form-row">
+                <li>
+                    <label>数量：</label>
+                    <input class="id-input-value-2" type="text" placeholder="请填写出售数量">
+                    <input type="hidden" class="sell" value="{$fiat_deal_out}" placeholder="请填写购买数量">
+                    <span>USDT</span>
+                </li>
+                <li>
+                    <label>价格：</label>
+                    <input class="sell_price" type="text" value="0.00"  readonly="readonly">
+                    <span>CNY</span>
+                </li>
+            </ul>
+            <p class="deal-row">
+                可用 {$usdt} USDT <button data-all="{$usdt}" class="all-font">全部出售</button>
+            </p>
+            <div class="deal-btn-row">
+               <button type="button" id="sell_now">确定</button>
+            </div>
+            <p class="warm-prompt">
+                <span>温馨提示：</span>
+                <div style="font-size: 10px; padding: 10px,10px,10px,10px !important;">
+                    {:htmlspecialchars_decode($fiat_deal_out_rule)} 
+                </div>
+            </p>
+        </div>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        //选项卡
+        $('.deal-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.deal-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.deal-box').removeClass('deal-box-active');
+            $('#' + key).addClass('deal-box-active');
+        });
+        $(function(){
+            //input事件是HTML的标准事件，对于监听textarea  input都产生作用
+            //propertychange 是为了兼容IE(input事件不支持IE9以下)
+            $('.id-input-value').bind('input propertychange',function(){
+                var name = $('.buy').val();
+                var usdt = $(".id-input-value").val();
+                var cny = name*usdt;
+                $(".buy_price").val(cny);//赋值
+            });
+            $('.id-input-value-2').bind('input propertychange',function(){
+                var name = $('.sell').val();
+                var usdt = $(".id-input-value-2").val();
+                var cny = name*usdt;
+                $(".sell_price").val(cny);//赋值
+            });
+        });
+        
+        //全部出售
+        $('.all-font').click(function(){
+            var usdt = $('.all-font').data('all');
+            var name = $(".sell").val();
+            var cny = name*usdt;
+            $('.id-input-value-2').val(usdt);
+            $(".sell_price").val(cny);//赋值
+        });
+        
+        $('#buy_now').click(function(){
+            var token = localStorage.getItem('token');//抵扣方式
+            var usdt = $('.buy').val();
+            var num = $(".id-input-value").val();
+            var pay_price = $(".buy_price").val();
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/api/my/buyNow",
+                data: {token:token,num:num,usdt:usdt,pay_price:pay_price},
+                dataType: 'json',
+                success: function (res) {
+                    if(res.code===200){
+                        /*layer.msg('请去交易记录里付款', {icon: 1, time: 1000}, function(){
+                        window.location.href = "/api/my/orderDetails?token="+token;*/
+                        //  layer.msg('请去交易记录里付款');
+                        window.location.href = "/api/my/buy_details?token="+token+'&id='+res.data;
+                        /*setTimeout(function(){ 
+                             
+                        }, 2000);*/
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+        $('#sell_now').click(function(){
+            var token = localStorage.getItem('token');//抵扣方式
+            var usdt = $('.sell').val();
+            var num = $(".id-input-value-2").val();
+            var pay_price = $(".sell_price").val();
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/api/my/sellNow",
+                data: {token:token,num:num,usdt:usdt,pay_price:pay_price},
+                dataType: 'json',
+                success: function (res) {
+                    if(res.code===200){
+                            /*layer.msg(res.msg, {icon: 1, time: 1000}, function(){
+                            window.location.href = 'index.html';*/
+                            // console.log(res);return false;
+                        window.location.href = "/api/my/sell_details?token="+token+'&id='+res.data;
+                        /*setTimeout(function(){ 
+                             
+                        }, 2000);*/
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

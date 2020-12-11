@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>消息详情</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <style>
+        body{
+
+            background: #ffffff;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .detail-title{
+            letter-spacing: .01rem;
+            padding: .3rem;
+            font-size: .34rem;
+            font-family: Source Han Sans CN;
+            font-weight: bold;
+            color: #333333;
+            line-height: .4rem;
+        }
+        .time{
+            padding: 0 .3rem;
+            font-size: .24rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #B1B6BA;
+            opacity: 1;
+            margin-top: .22rem;
+        }
+        .content{
+            margin-top: .5rem;
+            padding: 0 .3rem;
+            font-size: .2rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            line-height: .45rem;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">消息详情</div>
+</div>
+<h1 class="detail-title">
+    {$message.title}
+</h1>
+<span class="time">{$message.create_time}</span>
+<div class="content">
+    {$message.content}
+</div>
+</body>
+</html>

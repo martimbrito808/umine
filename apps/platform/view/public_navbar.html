@@ -1,0 +1,104 @@
+<div class="m-logo"></div>
+<ul class="layui-nav layui-nav-tree">
+	<style type="text/css">
+		.layui-nav-item .layui-icon {
+			font-size:18px;
+			padding-right: 10px;
+		    color: #8f94a1;
+		    position: relative;
+		    top: 2px;
+		}
+	</style>
+	<li class="layui-nav-item {in name='navbar' value='notice'}layui-nav-itemed{/in}">
+		<a href="javascript:;"><i class="iconfont">&#xe60e;</i>通知公告</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='notice'}layui-this{/eq}"><a href="{:url('notice/index')}"><span class="l-line"></span>通知公告</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='protocol,account'}layui-nav-itemed{/in}">
+		<a href="javascript:;"><i class="iconfont">&#xe60e;</i>设置</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='protocol'}layui-this{/eq}"><a href="{:url('protocol/index')}"><span class="l-line"></span>规则协议</a></dd>
+			<dd class="navlink {eq name='navbar' value='account'}layui-this{/eq}"> <a href="{:url('account/index')}"><span class="l-line"></span>收款账号</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='article'} layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>资讯管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='article'}layui-this{/eq}"><a href="{:url('article/index')}"><span class="l-line"></span>资讯列表</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='user'}layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-user"></i>会员管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='user'}layui-this{/eq}"><a href="{:url('user/index')}"><span class="l-line"></span>会员列表</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='goodsmill,goodswealth,goodssmart'}layui-nav-itemed{/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-cart-simple"></i>商品管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='goodsmill'} layui-this{/eq}"><a href="{:url('goodsMill/index')}"><span class="l-line"></span>实体矿机</a></dd>
+			<dd class="navlink {eq name='navbar' value='goodssmart'} layui-this{/eq}"><a href="{:url('goodsSmart/index')}"><span class="l-line"></span>云算力</a></dd>
+			<dd class="navlink {eq name='navbar' value='goodswealth'} layui-this{/eq}"><a href="{:url('goodsWealth/index')}"><span class="l-line"></span>财富</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='goodsmillorder,goodssmartorder,goodswealthorder'}layui-nav-itemed{/in}">
+		<a href="javascript:;"><i class="iconfont">&#xe609;</i>订单管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='goodsmillorder'}layui-this{/eq}"><a href="{:url('goodsMillOrder/index')}"><span class="l-line"></span>实体矿机订单</a></dd>
+			<dd class="navlink {eq name='navbar' value='goodssmartorder'}layui-this{/eq}"><a href="{:url('goodsSmartOrder/index')}"><span class="l-line"></span>云算力订单</a></dd>
+			<dd class="navlink {eq name='navbar' value='goodswealthorder'}layui-this{/eq}"><a href="{:url('goodsWealthOrder/index')}"><span class="l-line"></span>财富订单</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='coupon'}layui-nav-itemed{/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-picture-fine"></i>优惠券管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='coupon'}layui-this{/eq}"><a href="{:url('coupon/index')}"><span class="l-line"></span>优惠券管理</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='withdraw,recharge'}layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i>充值/提现</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='recharge'}layui-this{/eq}"> <a href="{:url('recharge/index')}"><span class="l-line"></span>充值记录</a></dd>
+			<dd class="navlink {eq name='navbar' value='withdraw'}layui-this{/eq}"> <a href="{:url('withdraw/index')}"><span class="l-line"></span>提现申请</a></dd>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item {in name='navbar' value='usdtbuy,usdtsell'}layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i>法币交易</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='usdtbuy'}layui-this{/eq}"> <a href="{:url('usdtBuy/index')}"><span class="l-line"></span>USDT购买</a></dd>
+			<dd class="navlink {eq name='navbar' value='usdtsell'}layui-this{/eq}"> <a href="{:url('usdtSell/index')}"><span class="l-line"></span>USDT出售</a></dd>
+		</dl>
+	</li>
+
+	<li class="layui-nav-item {in name='navbar' value='node,nodemill'}layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i>节点管理</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='node'}layui-this{/eq}"> <a href="{:url('node/index')}"><span class="l-line"></span>节点列表</a></dd>
+			<dd class="navlink {eq name='navbar' value='nodemill'}layui-this{/eq}"> <a href="{:url('nodeMill/index')}"><span class="l-line"></span>赠送矿机设置</a></dd>
+		</dl>
+	</li>
+	
+	<li class="layui-nav-item {in name='navbar' value='feedback'}layui-nav-itemed {/in}">
+		<a href="javascript:;"><i class="layui-icon layui-icon-rmb"></i>意见反馈</a>
+		<dl class="layui-nav-child">
+			<dd class="navlink {eq name='navbar' value='feedback'}layui-this{/eq}"> <a href="{:url('feedback/index')}"><span class="l-line"></span>意见反馈</a></dd>
+		</dl>
+	</li>
+
+<!--	<li class="layui-nav-item {in name='navbar' value='manager,links_index,bank'}layui-nav-itemed{/in}">-->
+<!--		<a href="javascript:;"><i class="iconfont">&#xe60b;</i>系统管理</a>-->
+<!--		<dl class="layui-nav-child">-->
+<!--			<dd class="navlink {eq name='navbar' value='manager'}layui-this{/eq}"><a href="{:url('manager/index')}"><span class="l-line"></span>管理员列表</a></dd>-->
+<!--			<dd class="navlink {eq name='navbar' value='links_index'}layui-this{/eq}"><a href="{:url('links/index', array('mold'=>'index'))}"><span class="l-line"></span>轮播图管理</a></dd>-->
+<!--		</dl>-->
+<!--	</li>-->
+</ul>

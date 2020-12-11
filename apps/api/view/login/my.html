@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的</title>
+    <script src="js/myFlexible.js"></script>
+    <link rel="stylesheet" href="css/news.css">
+    <style>
+        .index-wrapper {
+            padding: 1.3rem 0 1.06rem
+        }
+    </style>
+</head>
+<!-- 我的 -->
+
+<body style="background-color: #F8F8F8;">
+    <header class="my-header">
+        <a href="javascript:void(0)">
+            <img src="images/head_icon2.png" alt="">
+        </a>
+    </header>
+    <div class="index-wrapper">
+        <div class="mill-wrap">
+            <p class="my-top-row">
+                <span>175****1562</span>
+                <span>17545621562</span>
+            </p>
+            <ul class="my-navList">
+                <li>
+                    <a href="javascript:void(0)">
+                        <div class="navList-sidebar">
+                            <div class="navList-row">
+                                资产估值(BTC)
+                                <button type="button" class="eye_btn" id="showPwd">
+                                    <img src="images/eye_hide.png" alt="" class="eye_hide">
+                                    <img src="images/eye.png" alt="" class="eye_show">
+                                </button>
+                            </div>
+                            <div class="navList-num" id="navList-num">******</div>
+                        </div>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        <p class="navList-row">
+                            <img src="images/nav1.png" alt="" class="navList-icon">
+                            我的租赁
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+            </ul>
+            <ul class="my-subNavList">
+                <li>
+                    <a href="javascript:void(0)">
+                        <img src="images/nav2.png" alt="" class="navList-icon">
+                        买卖USDT
+                    </a>
+                </li>
+                <li>
+                    <a href="exchange.html">
+                        <img src="images/nav3.png" alt="" class="navList-icon">
+                        兑换
+                    </a>
+                </li>
+            </ul>
+            <a href="invite_friends.html" class="my-logo">
+                <img src="images/logo4.png" alt="">
+            </a>
+            <ul class="my-menuList">
+                <li>
+                    <a href="discount_coupon.html">
+                        <p class="navList-row">
+                            <img src="images/subNav1.png" alt="" class="menu-icon">
+                            优惠券
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        <p class="navList-row">
+                            <img src="images/subNav2.png" alt="" class="menu-icon">
+                            费用抵扣方式
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="safety_center.html">
+                        <p class="navList-row">
+                            <img src="images/subNav3.png" alt="" class="menu-icon">
+                            安全中心
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        <p class="navList-row">
+                            <img src="images/subNav4.png" alt="" class="menu-icon">
+                            关于我们
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)">
+                        <p class="navList-row">
+                            <img src="images/subNav5.png" alt="" class="menu-icon">
+                            退出
+                        </p>
+                        <img src="images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer class="unified-footer">
+        <ul class="foot-menuList">
+            <li>
+                <a href="index.html">
+                    <img src="images/foot.png" alt="">
+                    <span class="foot-menu-text ">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="mill.html">
+                    <img src="images/foot2.png" alt="">
+                    <span class=" foot-menu-text">矿机</span>
+                </a>
+            </li>
+            <li>
+                <a href="money.html">
+                    <img src="images/foot3.png" alt="">
+                    <span class="foot-menu-text">财富</span>
+                </a>
+            </li>
+            <li>
+                <a href="my.html">
+                    <img src="images/foot4_active.png" alt="">
+                    <span class="foot-menu-text active">我的</span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+    <script src="common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        const money = 9999.99;
+        // 新增
+        $('#showPwd').click(function () {
+            var that = $(this);
+            if (that.hasClass('active')) {
+                $('#navList-num').html('******');
+                that.removeClass('active');
+            } else {
+                $('#navList-num').html(money + '<span class="money-yuan"> ≈￥' + money / 100 + '</span>');
+                that.addClass('active');
+            }
+        });
+    </script>
+</body>
+
+</html>

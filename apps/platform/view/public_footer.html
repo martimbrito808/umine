@@ -1,0 +1,33 @@
+<script>
+$('#loginout').on('click', function(){
+	layer.confirm('确定要退出登录吗?', function(){
+		$.ajax({
+			url:"{:url('home/loginout')}",
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('退出中，请稍后...');
+			},
+			success:function(res) {				
+				location.href = '{:url("home/login")}';
+			}
+		});
+	});
+});
+
+$('#clearCache').on('click', function(){
+	$.ajax({
+		url:"{:url('home/clear')}",
+		type:'post',
+		async: false,
+		beforeSend:function(){
+			loading('清除中，请稍后...');
+		},
+		success:function(res) {
+			msg(res.msg);
+		}
+	});
+});
+</script>
+</body>
+</html>

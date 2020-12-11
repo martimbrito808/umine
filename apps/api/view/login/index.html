@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    <script src="js/myFlexible.js"></script>
+    <link rel="stylesheet" href="css/news.css">
+    <link rel="stylesheet" href="css/swiper.min.css">
+    <style>
+        .swiper-container {
+            width: 100%;
+            height: 100%;
+            margin-bottom: 0.35rem;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            width: 80% !important;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<!-- 首页 -->
+
+<body style="background-color: #F9F9F9;">
+    <header class="index-header">
+        <a href="javascript:void(0)" class="index-head-logo">
+            <img src="images/logo.png" alt="">
+        </a>
+        <div class="index-head-row">
+            <a href="javascript:void(0)">
+                <img src="images/head_icon.png" alt="">
+            </a>
+            <a href="javascript:void(0)">
+                <img src="images/head_icon2.png" alt="">
+            </a>
+        </div>
+    </header>
+    <div class="index-wrapper">
+        <div class="padding-box">
+            <div class="index-card">
+                <div class="index-card-top">
+                    <span class="index-card-label">总收益(BTC)</span>
+                    <a href="javascript:void(0)" class="index-card-link">
+                        收益记录
+                        <img src="images/right_icon2.png" alt="">
+                    </a>
+                </div>
+                <div class="index-card-middle">
+                    <p class="index-card-msg">
+                        0.00000000<span class="small-font">≈¥0.00</span>
+                    </p>
+                    <p class="index-card-row">昨日收益：0.00000000</p>
+                </div>
+                <ul class="index-card-list">
+                    <li>
+                        <span>0</span>
+                        <span>
+                            <img src="images/icon3.png" alt="">
+                            我的矿机
+                        </span>
+                    </li>
+                    <li>
+                        <span>171.75%</span>
+                        <span>
+                            <img src="images/icon2.png" alt="">
+                            年化收益
+                        </span>
+                    </li>
+                    <li>
+                        <span>0T</span>
+                        <span>
+                            <img src="images/icon4.png" alt="">
+                            我的算力
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <!-- 未登录时显示 -->
+            <!-- <div class="index-card">
+                 <div class="not-log">
+                     <button>登录/注册</button>
+                     <span>灰度超算一站式矿场服务平台</span>
+                 </div>
+            </div> --> 
+            <img src="images/logo2.png" alt="" class="index-logo">
+        </div>
+        <div class="padding-box">
+            <div class="index-rowBetween">
+                <span class="index-label">我的矿机</span>
+                <a href="my_mill.html" class="index-rowAlign">
+                    全部
+                    <img src="images/right_icon.png" alt="">
+                </a>
+            </div> 
+            <!-- Swiper -->
+            <div class="swiper-container swiper-container-horizontal">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-slide-active">
+                        <div class="mill-card">
+                            <img src="images/img.png" alt="" class="mill-card-img">
+                            <div class="mill-card-sidebar">
+                                <h3 class="mill-card-title">M21S-56T</h3>
+                                <p class="mill-card-msg">矿机数量：2</p>
+                                <p class="mill-card-msg">昨日收益：0.000817</p>
+                            </div>
+                            <p class="mill-card-label">
+                                <img src="images/icon.png" alt="">
+                                保障中
+                            </p>
+                            <span class="mill-card-tag">演示</span>
+                        </div>
+                    </div>
+                    <div class="swiper-slide swiper-slide-next">
+                        <div class="mill-card">
+                            <img src="images/img.png" alt="" class="mill-card-img">
+                            <div class="mill-card-sidebar">
+                                <h3 class="mill-card-title">M21S-56T</h3>
+                                <p class="mill-card-msg">矿机数量：2</p>
+                                <p class="mill-card-msg">昨日收益：0.000817</p>
+                            </div>
+                            <p class="mill-card-label">
+                                <img src="images/icon.png" alt="">
+                                保障中
+                            </p>
+                            <span class="mill-card-tag">演示</span>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="mill-card">
+                            <img src="images/img.png" alt="" class="mill-card-img">
+                            <div class="mill-card-sidebar">
+                                <h3 class="mill-card-title">M21S-56T</h3>
+                                <p class="mill-card-msg">矿机数量：2</p>
+                                <p class="mill-card-msg">昨日收益：0.000817</p>
+                            </div>
+                            <p class="mill-card-label">
+                                <img src="images/icon.png" alt="">
+                                保障中
+                            </p>
+                            <span class="mill-card-tag">演示</span>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="mill-card">
+                            <img src="images/img.png" alt="" class="mill-card-img">
+                            <div class="mill-card-sidebar">
+                                <h3 class="mill-card-title">M21S-56T</h3>
+                                <p class="mill-card-msg">矿机数量：2</p>
+                                <p class="mill-card-msg">昨日收益：0.000817</p>
+                            </div>
+                            <p class="mill-card-label">
+                                <img src="images/icon.png" alt="">
+                                保障中
+                            </p>
+                            <span class="mill-card-tag">演示</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding-box">
+            <div class="index-rowBetween">
+                <span class="index-label">咨询</span>
+            </div>
+            <ul class="timeLine">
+                <li class="timeLine_li">
+                    <div class="timeLine_row"><span></span></div>
+                    <div class="timeLine_box">
+                        <span class="update_time">刚刚</span>
+                        <span class="consult_title">MXC抹茶SpaceM29号开启 现在增加主流资产交易量可得WOO签数</span>
+                        <span class="con">据官方公告，10月23日13:00-10月29日21:00，现在增加BTC、ETH、
+                            EOS/DOT等12个主流资产现货货杠杆交易量，可得MXC抹茶新一期S
+                            paceM活动WOO（Wootninin Net你您）抽签签署。</span>
+                    </div>
+                </li>
+                <li class="timeLine_li">
+                    <div class="timeLine_row"><span></span></div>
+                    <div class="timeLine_box">
+                        <span class="update_time">5小时前</span>
+                        <span class="consult_title">MXC抹茶SpaceM29号开启 现在增加主流资产交易量可得WOO签数</span>
+                        <span class="con">据官方公告，10月23日13:00-10月29日21:00</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer class="unified-footer">
+        <ul class="foot-menuList">
+            <li>
+                <a href="index.html">
+                    <img src="images/foot_active.png" alt="">
+                    <span class="foot-menu-text active">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="mill.html">
+                    <img src="images/foot2.png" alt="">
+                    <span class=" foot-menu-text ">矿机</span>
+                </a>
+            </li>
+            <li>
+                <a href="money.html">
+                    <img src="images/foot3.png" alt="">
+                    <span class="foot-menu-text">财富</span>
+                </a>
+            </li>
+            <li>
+                <a href="my.html">
+                    <img src="images/foot4.png" alt="">
+                    <span class="foot-menu-text">我的</span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+
+    <script src="js/swiper.min.js"></script>
+    <script>
+        //轮播
+        var swiper = new Swiper('.swiper-container', {
+            slidesPerView: 'auto',
+            paginationClickable: true,
+            spaceBetween: 10
+        });
+    </script>
+</body>
+
+</html>

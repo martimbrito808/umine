@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BTC充值</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <style>
+        .mui-toast-container {
+            bottom: 40%;
+        }
+    </style>
+</head>
+<!-- BTC充值 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:void(0)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <div class="recharge-wrap">
+            <h3 class="recharge-title">BTC充值二维码</h3>
+            <img src="../../public/static/images/code.jpg" alt="" class="code-icon">
+            <p class="address-text">地址：ifnoifgnoreingiorengoiegnoengoeirnge</p>
+            <button class="copy-btn" data-clipboard-text="我是复制的内容">复制收款地址</button>
+            <div class="form-box">
+                <p class="form-row">
+                    <label>数量：</label>
+                    <input type="text" placeholder="请填写充值数量" />
+                    <span class="form-font">BTC</span>
+                </p>
+            </div>
+            <div class="form-row-column">
+                <span>上传付款凭证：</span>
+                <div class="uploadFile">
+                    <ul class="upload-list">
+                        <li>
+                            <div class="selected">
+                                <img src="../../public/static/images/upload.png" />
+                                <input class="uploadFileBtn" type="file" accept="image/png,image/gif,image/jpeg" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-btnBox">
+                <button>提交</button>
+            </div>
+            <p class="warm-prompt">
+                温馨提示：<br />
+                · 禁止向BTC地址充值除BTC之外的资产，任何充入BTC 地址的非BTC资产将不可找回。<br />
+                · 使用BTC地址充值需要6个网络确认才能到账 <br />
+                · 充值最小额度为0.005BTC，小于0.005BTC将无法到账
+            </p>
+        </div>
+    </div> 
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/common/clipboard/clipboard.min.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script>
+        //复制
+        var clipboard = new ClipboardJS('.copy-btn');
+        clipboard.on('success', function (e) {
+            mui.toast(
+                '复制成功',
+            )
+            e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+            mui.toast(
+                '复制失败',
+            )
+        });
+        //图片预览
+        var uploadFileBtn = document.getElementsByClassName('uploadFileBtn');
+        for (var i = 0; i < uploadFileBtn.length; i++) {
+            uploadFileBtn[i].addEventListener('change', function (e) {
+                var self = this;
+                // 需要上传的文件对象，单文件
+                var file = e.target.files[0];
+                // 未选择文件时停止执行
+                if (!file) {
+                    return;
+                }
+                // 此部分为设置预览图片方法【本地图片路径】
+                var settingPreview = function () {
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(file);
+                    oFReader.onloadend = function (oFRevent) {
+                        var src = oFRevent.target.result;
+                        var li =
+                            '\t\t\t\t<li>\n' +
+                            '\t\t\t\t\t<div class="selected">\n' +
+                            '\t\t\t\t\t\t<img src="' + src + '" /><span class="img-del"></span>\n' +
+                            '\t\t\t\t\t</div>\n' +
+                            '\t\t\t\t</li>';
+                        $('.upload-list').prepend(li);
+                    }
+                }
+                // 设置预览图片
+                settingPreview();
+
+                // 以下为模拟ajax异步上传文件，【实际使用ajax异步上传文件时，此位置全部删除】
+                setTimeout(function () {
+                    var code = 200;
+                    if (code == 200) {
+                        // 设置上传成功后的地址
+                        //img.setAttribute('src','服务器返回上传成功后的图片地址');
+                        // 提示上传成功
+                        // alert('上传成功');
+                    } else if (code == 500) {
+                        // 上传失败清除掉预览图片
+                        img.setAttribute('src', 'images/add@2x.png');
+                        // 提示上传失败
+                        // alert('上传失败');
+                    }
+                }, 2000)
+                // -------- 模拟上传 -----------
+            })
+        }
+        $('body').on('click', '.img-del', function () {
+            $(this).parents('li').eq(0).remove();
+        })
+    </script>
+</body>
+
+</html>

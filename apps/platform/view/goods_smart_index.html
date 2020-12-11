@@ -1,0 +1,49 @@
+{include file="public:header" /}
+<div class="main-layout" id="main-layout">
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container clearfix">
+				<div class="column-content-detail">
+					<div class="layui-form-item">
+						<div class="layui-inline tool-btn">
+							<button class="layui-btn layui-btn-small layui-btn-normal addBtn" onclick="showDiyWin('添加新信息', '{:url(\'publish\')}',1400, 700);return false;"><i class="layui-icon">&#xe654;</i></button>
+						</div>
+						<div class="layui-inline">
+							<input type="text" id="keys" value="{$keys}" placeholder="请输入标题" autocomplete="off" class="layui-input">
+						</div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" id="search">搜索</button></div>
+						<div class="layui-inline"><button class="layui-btn layui-btn-normal" onclick="$('#keys').val('');return false;">清除</button></div>
+					</div>
+					<div class="layui-form" id="table-list">
+						<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'ajaxData\', array(\'keys\'=>$keys, \'store\'=>$store ))}', page:true, limit:20, height:'full-170', skin:'row', even:true, size:'lg'}" lay-filter="ajaxData">
+							<thead>
+								<tr>
+									<th lay-data="{field:'toolbar', width:80}">操作</th>
+									<th lay-data="{field:'sort', width:80, sort:true, edit:'text'}">排序</th>
+									<th lay-data="{field:'cover', width:80}">LOGO</th>
+									<th lay-data="{field:'name', sort:true}">名称</th>
+									<th lay-data="{field:'apr'}">年化收益</th>
+									<th lay-data="{field:'rengou_begin'}">认购开始</th>
+									<th lay-data="{field:'rengou_end'}">认购结束</th>
+									<th lay-data="{field:'sales_sum'}">销量</th>
+									<th lay-data="{field:'statusbar', sort:true}">状态</th>
+									<th lay-data="{field:'create_time'}">添加时间</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+{include file="public:script" /}
+{include file="public:footer" /}

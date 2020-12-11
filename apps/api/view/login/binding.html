@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>绑定谷歌验证码</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <style>
+        .mui-toast-container {
+            bottom: 40%;
+        }
+    </style>
+</head>
+<!-- 绑定谷歌验证码 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>绑定谷歌验证码</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="binding-box">
+            <p class="binding-row">
+                1.下载谷歌验证器
+                <button>点击下载</button>
+            </p>
+        </div>
+        <div class="binding-box">
+            <div class="binding-column">
+                <p class="binding-title">2.获取验证码</p>
+                <div class="binding-row-between">
+                    <p class="binding-row-column">
+                        <span class="gray-text">使用谷歌验证器</span>
+                        <span class="black-text">扫码生成动态验证码</span>
+                    </p>
+                    <img src="../../public/static/images/code.jpg" alt="" class="code-img">
+                </div>
+                <div class="binding-row-column">
+                    <p class="gray-text">手动输入密钥和设备名称</p>
+                    <p class="binding-row">
+                        密钥：NUIHGUOI：BHGIUGH
+                        <button class="copy_btn" data-clipboard-text="我是复制的内容">复制</button>
+                    </p>
+                    <p class="binding-row">
+                        设备名称：18758956325
+                        <button class="copy_btn" data-clipboard-text="我是复制的内容">复制</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="binding-box">
+            <p class="binding-title">3.输入谷歌验证码</p>
+            <input type="text" placeholder="请输入谷歌验证码" class="binding-input">
+            <input type="text" placeholder="请输入登录密码" class="binding-input">
+            <button class="binding-btn">确认绑定</button>
+        </div>
+    </div>
+    <script src="../../public/static/common/clipboard/clipboard.min.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script>
+        //复制
+        var clipboard = new ClipboardJS('.copy_btn'); 
+        clipboard.on('success', function (e) {
+            mui.toast(
+                '复制成功',
+            )
+            e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+            mui.toast(
+                '复制失败',
+            )
+        });
+    </script>
+</body>
+
+</html>

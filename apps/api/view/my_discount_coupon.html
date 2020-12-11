@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>优惠券</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 优惠券 -->
+
+<body style="background: #F5F5F5">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>优惠券</h3>
+    </header>
+    <div class="unified-wrapper">
+         <form>
+            <div class="discount_bar">
+                <input type="text" name="coupon" placeholder="请输入优惠码" />
+                <button type="button" id="receive">立即领取</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script type="text/javascript">
+        // 第三种 通过方法响应点击事件
+        $('#receive').click(function() {
+            var d = {};
+            var t = $('form').serializeArray();
+            //t的值为[{name: "a1", value: "xx"},
+            //{name: "a2", value: "xx"}...]
+            $.each(t, function() {
+                d[this.name] = this.value;
+            });
+            d['token'] = localStorage.getItem('token');;
+            var data = d;
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/api/my/discount_coupon",
+                data: data,
+                dataType: 'json',
+                success: function (res) {
+                    if(res.code===200){
+                        // window.location.reload()//刷新当前页面.
+                        layer.msg('领取成功');
+                    }else{
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

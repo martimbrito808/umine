@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>矿机</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- 矿机 -->
+
+<body style="background-color: #fff;">
+    <header class="index-header">
+        <h3 class="mill-title">矿机</h3>
+    </header>
+    <div class="index-wrapper">
+        <div class="mill-wrap">
+            <img src="../../public/static/images/bg5.png" alt="" class="mill-logo">
+            <ul class="mill-tab">
+               
+             
+                
+ <li>
+                    <a data-key="first" class="active" href="javascript:void(0)">
+                        实体矿机
+                        <span class="border"></span>
+                    </a>
+                </li>
+                
+                
+                   <li>
+                    <a data-key="second" href="javascript:void(0)" class="">
+                        云算力·租赁
+                        <span class="border"></span>
+                    </a>
+                </li>
+                
+
+                                <li>
+                    <a data-key="second" href="javascript:void(0)" class="">
+                        云算力·购买
+                        <span class="border"></span>
+                    </a>
+                </li>
+                
+                
+            </ul>
+            <div id="first" class="mill mill-active">
+                <ul class="mill-entity">
+                    {volist name='mill_list' id='ml'} 
+                        {switch name="ml.type" }
+                            {case value="1"}  <!--现货-->
+                            <a href="/api/mill/income_introduced?id={$ml.id}&token={$auth.token}">
+                                <li class="brown-bg">
+                                    <div class="mill-entity-box">
+                                        <div class="mill-entity-top">
+                                            <span class="mill-entity-status spot-goods">现货</span>
+                                            <p class="mill-entity-title">{$ml.name}</p>
+                                        </div>
+                                        <div class="mill-entity-bottom">
+                                            <ul class="mill-entity-list">
+                                                <li>
+                                                    <span>价格</span>
+                                                    <span>{:showprice($ml.price)}USDT/台</span>
+                                                </li>
+                                                <li>
+                                                    <span>预计回报率</span>
+                                                    <span>{$ml.huibaolv}</span>
+                                                </li>
+                                            </ul>
+                                            <img src="{:getfile($ml.cover)}" alt="" class="mill-entity-img">
+                                        </div>
+                                    </div>
+                                    <div class="mill-entity-foot">
+                                        <a class="go-link">
+                                            立即抢购
+                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                        </a>
+                                    </div>
+                                </li>
+                            </a>
+                            {/case}
+                            {case value="2"}  <!--预售-->
+                             <a href="/api/mill/income_introduced?id={$ml.id}&token={$auth.token}">
+                                <li class="orange-bg">
+                                    <div class="mill-entity-box">
+                                        <div class="mill-entity-top">
+                                            <span class="mill-entity-status sale-goods">预售</span>
+                                            <p class="mill-entity-title">{$ml.name}</p>
+                                        </div>
+                                        <div class="mill-entity-bottom">
+                                            <ul class="mill-entity-list">
+                                                <li>
+                                                    <span>价格</span>
+                                                    <span>{:showprice($ml.price)}USDT/台</span>
+                                                </li>
+                                                <li>
+                                                    <span>预计回报率</span>
+                                                    <span>{$ml.huibaolv}</span>
+                                                </li>
+                                            </ul>
+                                            <img src="{:getfile($ml.cover)}" alt="" class="mill-entity-img">
+                                        </div>
+                                    </div>
+                                    <div class="mill-entity-foot">
+                                        <a class="go-link">
+                                            立即抢购
+                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                        </a>
+                                    </div>
+                                </li>
+                            </a>
+                            {/case}
+                        {/switch}
+                    {/volist}
+                    
+                    {volist name='mill_disabled_list' id='mdl'} 
+                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                        <li>
+                            <div class="mill-entity-box">
+                                <div class="mill-entity-top">
+                                    <span class="mill-entity-status lose-efficacy">{$mdl.type == 1 ? '现货' : '预售'}</span>
+                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                </div>
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span class="gray-font">价格</span>
+                                            <span class="gray-font">{:showprice($mdl.price)}USDT/台</span>
+                                        </li>
+                                        <li>
+                                            <span class="gray-font">预计回报率</span>
+                                            <span class="gray-font">{$mdl.huibaolv}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="mill-tag-box">
+                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                    </div>
+                                </div>
+                                <!--<div class="mill-tag">永久产权</div>-->
+                            </div>
+                        </li>
+                    </a>
+                    {/volist}
+                </ul>
+            </div>
+            
+            <!--智能合约机-->
+            <div id="second" class="mill">
+                <ul class="mill-entity">
+                    {volist name="wealth_list" id="wl"}
+                        <li>
+                            <a href="/api/money/money_management?token={$auth.token}&id={$wl.id}">
+                                <div class="mill-module">
+                                    <p class="mill-module-row">
+                                        <img src="{:getfile($wl.cover)}" alt="">
+                                        <span>{$wl.name}</span>
+                                    </p>
+                                    <ul class="mill-module-list">
+                                        <li>
+                                            <span class="mill-module-num">{$wl.apr_3}%-{$wl.apr_12}%</span>
+                                            <span class="mill-module-font">年化收益</span>
+                                        </li>
+                                        <li>
+                                            <span class="mill-module-num2">产品周期：30-120天</span>
+                                            <span class="mill-module-font2">{$wl.intro}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </a>
+                        </li>
+                    {/volist}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <footer class="unified-footer">
+        <ul class="foot-menuList">
+             {if condition="$auth.token"}
+            <li>
+                <a href="/api/index/index.html?token={$auth.token}">
+                    <img src="../../public/static/images/foot.png" alt="">
+                    <span class="foot-menu-text active">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/mill/mill.html?token={$auth.token}">
+                    <img src="../../public/static/images/foot2_active.png" alt="">
+                    <span class=" foot-menu-text ">矿机</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/node/index.html?token={$auth.token}">
+                    <img src="../../public/static/images/foot5.png" alt="">
+                    <span class=" foot-menu-text ">节点</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/money/money.html?token={$auth.token}">
+                    <img src="../../public/static/images/foot3.png" alt="">
+                    <span class="foot-menu-text">财富</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/my/my.html?token={$auth.token}">
+                    <img src="../../public/static/images/foot4.png" alt="">
+                    <span class="foot-menu-text">我的</span>
+                </a>
+            </li>
+            {else/}
+            <li>
+                <a href="/api/index/index.html">
+                    <img src="../../public/static/images/foot.png" alt="">
+                    <span class="foot-menu-text active">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/mill/mill.html">
+                    <img src="../../public/static/images/foot2_active.png" alt="">
+                    <span class=" foot-menu-text ">矿机</span>
+                </a>
+            </li>
+            <li>
+	            <a href="/api/login/login.html">
+                    <img src="../../public/static/images/foot5.png" alt="">
+                    <span class=" foot-menu-text ">节点</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/money/money.html">
+                    <img src="../../public/static/images/foot3.png" alt="">
+                    <span class="foot-menu-text">财富</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/login/login.html">
+                    <img src="../../public/static/images/foot4.png" alt="">
+                    <span class="foot-menu-text">我的</span>
+                </a>
+            </li>
+            {/if}
+        </ul>
+    </footer>
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        //选项卡
+        $('.mill-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.mill-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.mill').removeClass('mill-active');
+            $('#' + key).addClass('mill-active');
+        });
+    </script>
+</body>
+
+</html>

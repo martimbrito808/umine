@@ -1,0 +1,72 @@
+{include file="public:header" /}
+<div class="main-layout" id="main-layout">
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<form class="layui-form layui-form-pane container-fluid">
+			<div class="layui-tab layui-tab-card">
+				<ul class="layui-tab-title">
+					<li class="layui-this">协议编辑</li>
+				</ul>
+				<div class="layui-tab-content">
+
+					{volist name="list" id="vo"}
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">{$vo['title']}：</label>
+						<div class="layui-input-block">
+							<textarea name="setting[{$vo['variable']}]" placeholder="请输入{$vo['title']}" class="layui-input editor" style="width:99.9%;height:200px;">{$vo['value']}</textarea>
+							</textarea>
+						</div>
+					</div>
+					{/volist}
+				</div>
+			</div>
+			<div class="layui-form-item" style="padding-left: 10px;">
+				<div class="layui-input-block">
+					<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="__EXTEND__/kindeditor/kindeditor.js"></script>
+<script type="text/javascript" src="__EXTEND__/kindeditor/lang/zh_CN.js"></script>
+<script>
+	layui.use(['form'], function(){
+		var form = layui.form;
+		form.on('submit(dataPost)', function(data){
+			$.ajax({
+				url:"{:url(request()->action())}",
+				data:data.field,
+				type:'post',
+				async: false,
+				beforeSend:function(){
+					loading('提交中，请稍后...');
+				},
+				success:function(res) {
+					msg(res.msg);
+				}
+			});
+			return false;
+		});
+	});
+
+	$(function(){
+		KindEditor.create('textarea[class="editor"]',{
+			afterBlur: function () {
+			this.sync();
+			}
+		})
+	});
+</script>
+{include file="public:footer" /}

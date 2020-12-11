@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$info.class}充值</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
+    <style>
+        .mui-toast-container {
+            bottom: 40%;
+        }
+    </style>
+</head>
+<!-- BTC充值 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+    </header>
+    <div class="unified-wrapper">
+        <div class="recharge-wrap">
+            <h3 class="recharge-title">{$info.class}充值二维码</h3>
+            <img src="{$info.value}" alt="" class="code-icon">
+            <p class="address-text">地址：{$info.title}</p>
+            <button class="copy-btn" data-clipboard-text="{$info.title}">复制收款地址</button>
+            <div class="form-box">
+                <p class="form-row">
+                    <label>数量：</label>
+                    <input type="number" id='num' placeholder="请填写充值数量" />
+                    <span class="form-font">{$info.class}</span>
+                </p>
+            </div>
+            <div class="form-row-column">
+                <span>上传付款凭证：</span>
+                <div class="uploadFile">
+                    <ul class="upload-list">
+                        <li id='add'>
+                            <div class="selected">
+                                <img src="../../public/static/images/upload.png" />
+                                <input class="uploadFileBtn" type="file" accept="image/png,image/gif,image/jpeg" />
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-btnBox">
+                <button class='tijiao'>提交</button>
+            </div>
+            <p class="warm-prompt">
+                温馨提示：<br />
+                · 禁止向{$info.class}地址充值除{$info.class}之外的资产，任何充入{$info.class} 地址的非{$info.class}资产将不可找回。<br />
+                · 使用{$info.class}地址充值需要6个网络确认才能到账 <br />
+                · 充值最小额度为{$info.min_price}{$info.class}，小于{$info.min_price}{$info.class}将无法到账
+            </p>
+        </div>
+    </div> 
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/common/clipboard/clipboard.min.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script>
+        //复制
+        var clipboard = new ClipboardJS('.copy-btn');
+        clipboard.on('success', function (e) {
+            mui.toast(
+                '复制成功',
+            )
+            e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+            mui.toast(
+                '复制失败',
+            )
+        });
+        //图片预览
+        var uploadFileBtn = document.getElementsByClassName('uploadFileBtn');
+      
+        for (var i = 0; i < uploadFileBtn.length; i++) {
+            uploadFileBtn[i].addEventListener('change', function (e) {
+                var self = this;
+                // 需要上传的文件对象，单文件
+                var file = e.target.files[0];
+                // 未选择文件时停止执行
+                if (!file) {
+                    return;
+                }
+                // 此部分为设置预览图片方法【本地图片路径】
+                var settingPreview = function () {
+                    var oFReader = new FileReader();
+                    oFReader.readAsDataURL(file);
+                    oFReader.onloadend = function (oFRevent) {
+                        var src = oFRevent.target.result;
+                        var li =
+                            '\t\t\t\t<li>\n' +
+                            '\t\t\t\t\t<div class="selected">\n' +
+                            '\t\t\t\t\t\t<img class="base64img" src="' + src + '" /><span class="img-del"></span>\n' +
+                            '\t\t\t\t\t</div>\n' +
+                            '\t\t\t\t</li>';
+                        $('.upload-list').prepend(li);
+                        $.ajax({
+                            type : "POST",
+                            contentType: "application/json;charset=UTF-8",
+                            url : "/api/public/baseimg_upload",
+                            data : JSON.stringify({img:src}),
+                            success : function(result) {
+                                if(result.status == 1) {
+                                    $('.base64img').attr('data-img', result.data.url);
+                                }
+                            },
+                            //请求失败，包含具体的错误信息
+                            error : function(e){
+                                mui.toast(
+                                    '图片上传失败，请重新上传',
+                                )
+                            }
+                        });
+                    }
+                }
+                
+               if($('.upload-list li').length >= 1) {
+                    $('#add').hide();
+                }
+                
+                settingPreview();
+     
+                // img.setAttribute('src', 'images/add@2x.png');
+                // 提示上传失败
+                // alert('上传失败');
+            })
+        }
+        $('body').on('click', '.img-del', function () {
+            console.log($('.upload-list li').length);
+            $(this).parents('li').eq(0).remove();
+             if($('.upload-list li').length < 2) {
+                $('#add').show();
+            }
+        })
+        
+        let lock = false;
+        $('.tijiao').click(function() {
+            let num, pingzheng,type,class_name;
+            let token = localStorage.getItem('token');
+            num = $('#num').val();
+            pingzheng = $('.base64img').attr('data-img');
+            class_name = "{$info.class}"
+            type = "{$info.class_num}"
+            if(num == undefined || num == '') {
+                 mui.toast(
+                    '请输入充值金额',
+                )
+                return false;
+            }
+            if(pingzheng == undefined || pingzheng == '' ) {
+                mui.toast(
+                    '请上传充值凭证',
+                )
+                return false;
+            }
+            
+            if(lock == true) {
+                return false;
+            }
+            lock = true;
+           
+            $.ajax({
+                type : "POST",
+                contentType: "application/json;charset=UTF-8",
+                url : "/api/money/recharge_up",
+                data : JSON.stringify({
+                    money: num,
+                    voucher: pingzheng,
+                    type: type,
+                    token: token,
+                    class_name:class_name
+                }),
+                success : function(result) {
+                    if(result.code == 200) {
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+                    }else{
+                        lock = false;
+                    }
+                    mui.toast(
+                        result.msg
+                    )
+
+                    // if(result.status == 1) {
+                    //     console.log(result.data.url);
+                    //     $('.base64img').attr('data-img', result.data.url);
+                    // }
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    lock = false;
+                    mui.toast(
+                        '出错啦，请稍后再试',
+                    )
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>

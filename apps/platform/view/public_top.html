@@ -1,0 +1,13 @@
+<div class="menu-btn" id="hideBtn">
+	<a href="javascript:;">
+		<span class="iconfont">&#xe60e;</span>
+	</a>
+</div>
+<ul class="layui-nav">
+	<!-- <li class="layui-nav-item navlink"><a href="{:url('cn/home/index')}" target="_blank" style="color:#333;">前台首页</a></li> -->
+	<!-- <li class="layui-nav-item navlink"><a href="javascript:;" id="clearCache" style="color:#333;">清除缓存</a></li> -->
+	<li class="layui-nav-item navlink"><a href="{:url('home/index')}" style="color:#333;">后台首页</a></li>
+	<li class="layui-nav-item navlink"><a href="javascript:;" onclick="showDiyWin('系统设置', '{:url(\'home/config\')}', 1000);return false;" style="color:#333;">系统设置</a></li>
+	<li class="layui-nav-item navlink"><a href="javascript:;" onclick="showDiyWin('修改密码', '{:url(\'home/pass\')}', 800, 500);return false;" style="color:#333;">修改密码</a></li>
+	<li class="layui-nav-item"><a href="javascript:;" id="loginout" style="color:#333;">退出</a></li>
+</ul>

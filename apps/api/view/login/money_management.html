@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>USDT生币宝定期理财</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+</head>
+<!-- USDT生币宝定期理财 -->
+
+<body style="background-color: #fff;">
+    <header class="money-header">
+        <a href="javascript:void(0)">
+            <img src="../../public/static/images/return2.png" alt="" class="return-icon">
+        </a>
+        <h3>USDT生币宝定期理财</h3>
+    </header> 
+    <div class="money-wrapper">
+        <div class="management-head">
+            <div class="management-box">
+                <img src="../../public/static/images/type3.png" alt="" class="management-icon">
+                <span class="management-label">USDT生币宝定期理财</span>
+                <ul class="management-list">
+                    <li>
+                        <span class="percent">15.00%</span>
+                        <span class="management-name">年化收益率</span>
+                    </li>
+                    <li>
+                        <span class="period">90天</span>
+                        <span class="management-name">产品周期</span>
+                    </li>
+                </ul>
+                <span class="management-tag">高收益，低风险，保本保息</span>
+                <ul class="data-tab">
+                    <li>
+                        <a data-key="first" href="javascript:void(0)" class="active">
+                            30天
+                            <span class="border-active"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-key="second" href="javascript:void(0)" class="">
+                            60天
+                            <span class="border-active"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-key="third" href="javascript:void(0)" class="">
+                            90天
+                            <span class="border-active"></span>
+                        </a>
+                    </li>
+                    <li>
+                        <a data-key="third" href="javascript:void(0)" class="">
+                            120天
+                            <span class="border-active"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div> 
+        <ul class="timeline-new">
+            <li class="timeline-round">
+                <span>01-13 00:00</span>
+            </li>
+            <li class="timeline-line">
+                <span>认购期</span>
+            </li>
+            <li class="timeline-round">
+                <span>01-13 00:00</span>
+            </li>
+            <li class="timeline-line" style="padding-left: 1rem;">
+                <span>收益期</span>
+            </li>
+            <li class="timeline-round">
+                <span>01-13 00:00</span>
+            </li>
+        </ul>
+        <div class="product-presentation">
+            <h3>产品介绍</h3>
+            <p>
+                项目方：灰度超算<br />
+                认购额度：100USDT起；<br />
+                开挖日期：2020年1月31日起<br />
+                租赁周期：30天<br />
+                年化收益：15%<br />
+                返息货币：USDT<br />
+                返还本金：从开挖之日开始，30天后到期。本期到期后，3个工作日返还到用户账户。
+            </p>
+        </div>
+    </div>
+    <footer class="foot-box">
+        <button>立即购买</button>
+    </footer>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //选项卡
+        $('.data-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.data-tab li a').removeClass('active');
+            that.addClass('active');
+        });
+    </script>
+</body>
+
+</html>

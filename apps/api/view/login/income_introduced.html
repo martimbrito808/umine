@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>收益介绍</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <style>
+        /* 修改 */
+        .unified-header{
+            z-index: 99;
+        }
+    </style>
+</head>
+<!-- 收益介绍 -->
+
+<body style="background: #fff">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3 class="income-h3">{$info.name}...</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="income-imgBox">
+            <img src="../../public/static/images/bg4.png" alt="" class="income-img">
+        </div>
+        <div class="income-box">
+            <h3 class="income-num">{:showprice($info.price)}<span class="income-font">USDT</span></h3>
+            <p class="income-row">
+                <span class="income-label">预售111</span>
+                <span class="income-name">{$info.name}</span>
+            </p>
+            <ul class="income-msgList">
+                <li>
+                    <span class="income-msg_name">电费</span>
+                    <span class="income-msg_text">0.39元/度</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">管理费</span>
+                    <span class="income-msg_text">5%日产出</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">保险费</span>
+                    <span class="income-msg_text">0元</span>
+                    <span class="income-msg_font">(新机器免保费)</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">功耗比</span>
+                    <span class="income-msg_text">1.5W/M</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">预计回报率</span>
+                    <span class="income-msg_text">100%-150%</span>
+                </li>
+                <li>
+                    <span class="income-msg_name">每日产出</span>
+                    <span class="income-msg_font" style="font-weight: bold;">0.03</span>
+                </li>
+            </ul>
+            <ul class="income-timeList">
+                <li>
+                    <span class="circle"></span>售卖结束时间：2020-10-31
+                </li>
+                <li>
+                    <span class="circle"></span>预计上架时间：2020-11-01
+                </li>
+            </ul>
+            <div class="income-bottom-box">
+                <p class="income-rowAlign">
+                    <img src="../../public/static/images/icon10.png" alt="">
+                    优惠券
+                </p>
+                <a href="javascript:void(0)" class="income-link">
+                    加灰度超算小助手领取优惠券
+                    <img src="../../public/static/images/right_icon5.png" alt="">
+                </a>
+            </div>
+            <span class="income-tag">实体矿机</span>
+        </div>
+        <ul class="introduce-tab">
+            <li>
+                <a data-key="first" href="javascript:void(0)" class="active">
+                    矿机介绍
+                    <span class="border-bottom"></span>
+                </a>
+            </li>
+            <li>
+                <a data-key="second" href="javascript:void(0)">
+                    收益介绍
+                    <span class="border-bottom"></span>
+                </a>
+            </li>
+        </ul>
+        <div class="introduce introduce-active" id="first">
+            <div class="introduce-box">
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        实体矿机
+                    </p>
+                    <p class="introduce-msg">此矿机为<span class="emphasis">实体矿机</span>，购买后永久拥有产权。</p>
+                </div>
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        配置全面
+                    </p>
+                    <p class="introduce-msg">此产品包含矿机、电源及<span class="emphasis">机位</span>。</p>
+                </div>
+                <div class="introduce-row">
+                    <p class="align-row">
+                        <img src="../../public/static/images/icon9.png" alt="">
+                        专业服务
+                    </p>
+                    <p class="introduce-msg">购买此产品后铀矿为您提供物流运输、矿机
+                        上架、收益分发、矿机维护及维修等<span class="emphasis">一站式
+                            服务</span>，免除您的后顾之忧。</p>
+                </div>
+            </div>
+            <div class="introduce-box2">
+                <p class="detailes-parameters">详细参数</p>
+                <p class="detailes-row">
+                    <span>矿机型号</span>
+                    <span>A10Pro</span>
+                </p>
+                <p class="detailes-row">
+                    <span>矿机算力</span>
+                    <span>500M</span>
+                </p>
+                <p class="detailes-row">
+                    <span>矿机功率</span>
+                    <span>750W</span>
+                </p>
+                <p class="detailes-row">
+                    <span>支持算法</span>
+                    <span>Ethash</span>
+                </p>
+                <p class="detailes-row">
+                    <span>显存容量</span>
+                    <span>6G</span>
+                </p>
+            </div>
+            <div class="btn-box">
+                <button class="pay-btn">立即购买</button>
+            </div>
+        </div>
+        <div class="introduce " id="second">
+            <p class="introduce-label"><span>收益发放</span></p>
+            <ul class="income-list">
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        收益结算公式
+                    </p>
+                    <p class="income-content">
+                        挖矿产出结算模式<br />
+                        每日收益=每日挖矿产出-电费-管理费-保险费
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        结算时间
+                    </p>
+                    <p class="income-content">
+                        每日24:00:00(UTC+8)根据用户当时持有的实际算力，结算前一日的算力收益
+                    </p>
+                </li>
+            </ul>
+            <p class="introduce-label"><span>费用收取</span></p>
+            <ul class="income-list">
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        电费
+                    </p>
+                    <p class="income-content">
+                        每日日电费=当日日持有算力力力*(功耗比/1000)*电价24，
+                        按照结算时ETH/USDT价格，折算为ETH扣除电费
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        保险费
+                    </p>
+                    <p class="income-content">
+                        保险费=挖矿产出1%(新机免保险费)<br />
+                        用于抵御矿场出现水电异常、机器返修、机器配件消耗、
+                        机器折旧性能下降等风险，保障用户每日获得稳定的挖矿
+                        收益
+                    </p>
+                </li>
+                <li>
+                    <p class="income-title">
+                        <span class="circle2"></span>
+                        管理费
+                    </p>
+                    <p class="income-content">
+                        管理费=挖矿产出的5%<br />
+                        在矿场管理维护矿机使其正常运行的人员成本及平台利润
+                        费用收取方式：在向用户每日发放收益时，电费、保险费
+                        、管理费从挖矿产出中直接扣除。
+                    </p>
+                </li>
+            </ul>
+            <div class="btn-box">
+                <button class="pay-btn">立即购买</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="mask_layer"></div>
+    <div class="bottom_window">
+        <div class="window_top">
+            <div class="window_top_row">
+                <span class="window-tag">预告</span>
+                <h3>S19PRO0-110T 低价预售</h3>
+            </div>
+            <div class="parameter-box">
+                <span class="window-label">购买数量</span>
+                <div class="parameter-row">
+                    <button class="selected">1</button>
+                    <button>2</button>
+                    <button>5</button>
+                    <button>10</button>
+                </div>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">优惠券</span>
+                <a href="javascript:void(0)" class="coupon-link">
+                    未使用优惠券
+                    <img src="../../public/static/images/right_icon2.png" alt="">
+                </a>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">订单金额</span>
+                <span class="order-amount">3488.0<span class="fontSmall">USDT</span></span>
+            </div>
+        </div>
+        <p class="available-capital">可用资产： 0 USDT</p>
+        <div class="window_bottom">
+            <button>购买</button>
+        </div>
+    </div>
+    <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script>
+        //选项卡
+        $('.introduce-tab li a').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            $('.introduce-tab li a').removeClass('active');
+            that.addClass('active');
+            $('.introduce').removeClass('introduce-active');
+            $('#' + key).addClass('introduce-active');
+        });
+
+        //底部弹框
+        $('.pay-btn').click(function () {
+            $('.bottom_window,.mask_layer').slideDown(200).css('display', 'flex');
+        })
+        $('.mask_layer,.cancel-btn').click(function () {
+            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+
+        //购买数量选择
+        $('.parameter-row button').click(function () {
+            var that = $(this);
+            var key = that.data('key');
+            that.siblings().removeClass('selected');
+            that.addClass('selected');
+        });
+    </script>
+
+</body>
+
+</html>

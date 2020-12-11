@@ -1,0 +1,75 @@
+{include file="public:header" /}
+<form class="layui-form layui-form-pane">
+	<div class="page-content-wrap">
+		<div class="layui-tab layui-tab-card">
+			<div class="layui-tab-content">
+				<!--站点配置-->
+				<div class="layui-tab-item layui-show">
+					<div class="layui-form-item">
+						<label class="layui-form-label">登录账号：</label>
+						<div class="layui-input-block">
+							<input type="text" autocomplete="off" name="account" class="layui-input" readonly="readonly" value="{$manager['account']}">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">旧密码：</label>
+						<div class="layui-input-block">
+							<input type="password" name="oldpass" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">新密码：</label>
+						<div class="layui-input-block">
+							<input type="password" name="newpass" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">确认密码：</label>
+						<div class="layui-input-block">
+							<input type="password" name="repass" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>			
+		<div class="layui-form-item" style="padding-left: 10px;">
+			<div class="layui-input-block">
+				<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即修改</button>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" name="id" value="{$rows['id']}">
+</form>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>
+layui.use(['form'], function(){
+	var form = layui.form;
+	
+	form.on('submit(dataPost)', function(data){
+		$.ajax({
+			url:"{:url(request()->action())}",
+			data:data.field,
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('提交中，请稍后...');
+			},
+			success:function(res) {
+				msg(res.msg);
+				if(res.error == 0){
+					setTimeout(function(){					
+						var index=parent.layer.getFrameIndex(window.name);
+						parent.layer.close(index);
+					}, 1500);
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+{include file="public:header" /}
+<form class="layui-form layui-form-pane container-fluid">
+	<div class="layui-tab layui-tab-card">
+		<ul class="layui-tab-title">
+			<li class="layui-this">基本信息</li>
+		</ul>
+		<div class="layui-tab-content">
+			<div class="layui-tab-item layui-show">
+
+	            <div class="layui-form-item">
+					<label class="layui-form-label">昵称：</label>
+					<div class="layui-input-inline">
+						<input type="text" readonly="readonly" value="{$rows['username']}" class="layui-input">
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">登录账号：</label>
+					<div class="layui-input-inline">
+						<input type="text" name="tel" readonly="readonly" value="{$rows['tel']}" class="layui-input">
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">密码：</label>
+					<div class="layui-input-inline">
+						<input type="hidden" name="oldpass" value="{$rows.password}">
+						<input type="text" name="password" value="" autocomplete="off" class="layui-input">
+					</div>
+					<div class="layui-form-mid layui-word-aux">不修改请留空</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">状态: </label>
+					<div class="layui-input-block">
+						<input type="radio" name="status" value="0" title="封号" {eq name="$rows['status']" value="0" } checked {/eq}>
+						<input type="radio" name="status" value="1" title="正常" {eq name="$rows['status']" value="1" } checked {/eq}>
+					</div>
+				</div>
+
+				<hr class="layui-bg-gray">
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册时间：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{:date('Y-m-d H:i',$rows['create_time'])}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">BTC：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.btc}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">USDT：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.usdt}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">ETH：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.eth}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">ETHU：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.ethu}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">ER：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.er}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">EUF：</label>
+					<div class="layui-input-inline">
+						<input type="text" value="{$rows.euf}" autocomplete="off" class="layui-input" disabled>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item" style="padding-left: 10px;">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+			<a class="layui-btn layui-btn-primary" onclick="closeWin()">关闭并返回列表</a>
+		</div>
+	</div>
+	<input type="hidden" id="rowsID" name="id" value="{:isset($rows['id']) ? $rows['id'] : ''}">
+</form>
+{include file="public:script" /}
+{include file="public:footer" /}

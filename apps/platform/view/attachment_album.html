@@ -1,0 +1,152 @@
+{include file="public:header" /}
+<style type="text/css">
+<!--
+.layui-tab-card{width:31%;margin-left:1%;float:left;}
+.albumbox{padding:3%;margin-top:50px;}
+.imgbox{position:relative;padding:5px;}
+.imgbox img{width:150px;height:150px;}
+.imgbox .imgsBtn{position:absolute;right:5px;top:5px;}
+.imgbox p{line-height:22px;font-size:14px;}
+.imgbox p span{color:#c00;}
+-->
+</style>
+<blockquote class="layui-elem-quote" style="position:fixed;left:0;top:0;width:100%;z-index:999;">
+	<div style="padding:0 5% 0 3%;overflow:hidden;">
+		<div style="float:left">
+			<a href="javascript:;" id="upfile" class="layui-btn layui-btn-normal">上传文件(可多选)</a>
+		</div>
+		<div style="float:right">{$result->render()}</div>
+	</div>
+</blockquote>
+<div class="albumbox">
+	{volist name="result" id="vo"}
+	<div class="layui-tab layui-tab-card imgbox">		
+		<table width="100%" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+					{switch name="box"}
+						{case value="video"}
+							<a href="javascript:;" class="showVideo" rel="{$vo.filepath}">
+								<video width='150px' height="80px" src="{$vo.filepath}" alt="{$vo['title']}" ></video>
+							</a>
+						{/case}
+						{default /}
+							<a href="javascript:;" class="showImg" rel="{$vo.filepath}">
+								<img src="{$vo.thumb ? $vo.thumb : $vo.filepath}" alt="{$rows['title']}" />
+							</a>
+					{/switch}
+
+				</td>
+				<td width="10">&nbsp;</td>
+				<td style="vertical-align:top">
+					<p>图片名称：<span>{$vo.title}</span></p>
+					<p>图片大小：<span>{$vo.filesize|getSize}</span></p>
+					<p>上传时间：<span>{$vo.create_time|date='Y/m/d H:i',###}</span></p>
+					<p>
+						<a href="javascript:;" onclick="setCover('{$vo.id}', '{$vo.filepath}')" class="layui-btn layui-btn-sm">设为封面</a>
+						<a href="javascript:;" onclick="setCover_2('{$vo.id}', '{$vo.filepath}')" class="layui-btn layui-btn-sm">设为详情</a>
+					</p>
+				</td>
+		</table>
+		<div class="imgsBtn">
+			<a href="javascript:;" class="delfile" alt="{$vo['id']}" title="删除"><i class="layui-icon">&#xe640;</i></a>
+		</div>
+	</div>
+	{/volist}
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>
+
+layui.use(['upload'], function(){
+	var upload = layui.upload;
+	upload.render({
+		elem: '#upfile',
+		multiple: true,
+		url: "{:url('Attachment/upload')}",	//上传接口
+		before: function(obj){
+			loading('上传中，请稍后...');
+		},
+		allDone: function(obj){
+			layer.confirm('上传完成，共：<span style="color:#c00">'+ obj.total +'</span>个文件，成功：<span style="color:#c00">'+ obj.successful + '</span>个，失败：<span style="color:#c00">'+ obj.aborted + '</span>个', {icon:1, title:'上传结果'}, function(){
+				location.reload();
+			});
+		},
+		error: function(res){
+			msg(res.msg);
+		}
+	});
+});
+
+function setCover(id, filepath){
+	var str = '';
+	str = '<li>';
+	str += '<input type="hidden" name="cover" value="'+ id +'" />';
+	str += '<img src="'+ filepath +'">';
+	str += '<div class="imgsBtn">';
+	str += '<a href="javascript:;" class="delfile" alt="'+ id +'" title="删除"><i class="layui-icon">&#xe640;</i></a>';
+	str += '</div>';
+	str += '</li>';
+	$(window.parent.document).find("#cover").html(str);
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+
+function setCover_2(id, filepath){
+	var str = '';
+	str = '<li>';
+	str += '<input type="hidden" name="cover_2" value="'+ id +'" />';
+	str += '<img src="'+ filepath +'">';
+	str += '<div class="imgsBtn">';
+	str += '<a href="javascript:;" class="delfile" alt="'+ id +'" title="删除"><i class="layui-icon">&#xe640;</i></a>';
+	str += '</div>';
+	str += '</li>';
+	$(window.parent.document).find("#cover_2").html(str);
+	var index = parent.layer.getFrameIndex(window.name);
+	parent.layer.close(index);
+}
+
+$('.showImg').click(function(){
+	var src = $(this).attr('rel');
+	layer.open({
+		type: 1,
+		title: false,
+		closeBtn: 0,
+		offset: '50px',
+		area: '50%',
+		skin: 'layui-layer-nobg', //没有背景色
+		shadeClose: true,
+		content: `<img src="${src}" style="width:600px"  >`
+	});
+	// layer.open({title:'查看文件', offset: '50px', content:'<img src="'+src+'" style="width:600px" />', area:'650px'});
+});
+
+//删除图片
+$('body').on('click', '.delfile', function(){
+	var id = $(this).attr('alt');
+	var li = $(this).parent().parent();
+
+	layer.confirm('确定要删除图片吗？', {icon: 3, title:'提示'}, function(index){
+		$.ajax({
+			url:"{:url('Attachment/delfile')}",
+			data:{id:id},
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('删除中，请稍后...');
+			},
+			success:function(res) {
+				msg(res.msg);
+				if(res.error == 0) {
+					setTimeout(function() {
+						li.remove();
+					}, 1500);
+				}
+			}
+		});
+	});
+});
+</script>
+{include file="public:footer" /}

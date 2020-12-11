@@ -1,0 +1,90 @@
+{include file="public:header" /}		
+<div class="wrap-container clearfix">
+	<div class="column-content-detail">
+		<div class="layui-form" id="table-list">
+			<table class="layui-table" lay-data="{id:'ajaxData', url:'{:url(\'financeList\', array(\'user_id\'=>$user_id,\'type\' => $type))}', page:true, limit:20, height:'full-170'}" lay-filter="ajaxData">
+				<thead>
+					<tr>
+						<th lay-data="{checkbox:true}"></th>
+						<th lay-data="{field:'create_time', sort:true}">时间</th>
+						<th lay-data="{field:'money', sort:true}">用户资金</th>
+						<th lay-data="{field:'statusbar', sort:true}">分类</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	layui.use(['form', 'table'], function(){
+		var form = layui.form;
+		var table = layui.table;
+
+		//监听工具条
+		table.on('tool(ajaxData)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+			var data = obj.data; //获得当前行数据
+			var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+
+			if(layEvent === 'card_del'){ //删除
+				layer.confirm('真的删除此条数据吗?', function(index){
+					$.ajax({
+						url:"{:url('coupon/cardDel')}",
+						data:{id:data.id},
+						type:'post',
+						async: false,
+						beforeSend:function(){
+							loading('删除中，请稍后...');
+						},
+						success:function(res){
+							msg(res.msg);
+							if(res.error == 0){
+								setTimeout(function() {
+									obj.del();
+									layer.close(index);
+								}, 1500);
+							}
+						}
+					});
+				});
+			}else if (layEvent === 'card_hexiao'){
+				layer.confirm('您确定要进行核销操作吗?', function(index){
+					$.ajax({
+						url:"{:url('coupon/cardHexiao')}",
+						data:{id:data.id},
+						type:'post',
+						async: false,
+						beforeSend:function(){
+							loading('操作中，请稍后...');
+						},
+						success:function(res){
+							msg(res.msg);
+							if(res.error == 0){
+								setTimeout(function() {
+									obj.del();
+									layer.close(index);
+								}, 1500);
+							}
+						}
+					});
+				});
+			}
+		});
+
+		//搜索
+		$('#search').on('click', function(){
+			table.reload('ajaxData', {
+				where: {
+					keys: $('#keys').val(),
+				},
+				page: {
+					page: 1 //重新从第 1 页开始
+				}
+			});
+		});
+
+	});
+</script>

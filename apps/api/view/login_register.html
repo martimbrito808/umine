@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>灰度超算</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link rel="stylesheet" href="../../public/static/common/mui/css/mui.min.css">
+    <style>
+      
+        .mui-input-row {
+            display: flex;
+            align-items: center;
+        }
+
+        .mui-checkbox input[type=checkbox] {
+            position: static !important;
+        }
+
+        .mui-checkbox input[type=checkbox]:before,
+        .mui-radio input[type=radio]:before {
+            font-size: 0.43rem !important;
+        }
+
+        .mui-checkbox label {
+            padding: 0 0 0 0.1rem !important;
+            font-size: 0.28rem;
+        }
+
+        .mui-checkbox input[type=checkbox]:checked:before,
+        .mui-radio input[type=radio]:checked:before {
+            color: #DEAF5F !important;
+        }
+        .login-box{
+            margin: 0!important;
+        }
+    </style> 
+</head>
+<!-- 注册 -->
+
+<body style="background-color: #fff;">
+<header class="index-header">
+    <a href="javascript:history.go(-1)">
+        <img src="../../public/static/images/return.png" alt="" class="return-icon">
+    </a>
+</header>
+<div class="index-wrapper">
+    <div class="mill-wrap">
+        <form>
+            <h3 class="login-title">注册</h3>
+            <p class="login-row">
+                <input type="text" name="phone" id="phone" placeholder="请输入手机号">
+            </p>
+            <p class="login-row">
+                <input type="text" name="code" placeholder="验证码">
+                <button type="button" class="get-code">获取手机验证码</button>
+            </p>
+            <p class="login-row">
+                <input type="password" name="password" placeholder="登录密码(最小6位数字或字符)">
+            </p>
+            <p class="login-row">
+                <input type="password" name="again" placeholder="确认密码">
+            </p>
+            {if condition="$data.code"}
+                <p class="login-row">
+                    <input type="text" name="invitation" value="{$data.code}" readonly placeholder="邀请码(可选)">
+                </p>
+            {else/}
+                <p class="login-row">
+                    <input type="text" name="invitation" placeholder="邀请码(可选)">
+                </p>
+            {/if}
+            <div class="prompt-message">
+                <div class="mui-input-row mui-checkbox mui-left">
+                    <input name="checkbox" value="Item 1" type="checkbox">
+                    <label> 同意<span class="emphasis">《服务协议》</label>
+                </div>
+            </div>
+            <div class="login-box">
+                <button type="button" id="register">注册</button>
+            </div>
+        </form>
+        <div class="login-row-center">
+            <p>已有账号，<a href="login.html" class="jump">立即登录</a></p>
+        </div>
+    </div>
+</div>
+<script src="../../public/static/common/mui/js/mui.min.js"></script>
+<script src="../../public/static/js/jquery-3.2.1.js"></script>
+<script src="../../public/static/layer/layer.js"></script>
+<script type="text/javascript">
+    // 第三种 通过方法响应点击事件
+    $('#register').click(function() {
+        var d = {};
+        var t = $('form').serializeArray();
+        //t的值为[{name: "a1", value: "xx"},
+        //{name: "a2", value: "xx"}...]
+        $.each(t, function() {
+            d[this.name] = this.value;
+        });
+        var data = d;
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/api/Login/userRegister",
+            data: data,
+            dataType: 'json',
+            success: function (res) {
+                console.log(res.data);
+                if(res.code===200){
+                    window.location.href = "http://heyuetv.com/app.php/1";
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    });
+    $('.get-code').click(function() {
+        var d = {};
+        var t = $('form').serializeArray();
+        //t的值为[{name: "a1", value: "xx"},
+        //{name: "a2", value: "xx"}...]
+        $.each(t, function() {
+            d[this.name] = this.value;
+        });
+        var phone = d.phone;
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/api/Login/sendVerificationCode",
+            data: {phone:phone,type:1},
+            dataType: 'json',
+            success: function (res) {
+                console.log(res.data);
+                if(res.code===200){
+                    layer.msg(res.msg);
+                    // '{:Url("cloud/index/index")}'
+                }else{
+                    layer.msg(res.msg);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>

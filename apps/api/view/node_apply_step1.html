@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>成为节点</title>
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <script>
+        var width = document.documentElement.clientWidth;
+        document.documentElement.style.fontSize = width/7.5 + 'px';
+    </script>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <style>
+        body{
+
+            background: #F5F5F5;
+        }
+        .header{
+            background: #fff;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: .95rem;
+        }
+        .back{
+            position: absolute;
+            left: .3rem;
+        }
+        .back img{
+            width: .5rem;
+            height: .5rem;
+        }
+        .header .title{
+            font-size: .4rem;
+            font-family: SourceHanSansCN-Medium;
+            color: #1A1826;
+        }
+        .container{
+            background: #fff;
+            padding-top: .3rem;
+            margin-top: .3rem;
+            height: calc(100vh - 1.25rem);
+            overflow: scroll;
+        }
+        .li-super, .li-reg{
+            width: 6.9rem;
+            height: 3.14rem;
+            padding: .57rem  .45rem .3rem .45rem;
+            margin: 0 auto;
+            border-radius: .15rem;
+            margin-top: .3rem;
+        }
+        .li-super h1,.li-reg h1{
+            font-size: .36rem;
+            font-family: Source Han Sans CN;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+        .li-super p,.li-reg p {
+            font-size: .24rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            line-height: .36rem;
+            margin-top: .4rem;
+        }
+        .li-super{
+            background: #72A4DD;
+        }
+        .li-reg{
+            background: #DDB472;
+        }
+        .tip{
+            font-size: .24rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            color: #333333;
+            margin-top: .4rem;
+            text-align: center;
+        }
+        .state{
+            margin-top: .4rem;
+            padding: 0 .4rem;
+            font-size: .24rem;
+            font-family: Source Han Sans CN;
+            font-weight: 400;
+            line-height: .36rem;
+            color: #666666;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/api/node/index.html?token={$auth.token}" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">成为节点</div>
+</div>
+<div class="container">
+    <ul>
+        <li class="li-super">
+            <a href='/api/node/apply_step2.html?token={$auth.token}&type=2'>
+                <h1>
+                    申请超级节点
+                
+                </h1>
+                <p>
+                    参与POS挖矿的ER数量达到1万的时候，返还锁仓的9枚EUF。节点内所有用户挖矿产出的5%归节点所有，超级节点的前三名可以获得一台实体矿机，总共36台矿机，送完为止，
+                </p>
+            </a>
+        </li>
+        <li class="li-reg">
+             <a href='/api/node/apply_step2.html?token={$auth.token}&type=1'>
+            <h1>
+                申请常规节点
+            </h1>
+            <p>
+                参与POS挖矿的ER数量达到1万的时候，返还锁仓的99枚ETHU。节点内所有用户挖矿产出的3%归节点所有。
+            </p>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

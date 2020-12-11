@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>灰度超算--我的云算力</title>
+    <link rel="stylesheet" href="../../public/static/css/reset.css">
+</head>
+<script>
+    var width = document.documentElement.clientWidth;
+    document.documentElement.style.fontSize = width/7.5 + 'px';
+</script>
+<style>
+    body{
+
+        background: #F5F5F5;
+    }
+    .header{
+        background: #fff;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: .95rem;
+    }
+    .back{
+        position: absolute;
+        left: .3rem;
+    }
+    .back img{
+        width: .5rem;
+        height: .5rem;
+    }
+    .header .title{
+        font-size: .4rem;
+        font-family: SourceHanSansCN-Medium;
+        color: #1A1826;
+    }
+    .manage-money-list{
+        margin: .3rem .3rem 0 .3rem;
+    }
+    .manage-money-item{
+        /*position: relative;*/
+        padding: .3rem;
+        height: 1.81rem;
+        margin-top: .2rem;
+        /*display: flex;*/
+        /*align-items: center;*/
+        background: #ffffff;
+        border-radius: .2rem;
+    }
+    .manage-money-t1{
+        display: flex;
+        align-items: center;
+        margin-bottom: .37rem;
+    }
+    .manage-money-t1 img{
+        width: .5rem;
+        height: .5rem;
+        margin-right: .16rem;
+    }
+    .manage-money-item-title{
+        font-size: .26rem;
+        font-family: SourceHanSansCN-Bold;
+        color: #2B2A3C;
+    }
+    .manage-money-item-status{
+        /*margin: auto;*/
+        font-size: .24rem;
+        font-family: Source Han Sans CN;
+        font-weight: 400;
+        color: #DEAF5F;
+        margin-left: auto;
+    }
+    .manage-money-t2{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .manage-money-t2-l1 span:nth-child(1){
+        margin-right: .15rem;
+        font-size: .26rem;
+        font-family: SourceHanSansCN-Regular;
+        color: #AAAAB0;
+    }
+    .manage-money-t2-l1 span:nth-child(2){
+        font-size: .44rem;
+        font-family: SourceHanSansCN-Bold;
+        color: #FF7743;
+        font-weight: bold;
+    }
+    .manage-money-t2-r1{
+        font-size: .3rem;
+        font-family: SourceHanSansCN-Bold;
+        font-weight: bold;
+        color: #232232;
+    }
+</style>
+</head>
+<body>
+<div class="header">
+    <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
+    <div class="title">我的云算力</div>
+</div>
+<div class="container">
+    <ul class="manage-money-list">
+        {volist name="wealth" id="vo"}
+            <li class="manage-money-item detalis" data-id="{$vo.id}" data-status="{$vo.status}">
+                <div class="manage-money-t1">
+                    <img src="{:getFile($vo.goods_wealth.cover)}" alt="">
+                    <span class="manage-money-item-title">{$vo.goods_wealth.name}</span>
+                    <span class="manage-money-item-status">{$vo.status}</span>
+                </div>
+                <div class="manage-money-t2">
+                    <div class="manage-money-t2-l1">
+                        <span>年化收益</span>
+                        <span>{$vo.apr}%</span>
+                    </div>
+                    <div class="manage-money-t2-r1">
+                        产品周期：{$vo.duration}天
+                    </div>
+                </div>
+            </li>
+        {/volist}
+    </ul>
+</div>
+<script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        $('.detalis').click(function(){
+            var token = localStorage.getItem('token');
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+            window.location.href = "/api/my/reason_wealth_details?token="+token+'&id='+id+'&status='+status;
+        });
+    </script>
+</body>
+</html>

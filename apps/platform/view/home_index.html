@@ -1,0 +1,362 @@
+{include file="public:header" /}
+<style type="text/css">
+.margin{margin:10px 10px 0px 10px;}
+.layui-tab-content h2{font-size:22px;font-weight:700;padding:10px 0;}
+.layui-tab-content p{font-size:12px;}
+.layui-tab-content{overflow:hidden;}
+</style>
+<div class="main-layout" id='main-layout'>
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container welcome-container">				  
+				<div class="layui-row">
+					<div class="layui-col-xs4">
+						<div class="layui-card margin">
+							<div class="layui-tab layui-tab-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">商城信息</li>
+								</ul>
+								<div class="layui-tab-content" style="text-align:center;height:50px;padding:30px 0;">
+									<div class="layui-col-xs3">
+										<h2>{$datas.total_user}</h2>
+										<p>用户数</p>
+									</div>
+									<div class="layui-col-xs3">
+										<h2>{$datas.total_goods}</h2>
+										<p>商品数</p>
+									</div>
+									<div class="layui-col-xs3">
+										<h2>{$datas.total_server}</h2>
+										<p>服务数</p>
+									</div>
+									<div class="layui-col-xs3">
+										<h2>{$datas.total_orders}</h2>
+										<p>总订单数</p>
+									</div>
+								</div>
+							</div>    
+						</div>
+					</div>
+					<div class="layui-col-xs8">
+						<div class="layui-card margin">
+							<div class="layui-tab-content" style="text-align:center;height:50px;padding:50px 0;">
+								<div class="layui-col-xs4" style="background:url(__IMG__/avatar.jpg) 25% center no-repeat;border-right:1px #ccc solid;">
+									<h2>{$datas.orders_status1}</h2>
+									<p>待发货商品订单</p>
+								</div>
+								<div class="layui-col-xs4" style="background:url(__IMG__/avatar.jpg) 25% center no-repeat;border-right:1px #ccc solid;">
+									<h2>{$datas.orders_status2}</h2>
+									<p>待自提商品订单</p>
+								</div>
+								<div class="layui-col-xs4" style="background:url(__IMG__/avatar.jpg) 25% center no-repeat;">
+									<h2>{$datas.orders_status3}</h2>
+									<p>待使用服务订单</p>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="layui-row">
+					<div class="layui-col-xs6" >
+						<div class="layui-card margin">
+							<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+								<ul class="layui-tab-title">
+									<div style="float:left;"><li class="layui-this">商品销量排行</li></div>
+									<div style="float:right">
+										<li class="layui-this">今日</li>
+										<li>昨日</li>
+										<li>最近7天</li>
+										<li>最近30天</li>
+									</div>
+									<div style="clear:both"></div>
+								</ul>
+								<div style="clear:both"></div>
+								<div class="layui-tab-content" style="height:300px;">
+									<div class="layui-tab-item layui-show">
+										<table class="layui-table" >
+											<thead>
+												<tr>
+													<th>排名</th>
+													<th>商品名称</th>
+													<th>成交数量</th>
+												</tr>
+											</thead>
+											<tbody>
+												{volist name="datas.goods.today" id="vo" key="k"}
+												<tr>
+													<td>{$k}</td>
+													<td>{:getField('goods', $vo.goods_id, 'name')}</td>
+													<td>{$vo.num}</td>
+												</tr>
+												{/volist}
+											</tbody>
+										</table>									
+									</div>
+									<div class="layui-tab-item">
+										<table class="layui-table" >
+											<thead>
+												<tr>
+													<th>排名</th>
+													<th>商品名称</th>
+													<th>成交数量</th>
+												</tr>
+											</thead>
+											<tbody>
+												{volist name="datas.goods.yesterday" id="vo" key="k"}
+												<tr>
+													<td>{$k}</td>
+													<td>{:getField('goods', $vo.goods_id, 'name')}</td>
+													<td>{$vo.num}</td>
+												</tr>
+												{/volist}
+											</tbody>
+										</table>									
+									</div>
+									<div class="layui-tab-item">
+										<table class="layui-table" >
+											<thead>
+												<tr>
+													<th>排名</th>
+													<th>商品名称</th>
+													<th>成交数量</th>
+												</tr>
+											</thead>
+											<tbody>
+												{volist name="datas.goods.week" id="vo" key="k"}
+												<tr>
+													<td>{$k}</td>
+													<td>{:getField('goods', $vo.goods_id, 'name')}</td>
+													<td>{$vo.num}</td>
+												</tr>
+												{/volist}
+											</tbody>
+										</table>									
+									</div>
+									<div class="layui-tab-item">
+										<table class="layui-table" >
+											<thead>
+												<tr>
+													<th>排名</th>
+													<th>商品名称</th>
+													<th>成交数量</th>
+												</tr>
+											</thead>
+											<tbody>
+												{volist name="datas.goods.month" id="vo" key="k"}
+												<tr>
+													<td>{$k}</td>
+													<td>{:getField('goods', $vo.goods_id, 'name')}</td>
+													<td>{$vo.num}</td>
+												</tr>
+												{/volist}
+											</tbody>
+										</table>									
+									</div>
+								</div>
+							</div>    
+						</div>
+						<div class="layui-card margin">
+							<div class="layui-tab layui-tab-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">近七日交易走势</li>
+								</ul>
+								<div class="layui-tab-content" id="jiaoyi" style="height:280px;"></div>
+							</div>    
+						</div>
+					</div>
+					<div class="layui-col-xs6" >
+						<div class="layui-card margin">
+							<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+								<ul class="layui-tab-title">
+									<div style="float:left;"><li class="layui-this">订单概述</li></div>
+									<div style="float:right">
+										<li class="layui-this">今日</li>
+										<li>昨日</li>
+										<li>最近7天</li>
+										<li>最近30天</li>
+									</div>
+									<div style="clear:both"></div>
+								</ul>
+								<div style="clear:both"></div>									
+								<div class="layui-tab-content" style="text-align:center;height:50px;padding:50px 0;">
+									<div class="layui-tab-item layui-show">
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['today'][0]['num'] ? $datas['sales']['today'][0]['num'] : 0}</h2>
+											<p>成交量(件)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['today'][0]['total'] ? showprice($datas['sales']['today'][0]['total']) : 0}</h2>
+											<p>成交额(元)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['today'][0]['avg'] ? showprice($datas['sales']['today'][0]['avg']) : 0}</h2>
+											<p>订单平均消费(元)</p>
+										</div>
+									</div>
+									<div class="layui-tab-item">
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['yesterday'][0]['num'] ? $datas['sales']['yesterday'][0]['num'] : 0}</h2>
+											<p>成交量(件)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['yesterday'][0]['total'] ? showprice($datas['sales']['yesterday'][0]['total']) : 0}</h2>
+											<p>成交额(元)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['yesterday'][0]['avg'] ? showprice($datas['sales']['yesterday'][0]['avg'], 2) : 0}</h2>
+											<p>订单平均消费(元)</p>
+										</div>
+									</div>
+									<div class="layui-tab-item">
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['week'][0]['num'] ? $datas['sales']['week'][0]['num'] : 0}</h2>
+											<p>成交量(件)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['week'][0]['total'] ? showprice($datas['sales']['week'][0]['total']) : 0}</h2>
+											<p>成交额(元)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['week'][0]['avg'] ? showprice($datas['sales']['week'][0]['avg'], 2) : 0}</h2>
+											<p>订单平均消费(元)</p>
+										</div>
+									</div>
+									<div class="layui-tab-item">
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['month'][0]['num'] ? $datas['sales']['month'][0]['num'] : 0}</h2>
+											<p>成交量(件)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['month'][0]['total'] ? showprice($datas['sales']['month'][0]['total']) : 0}</h2>
+											<p>成交额(元)</p>
+										</div>
+										<div class="layui-col-xs4">
+											<h2 style="color:orange">{$datas['sales']['month'][0]['avg'] ? showprice($datas['sales']['month'][0]['avg'], 2) : 0}</h2>
+											<p>订单平均消费(元)</p>
+										</div>
+									</div>
+								</div>
+							</div>    
+						</div>
+						<div class="layui-card margin">
+							<div class="layui-tab layui-tab-brief">
+								<ul class="layui-tab-title">
+									<li class="layui-this">用户购买力排行</li>
+								</ul>
+								<div class="layui-tab-content" id="goumaili" style="height:450px;"></div>
+							</div>    
+						</div>
+					</div>
+				</div> 
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+<script type="text/javascript" src="__EXTEND__/echarts/js/echarts.min.js"></script>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+		url:"{:url('getChartsData')}",
+		type:'post',
+		async: false,
+		beforeSend:function(){
+			//loading('数据获取中，请稍后...');
+		},
+		success:function(res){
+			if(res.error == 0){
+				setTimeout(function(){
+					jyph(res.data.data1.x, res.data.data1.y, res.data.data1.z);
+					gmlph(res.data.data2.x, res.data.data2.y);
+				}, 1500);
+			}
+		}
+	});
+});
+function jyph(x,y,z){
+  	var dom = document.getElementById('jiaoyi');
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+		tooltip: {
+	        trigger: 'axis'
+	    },
+	    legend: {
+	        data:['成交量', '成交额']
+	    },
+	    xAxis: {
+	        type: 'category',
+	        data: x
+	    },
+	    yAxis: {
+	        type: 'value'
+	    },
+	    series: [
+			{
+				itemStyle: {
+					normal: {color: 'rgba(30,144,255,0.5)'}
+				},
+				name: '成交量',
+				data: y,
+				type: 'line'
+			},
+			{
+				itemStyle: {
+					normal: {color: 'rgba(255,0,0,0.5)'}
+				},
+				name: '成交额',
+				data: z,
+				type: 'line'
+			},
+		]
+	};
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+}
+function gmlph(x,y){
+  	var dom = document.getElementById('goumaili');
+	var myChart = echarts.init(dom);
+	var app = {};
+	option = null;
+	option = {
+		tooltip: {
+	        trigger: 'axis'
+	    },
+	    xAxis: {
+	        type: 'category',
+	        data:x
+	    },
+	    yAxis: {
+	        type: 'value'
+	    },
+	    series: [
+			{
+				itemStyle: {
+					normal: {color: 'rgba(30,144,255,0.5)'}
+				},
+				name: '总金额',
+				data: y,
+				type: 'bar'
+			}
+		]
+	};
+	if (option && typeof option === "object") {
+	    myChart.setOption(option, true);
+	}
+}  
+</script>
+{include file="public:footer" /}

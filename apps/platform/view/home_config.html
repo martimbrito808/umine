@@ -1,0 +1,61 @@
+{include file="public:header" /}
+<form class="layui-form layui-form-pane container-fluid">
+	<div class="layui-tab layui-tab-card">
+		<div class="layui-tab-content">
+			<!--站点配置-->
+			<div class="layui-tab-item layui-show">
+				{volist name="list" id="vo"}
+				{switch name="vo['type']"}
+					{case value="text"}
+					<div class="layui-form-item layui-form-text">
+						<label class="layui-form-label">{$vo['title']}({$vo['variable']})：</label>
+						<div class="layui-input-block">
+							<textarea name="setting[{$vo['variable']}]" placeholder="请输入{$vo['title']}" class="layui-textarea">{$vo['value']}</textarea>
+						</div>
+					</div>
+					{/case}
+					{default}
+					<div class="layui-form-item">
+						<label class="layui-form-label" style="width:200px">{$vo['title']} {//$vo['variable']}   ：</label>
+						<div class="layui-input-block" style="margin-left:200px">
+							<input type="text" name="setting[{$vo['variable']}]" autocomplete="off" class="layui-input" value="{$vo['value']}">
+						</div>
+					</div>
+					{/switch}
+				{/volist}
+			</div>		
+		</div>
+	</div>
+	<div class="layui-form-item" style="padding-left: 10px;">
+		<div class="layui-input-block">
+			<button class="layui-btn layui-btn-normal" lay-submit lay-filter="dataPost">立即提交</button>
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/uploads.js" type="text/javascript" charset="utf-8"></script>
+<script>
+layui.use(['form'], function(){
+	var form = layui.form;
+	form.on('submit(dataPost)', function(data){
+		$.ajax({
+			url:"{:url(request()->action())}",
+			data:data.field,
+			type:'post',
+			async: false,
+			beforeSend:function(){
+				loading('提交中，请稍后...');
+			},
+			success:function(res) {
+				msg(res.msg);
+			}
+		});
+		return false;
+	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页咨询</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <style>
+        .unified-wrapper {
+            padding: 0.9rem 0.36rem;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<!-- 首页咨询 -->
+
+<body style="background: #fff">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+    </header> 
+    <div class="unified-wrapper">
+        <h3 class="consult-title">{$data.title}</h3>
+        <span class="consult-time">{$data.time}</span>
+        <p class="consult-text">
+            {$data.content}
+        </p>
+    </div>
+</body>
+
+</html>

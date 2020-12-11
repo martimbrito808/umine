@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <style>
+        .index-wrapper {
+            padding: 1.3rem 0 1.06rem
+        }
+    </style>
+</head>
+<!-- 我的 -->
+
+<body style="background-color: #F8F8F8;">
+    <header class="my-header">
+        <a href="/api/my/message?token={$data.token}">
+            <img src="../../public/static/images/head_icon2.png" alt="">
+        </a>
+    </header>
+    <div class="index-wrapper">
+        <div class="mill-wrap">
+            <p class="my-top-row modify_name">
+                <span>{$userInfo.formatTel}</span>
+                <span>{$userInfo.username}</span>
+            </p>
+            <ul class="my-navList">
+                <li id='zichan'>
+                    <a href='javascript:;'>
+                        <div class="navList-sidebar">
+                            <div class="navList-row">
+                                资产估值(BTC)
+                                <button type="button" class="eye_btn" id="showPwd">
+                                    <img src="../../public/static/images/eye_hide.png" alt="" class="eye_show">
+                                    <img src="../../public/static/images/eye.png" alt="" class="eye_hide">
+                                </button>
+                            </div>
+                            <div class="navList-num" id="navList-num">
+                                <span class="money-yuan">{:showprice($userInfo.btc)} ≈￥{$userInfo.cny}</span>
+                            </div>
+                        </div>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="/api/my/reason_wealth?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/nav1.png" alt="" class="navList-icon">
+                            我的云算力
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+            </ul>
+            
+            
+            
+            
+            <ul class="my-subNavList">
+                <li>
+                    <a href="/api/my/deal?token={$data.token}">
+                        <img src="../../public/static/images/nav2.png" alt="" class="navList-icon">
+                        买卖USDT
+                    </a>
+                </li>
+                <li>
+                    <a href="/api/my/exchange?token={$data.token}">
+                        <img src="../../public/static/images/nav3.png" alt="" class="navList-icon">
+                        BTC兑换
+                    </a>
+                </li>
+            </ul>
+            
+            
+                        <ul class="my-subNavList">
+                <li>
+                    <a href="/api/money/recharge?token=TW+CGMhCZaw65Ra/MFGaaZbODu7z9vorMN1bnYeQDCU=&type=usdt">
+                        <img src="../../public/static/images/nav1.png" alt="" class="navList-icon">
+                        USDT充币
+                    </a>
+                </li>
+                <li>
+                    <a href="/api/money/withdraw_deposit?token=TW+CGMhCZaw65Ra/MFGaaZbODu7z9vorMN1bnYeQDCU=&type=usdt">
+                        <img src="../../public/static/images/nav3.png" alt="" class="navList-icon">
+                        USDT转账
+                    </a>
+                </li>
+            </ul>
+            
+                        
+                        <ul class="my-subNavList">
+                <li>
+                    <a href="/api/index/my_mill_all?token={$data.token}">
+                        <img src="../../public/static/images/nav1.png" alt="" class="navList-icon">
+                        我的矿机
+                    </a>
+                </li>
+                <li>
+                    <a href="https://calculator.atpool.com/">
+                        <img src="../../public/static/images/nav3.png" alt="" class="navList-icon">
+                        Fil计算器
+                    </a>
+                </li>
+            </ul>
+            
+            
+            <a href="/api/my/invite_friends?token={$data.token}" class="my-logo">
+                <img src="../../public/static/images/logo4.png" alt="">
+            </a>
+            <ul class="my-menuList">
+                <li>
+                    <a href="/api/node/index.html?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/foot5.png" alt="" class="menu-icon">
+                            代理中心
+                        </p>
+                        <img src="../../public/static/images/foot5.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/api/my/discount_coupon?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/subNav1.png" alt="" class="menu-icon">
+                            优惠券
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/api/my/binding_bank?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/subNav8.png" alt="" class="menu-icon">
+                            银行卡  {if condition="$user.banknum"}<span>已绑定 (点击更换) </span>{/if}
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/api/my/cost?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/subNav2.png" alt="" class="menu-icon">
+                            费用抵扣方式
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                <li>
+                    <a href="/api/my/safety_center?token={$data.token}">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/subNav3.png" alt="" class="menu-icon">
+                            安全中心
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                
+                   
+                
+                <li>
+                    <a href="/api/my/contact_us?token={$data.token}">
+                        <p class="navList-row" id="about">
+                            <img src="../../public/static/images/subNav4.png" alt="" class="menu-icon">
+                            关于我们
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+                
+                             
+                
+                <li>
+                    <a class="out">
+                        <p class="navList-row">
+                            <img src="../../public/static/images/subNav5.png" alt="" class="menu-icon">
+                            退出
+                        </p>
+                        <img src="../../public/static/images/right_icon3.png" alt="" class="right-icon">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer class="unified-footer">
+        <ul class="foot-menuList">
+            <li>
+                <a href="/api/index/index.html?token={$data.token}">
+                    <img src="../../public/static/images/foot.png" alt="">
+                    <span class="foot-menu-text">首页</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/mill/mill.html?token={$data.token}">
+                    <img src="../../public/static/images/foot2.png" alt="">
+                    <span class=" foot-menu-text ">矿机</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/node/index.html?token={$data.token}">
+                    <img src="../../public/static/images/foot5.png" alt="">
+                    <span class=" foot-menu-text ">节点</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/money/money.html?token={$data.token}">
+                    <img src="../../public/static/images/foot3.png" alt="">
+                    <span class="foot-menu-text">财富</span>
+                </a>
+            </li>
+            <li>
+                <a href="/api/my/my.html?token={$data.token}">
+                    <img src="../../public/static/images/foot4_active.png" alt="">
+                    <span class="foot-menu-text active">我的</span>
+                </a>
+            </li>
+        </ul>
+    </footer>
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+        $("#zichan").click( function(event){
+            window.location.href="/api/money/property?token={$data.token}";
+        });
+        
+        const money = "{:showprice($userInfo.btc)}";
+        const cny = "{$userInfo.cny}"
+        $('#showPwd').click(function () {
+            event.stopPropagation();
+            var that = $(this);
+            if (that.hasClass('active')) {
+                $('#navList-num').html(money + '<span class="money-yuan"> ≈￥' + cny + '</span>');
+                that.removeClass('active');
+            } else {
+                $('#navList-num').html('******');
+                that.addClass('active');
+            }
+        });
+        $('.out').click(function () {
+            localStorage.clear();
+            window.location.href = "/api/index/index";
+        });
+        $('.modify_name').click(function () {
+            var token = localStorage.getItem('token');
+            window.location.href = "/api/my/modify_name?token="+token;
+        });
+
+    </script>
+</body>
+
+</html>

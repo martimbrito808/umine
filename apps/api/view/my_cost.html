@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>费用</title>
+    <script src="../../public/static/js/myFlexible.js"></script>
+    <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link rel="stylesheet" href="../../public/static/common/mui/css/mui.min.css">
+    <style>
+        .mui-switch.mui-active {
+            border: 2px solid #E7BC78 !important;
+            background-color: #E7BC78 !important;
+        }
+    </style>
+</head>
+<!-- 费用 -->
+
+<body style="background-color: #fff;">
+    <header class="unified-header">
+        <a href="javascript:history.go(-1)">
+            <img src="../../public/static/images/return.png" alt="" class="return-icon">
+        </a>
+        <h3>费用</h3>
+    </header>
+    <div class="unified-wrapper">
+        <div class="mill-wrap">
+            <ul class="cost-list">
+                <li>
+                    <label>钱包USDT抵扣</label>
+                    <div id="switch_1" class="mui-switch  mui-switch-mini {if condition="$user==1"}mui-active{/if}">
+                        <div id="handle_1" class="mui-switch-handle"></div>
+                    </div>
+                </li>
+                <li>
+                    <label>产出BTC抵扣</label>
+                    <div id="switch_2" class="mui-switch  mui-switch-mini {if condition="$user==2"}mui-active{/if}">
+                        <div id="handle_2" class="mui-switch-handle"></div>
+                    </div>
+                </li>
+            </ul>
+            <p class="cost-laebl">抵扣说明</p>
+            <p class="cost-msg">
+                {$list}
+            </p>
+        </div>
+    </div>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
+    <script src="../../public/static/layer/layer.js"></script>
+    <script>
+      var token = localStorage.getItem('token');
+        $("#switch_1").click(function(){
+            let switch_1_status, switch_2_status, check;
+            switch_1_status = $('#switch_1').hasClass('mui-active'); //mui-active
+            switch_2_status = $('#switch_2').hasClass('mui-active'); //mui-active
+            if(switch_2_status == 1) {
+                check = 1;
+                $("#switch_1").addClass("mui-active");
+                $("#switch_2").removeClass("mui-active");
+                $('#handle_2').removeAttr('style');
+            }else{
+                check = 2;
+                $("#switch_1").removeClass("mui-active");
+                $('#handle_1').removeAttr('style');
+                $("#switch_2").addClass("mui-active");
+            }
+            
+            $.ajax({
+                url:"/api/my/cost",
+                 data: {'token':token,deduction:check},
+                success:function(result){
+                   layer.msg('修改成功');
+                }
+            });
+        
+        });
+        
+       $("#switch_2").click(function(){
+            let switch_1_status, switch_2_status, check;
+            switch_1_status = $('#switch_1').hasClass('mui-active'); //mui-active
+            switch_2_status = $('#switch_2').hasClass('mui-active'); //mui-active
+            if(switch_1_status == 1) {
+                 check = 2;
+                $("#switch_2").addClass("mui-active");
+                $("#switch_1").removeClass("mui-active");
+                $('#handle_1').removeAttr('style');
+            }else{
+                check = 1;
+                $("#switch_1").addClass("mui-active");
+                $("#switch_2").removeClass("mui-active");
+                $('#handle_2').removeAttr('style');
+            }
+            $.ajax({
+                url:"/api/my/cost",
+                data: {'token':token,deduction:check},
+                success:function(result){
+                  layer.msg('修改成功');
+                }
+            });
+        });
+    </script
+</body>
+
+</html>
