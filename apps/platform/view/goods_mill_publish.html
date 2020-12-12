@@ -26,6 +26,30 @@
 					</div>
 				</div>
 
+				<div class="layui-form-item">
+					<label class="layui-form-label">分类1：</label>
+					<div class="layui-input-block">
+						<select name="oc_type" lay-verify="required">
+							<option value=""> 请选择</option>
+							{volist name='oc_types' id='oc_type'}
+							<option {if condition="$oc_type.id eq $rows['oc_type']"} selected {/if} value="{$oc_type.id}"> {$oc_type.label} </option>
+							{/volist}
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">IPFS分类：</label>
+					<div class="layui-input-block">
+						<select name="ipfs_type">
+							<option value=""> 请选择</option>
+							{volist name='ipfs_types' id='ipfs_type'}
+							<option {if condition="$ipfs_type.id eq $rows['ipfs_type']"} selected {/if} value="{$ipfs_type.id}"> {$ipfs_type.label} </option>
+							{/volist}
+						</select>
+					</div>
+				</div>
+
 				<blockquote class="layui-elem-quote layui-quote-nm">
 					<small>预售填写</small>
 					<hr>

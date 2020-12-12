@@ -18,23 +18,37 @@ class MillController extends BaseController
         $param = input('param.');
         $auth['token'] = $param['token'];
         //实体矿机列表
-        $mill_list = Db::name('goods_mill')
+        $mill_list = Db::name('goodsMill')->alias('gm')
+            ->join('ocTypes o','gm.oc_type = o.id','LEFT')
+            ->field('o.label as olabel, gm.*')
             ->where(['status' => 1,'stock' => ['gt','0']])
             ->order('sort asc, id desc')
             ->select();
             
-        $mill_disabled_list = Db::name('goods_mill')
+        $mill_disabled_list = Db::name('goods_mill')->alias('gm')
+            ->join('ocTypes o','gm.oc_type = o.id','LEFT')
+            ->field('o.label as olabel, gm.*')
             ->where(['status' => 1, 'stock' => 0])
             ->order('sort asc, id desc')
             ->select();
             
         //租赁矿机
-        $wealth_list = Db::name('goods_wealth')
+        $wealth_list = Db::name('goods_wealth')->alias('gm')
+        ->join('ocTypes o','gm.oc_type = o.id','LEFT')
+        ->field('o.label as olabel, gm.*')
         ->where(['type' => 1,'status' => 1])
         ->order('sort asc, id desc')
         ->select();
+        $mill_list = array_merge($mill_list,$wealth_list);
+        $oc_types = Db::name('oc_types')
+        ->order('uid asc')
+        ->select();
         
-        return $this->fetch('', compact('auth', 'mill_list','mill_disabled_list','wealth_list'));
+        $ipfs_types = Db::name('ipfs_types')
+        ->order('uid asc')
+        ->select();
+        
+        return $this->fetch('', compact('auth', 'mill_list','mill_disabled_list','wealth_list', 'oc_types', 'ipfs_types'));
     }
     
     

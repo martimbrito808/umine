@@ -62,12 +62,13 @@ class MoneyController extends BaseController
         $money['rengou_end'] = date('m-d H:i',strtotime($money['rengou_end']));
         
         if($money['type'] == 1) {
+            $money['get_time_1'] = date('m-d H:i', $rengou_end + 1*60*60*24);
             $money['get_time_3'] = date('m-d H:i', $rengou_end + 30*60*60*24);
             $money['get_time_6'] = date('m-d H:i', $rengou_end + 60*60*60*24);
             $money['get_time_9'] = date('m-d H:i', $rengou_end + 90*60*60*24);
             $money['get_time_12'] = date('m-d H:i', $rengou_end + 120*60*60*24);
-            $money['zhouqi'] = '30';
-            $money['apr'] = $money['apr_3'];
+            $money['zhouqi'] = '1';
+            $money['apr'] = $money['apr_0'];
             return $this->fetch('money_money_management_1', compact('money','data'));
         }else{
             $money = transArray($money);

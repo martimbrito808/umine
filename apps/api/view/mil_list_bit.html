@@ -1,0 +1,136 @@
+
+            <!--
+            <div id="octype4" class="mill">
+                <ul class="mill-entity">
+                    {volist name='mill_list' id='moc4'} 
+                        {if $moc4.oc_type == 4}  
+                            <a href="/api/mill/income_introduced?id={$moc2.id}&token={$auth.token}">
+                                <li class="brown-bg">
+                                    <div class="mill-entity-box">
+                                        <div class="mill-entity-top">
+                                            <span class="mill-entity-status spot-goods">现货</span>
+                                            <p class="mill-entity-title">{$moc4.name}</p>
+                                        </div>
+                                        <div class="mill-entity-bottom">
+                                            <ul class="mill-entity-list">
+                                                <li>
+                                                    <span>价格</span>
+                                                    <span>{:showprice($moc4.price)}USDT/台</span>
+                                                </li>
+                                                <li>
+                                                    <span>预计回报率</span>
+                                                    <span>{$moc4.huibaolv}</span>
+                                                </li>
+                                            </ul>
+                                            <img src="{:getfile($moc4.cover)}" alt="" class="mill-entity-img">
+                                        </div>
+                                    </div>
+                                    <div class="mill-entity-foot">
+                                        <a class="go-link">
+                                            立即抢购
+                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                        </a>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                    {/volist}
+                    
+                    {volist name='mill_disabled_list' id='mdl'} 
+                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                        <li>
+                            <div class="mill-entity-box">
+                                <div class="mill-entity-top">
+                                    <span class="mill-entity-status lose-efficacy">{$mdl.type == 1 ? '现货' : '预售'}</span>
+                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                </div>
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span class="gray-font">价格</span>
+                                            <span class="gray-font">{:showprice($mdl.price)}USDT/台</span>
+                                        </li>
+                                        <li>
+                                            <span class="gray-font">预计回报率</span>
+                                            <span class="gray-font">{$mdl.huibaolv}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="mill-tag-box">
+                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                    {/volist}
+                </ul>
+            </div>
+            
+            <div id="octype5" class="mill">
+                <ul class="mill-entity">
+                    {volist name='mill_list' id='moc5'} 
+                        {if $moc5.oc_type == 5}
+                            <a href="/api/mill/income_introduced?id={$moc2.id}&token={$auth.token}">
+                                <li class="brown-bg">
+                                    <div class="mill-entity-box">
+                                        <div class="mill-entity-top">
+                                            <span class="mill-entity-status spot-goods">现货</span>
+                                            <p class="mill-entity-title">{$moc5.name}</p>
+                                        </div>
+                                        <div class="mill-entity-bottom">
+                                            <ul class="mill-entity-list">
+                                                <li>
+                                                    <span>价格</span>
+                                                    <span>{:showprice($mmoc5oc4.price)}USDT/台</span>
+                                                </li>
+                                                <li>
+                                                    <span>预计回报率</span>
+                                                    <span>{$moc5.huibaolv}</span>
+                                                </li>
+                                            </ul>
+                                            <img src="{:getfile($moc5.cover)}" alt="" class="mill-entity-img">
+                                        </div>
+                                    </div>
+                                    <div class="mill-entity-foot">
+                                        <a class="go-link">
+                                            立即抢购
+                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                        </a>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                    {/volist}
+                    
+                    {volist name='mill_disabled_list' id='mdl'} 
+                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                        <li>
+                            <div class="mill-entity-box">
+                                <div class="mill-entity-top">
+                                    <span class="mill-entity-status lose-efficacy">{$mdl.type == 1 ? '现货' : '预售'}</span>
+                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                </div>
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span class="gray-font">价格</span>
+                                            <span class="gray-font">{:showprice($mdl.price)}USDT/台</span>
+                                        </li>
+                                        <li>
+                                            <span class="gray-font">预计回报率</span>
+                                            <span class="gray-font">{$mdl.huibaolv}</span>
+                                        </li>
+                                    </ul>
+                                    <div class="mill-tag-box">
+                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </a>
+                    {/volist}
+                </ul>
+            </div>
+        -->

@@ -42,9 +42,16 @@ class GoodsMillController extends BaseController
             $map['name'] = array('like', '%' . $keys . '%');
         }
 
-        $result = $this->model->where($map)->order('status asc, id desc')->page($page, $perpage)->select();
+        //$result = $this->model->where($map)->order('status asc, id desc')->page($page, $perpage)->select();
+        $result = Db::name('goodsMill')->alias('gw')
+                ->join('ocTypes o','gw.oc_type = o.id','LEFT')
+                ->join('ipfsTypes i', 'gw.ipfs_type = i.id','LEFT')
+                ->field('o.label as olabel, i.label as ilabel, gw.*')
+                ->where($map)
+                ->order('gw.id desc')
+                ->page($page, $perpage)
+                ->select();
         $total = $this->model->where($map)->count();
-
         if ($result) {
             foreach ($result as $k => $v) {
                 $result[$k]['price'] = showprice($v['price']) . 'USDT';
@@ -53,6 +60,8 @@ class GoodsMillController extends BaseController
                 $result[$k]['richanchu'] = showprice($v['richanchu']);
                 $result[$k]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
                 $result[$k]['type'] = $v['type'] == 1 ? '现货' : '预售';
+                $result[$k]['oc_type_label'] = $v['olabel'];
+                $result[$k]['ipfs_type_label'] = $v['ilabel'];
                 $result[$k]['cover'] = $v['cover']
                     ? '<a href="javascript:;" lay-event="showcover"><img src="' . getFile($v['cover']) . '"></a>'
                     : '';
@@ -81,6 +90,7 @@ class GoodsMillController extends BaseController
    
             $validate = new \think\Validate([
                 ['type', 'require', '请选择矿机分类'],
+                ['oc_type', 'require', '请选择矿机分类'],
                 ['name', 'require', '名称不能为空'],    
                 ['location', 'require', '请输入矿机所在位置'],
                 ['cover', 'require', '封面图不能为空'],
@@ -129,8 +139,14 @@ class GoodsMillController extends BaseController
         } else {
             $rows['status'] = 1;
         }
+        $oc_types = Db::name('oc_types')
+        ->order('uid asc')
+        ->select();
+        $ipfs_types = Db::name('ipfs_types')
+        ->order('uid asc')
+        ->select();
         $this->seo();
-        return view('', compact('rows' ));
+        return view('', compact('rows', 'oc_types', 'ipfs_types' ));
     }
 
     /**
