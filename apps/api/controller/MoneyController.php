@@ -39,7 +39,6 @@ class MoneyController extends BaseController
      */
     public function money_management()
     {
-    
         $param = input('param.');
         $data['token'] = $param['token'];
         
@@ -60,6 +59,7 @@ class MoneyController extends BaseController
         $money['rengou_begin'] = date('m-d H:i',strtotime($money['rengou_begin']));
         $money['get_time'] = date('m-d H:i',strtotime($money['rengou_end']) + $money['zhouqi']*60*60*24);
         $money['rengou_end'] = date('m-d H:i',strtotime($money['rengou_end']));
+        $data['selfUsdt'] = Db::name('user')->where('id',$this->user_id)->value('usdt');
         
         if($money['type'] == 1) {
             $money['get_time_1'] = date('m-d H:i', $rengou_end + 1*60*60*24);
@@ -308,7 +308,7 @@ class MoneyController extends BaseController
          if(time()< strtotime($goods['rengou_begin']) || time()>strtotime($goods['rengou_end'])){
              sendRequest(201, '请在认购期内购买');
          }
-         $zhouqi = ['30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+         $zhouqi = ['1'=>'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
          $order_arr = [
              'type'=>2,
              'user_id'=>$this->user_id,
@@ -373,7 +373,7 @@ class MoneyController extends BaseController
          if(time()< strtotime($goods['rengou_begin']) || time()>strtotime($goods['rengou_end'])){
              sendRequest(201, '请在认购期内购买');
          }
-         $zhouqi = ['30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+         $zhouqi = ['1'=>'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
          $order_arr = [
              'type'=>1,
              'user_id'=>$this->user_id,

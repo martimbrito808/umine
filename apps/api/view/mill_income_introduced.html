@@ -147,13 +147,6 @@
                     <span>{$info.x_5}</span>
                 </p>
             </div>
-            <div class="btn-box">
-                 {if $info.buy == true }
-                    <button class="pay-btn">立即购买</button>
-                {else/}
-                    <button class="pay-btn" style='background: #DDDDDD;'  disabled>立即购买</button>
-                {/if}
-            </div>
         </div>
         <div class="introduce " id="second">
             <p class="introduce-label"><span>收益发放</span></p>
@@ -207,10 +200,15 @@
                     </p>
                 </li>
             </ul>
-            <div class="btn-box">
-                <button class="pay-btn">立即购买</button>
-            </div>
-
+        </div>
+        
+        <div class="btn-box">
+            
+        {if $info.buy == true }
+            <button class="pay-btn">立即购买</button>
+        {else/}
+            <button class="pay-btn" style='background: #DDDDDD;'  disabled>立即购买</button>
+        {/if}
         </div>
     </div>
     <div class="mask_layer"></div>

@@ -9,6 +9,7 @@
     <title>{$money.name}</title>
     <script src="../../public/static/js/myFlexible.js"></script>
     <link rel="stylesheet" href="../../public/static/css/news.css">
+    <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
 </head>
 <!-- USDT生币宝定期理财 -->
 
@@ -28,6 +29,9 @@
     font-size: 10px;
 }
 
+.layui-layer-content{
+        height: 105px !important;
+}
  body .demo-class .layui-layer-btn0{
   border-color: #E6E3E6;
   background-color: #FFF;
@@ -47,7 +51,7 @@
         </a>
         <h3>{$money.name}</h3>
     </header> 
-    <div class="money-wrapper">
+    <div class="money-wrapper" style="padding-bottom: 0px;">
         <div class="management-head">
             <div class="management-box">
                 <img src="{:getfile($money['cover'])}" alt="" class="management-icon">
@@ -130,9 +134,8 @@
                 <span> ER获取：投资收益的同时将1:10获得er</span> <br />
             </p>
         </div>
-    </div>
-    <footer class="foot-box">
-        {if $money.buy == 1 }
+        <div class="btn-box">
+            {if $money.buy == 1 }
            <button type="button" class="buy_now pay-btn" data-id="{$money.id}" style='
             width: 100%!important;
             height: 0.95rem!important;
@@ -145,14 +148,59 @@
                立即购买
                </button>
         {else/}
-            <button>立即购买</button>
+            <button style='
+            width: 100%!important;
+            height: 0.95rem!important;
+            background: #DDDDDD;
+            border-radius: 0.04rem;
+            border: none!important;
+            color: #FFFFFF;
+            font-size: 0.3rem;
+            margin-bottom: 0.7rem!important;'>立即购买</button>
         {/if}
-    </footer>
+        </div>
+    </div>
+    <div class="mask_layer"></div>
+    <div class="bottom_window">
+        <div class="window_top">
+            <div class="window_top_row">
+                <span class="window-tag">{$money.type == 1 ? '现货' : '预售'}</span>
+                <h3>{$money.name}</h3>
+            </div>
+            <div class="parameter-box">
+                <span class="window-label">购买数量</span>
+                <div class="parameter-row">
+                    <button data-val='1'>1</button>
+                    <button data-val='2'>2</button>
+                    <button data-val='5'>5</button>
+                    <button data-val='10'>10</button>
+                </div>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">优惠券</span>
+                <a href="javascript:void(0)" class="coupon-link">
+                    未使用优惠券
+                    <img src="../../public/static/images/right_icon2.png" alt="">
+                </a>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">订单金额</span>
+                <span class="order-amount"> <span class='danjia'>{:showprice(0)}</span><span class="fontSmall">USDT</span></span>
+            </div>
+        </div>
+        <p class="available-capital">可用资产： {:showprice($data.selfUsdt)} USDT</p>
+        <div class="window_bottom">
+            <input type="hidden" id="mill_id" value="{$money.id}" />
+            <input type="hidden" id="num" value="" />
+            <button id='buynow'>购买</button>
+        </div>
+    </div>
     <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
     <script src="../../public/static/layer/layer.js"></script>
+    <script src="../../public/static/common/mui/js/mui.min.js"></script>
     <script>
         //选项卡
-        var lang = 30;
+        var lang = 1;
         $('.data-tab li a').click(function () {
             let zhouqi, nianhua, shouyi;
             var that = $(this);
@@ -161,7 +209,7 @@
             switch(key) {
                 case 1:
                     zhouqi = '1天';
-                    lang = '30';
+                    lang = '1';
                     nianhua = "{$money.apr_0}%";
                     shouyi = "{$money.get_time_0}";
                     break;
@@ -199,55 +247,74 @@
         });
         //底部弹框
         $('.pay-btn').click(function () {
-            var id =  $('.pay-btn').data('id');
-            layer.open({
-                  type: 1
-                  ,skin: 'demo-class'
-                  ,offset: 'auto' 
-                  ,id: 'layerDemoAuto2'
-                  ,title: '请输入购买数量' //不显示标题
-                  ,content: '<span style="font-size:14px; margin-left:25px; margin-right:10px;">购买数量:</span><input class="num" name="num"/>'
-                  ,area:["300px","200px"]
-                  ,btn: ['取消', '确认']
-                  ,btnAlign: 'c'
-                  ,shade: 0.5
-                  ,yes: function () {
-                        layer.closeAll();
-                  },btn2: function(index, layero){
-                      var num = $('.num').val();
-                      var token = localStorage.getItem('token');
-                        if(num > 0){
-                            $.ajax({
-                                url: '/api/money/contractPurchase/',
-                                data: {token:token,num:num,id:id,lang:lang},
-                                type:'post',
-                                dataType: 'json',
-                                success:function (json) {
-                                    if(json.code === 200){
-                                        layer.closeAll();
-                                        layer.msg(json.msg,function () {
-                                            // parent.layer.closeAll();
-                                            // parent.layui.table.reload('test');
-                                            //window.location.reload();
-                                        });
-                                    }else{
-                                       layer.closeAll();
-                                       layer.msg(json.msg,function () {
-                                            // parent.layer.closeAll();
-                                            // parent.layui.table.reload('test');
-                                            //window.location.reload();
-                                        });
-                                    }
-                                }
-                            });
-                        }else{
-                            layer.msg('请输入购买数量');
-                        }
-                        return false //开启该代码可禁止点击该按钮关闭
-                    }
-            
-            });
+            $('.bottom_window,.mask_layer').slideDown(200).css('display', 'flex');
         });
+        $('.mask_layer,.cancel-btn').click(function () {
+            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+        })
+        //购买数量选择
+        $('.parameter-row button').click(function () {
+            var that = $(this);
+            var num = that.data('val');
+            var money = "{:showprice(1)}"
+            var allmoney = num;
+            $('#num').val(num);
+            that.siblings().removeClass('selected');
+            that.addClass('selected');
+            $('.danjia').text(allmoney);
+        });
+        let lock = false;
+        $('#buynow').click(function () {
+            let mill_id = $('#mill_id').val();
+            console.log(mill_id)
+            let num = $('#num').val();
+            let token = localStorage.getItem('token');
+ 
+            if(num == undefined || num == '') {
+                mui.toast('请选择购买数量')
+                return false;
+            }
+            if(mill_id == undefined || mill_id == '' ) {
+                mui.toast('非法请求')
+                return false;
+            }
+            if(lock == true) {
+                return false;
+            }
+            lock = true;
+            
+            $.ajax({
+                type : "POST",
+                contentType: "application/json;charset=UTF-8",
+                url : "/api/money/contractPurchase",
+                data : JSON.stringify({
+                    id:mill_id,
+                    num: num,
+                    token: token,
+                    lang:lang
+                }),
+                success : function(result) {
+                    if(result.code == 200) {
+                        console.log(result)
+                        setTimeout(function(){
+                            window.location.reload();
+                        },2000);
+                    }else{
+                        lock = false;
+                    }
+                    mui.toast(
+                        result.msg
+                    )
+                },
+                //请求失败，包含具体的错误信息
+                error : function(e){
+                    lock = false;
+                    mui.toast(
+                        '出错啦，请稍后再试',
+                    )
+                }
+            });
+        })
     </script>
 </body>
 
