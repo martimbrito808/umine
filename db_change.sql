@@ -4,3 +4,22 @@ ALTER TABLE `shop_goods_wealth`
 
 ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `zhouqi` TINYINT NOT NULL DEFAULT 1 AFTER `oc_type`;
+
+	ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `rengou_begin` TIME NULL DEFAULT NULL AFTER `shangjia_time`,
+	ADD COLUMN `rengou_end` TIME NULL DEFAULT NULL AFTER `rengou_begin`;
+
+	ALTER TABLE `shop_goods_mill`
+	CHANGE COLUMN `zhouqi` `zhouqi` INT NOT NULL DEFAULT 1 AFTER `oc_type`;
+
+	ALTER TABLE `shop_goods_mill_order`
+	ADD COLUMN `zhouqi` INT(11) NOT NULL DEFAULT '0' AFTER `num`;
+	
+	ALTER TABLE `shop_goods_mill_order`
+	ADD COLUMN `status` TINYINT(1) NOT NULL DEFAULT '1' AFTER `type`;
+	
+	ALTER TABLE `shop_goods_wealth`
+	ADD COLUMN `sale_type` TINYINT(1) NOT NULL DEFAULT '1' AFTER `type`;
+
+ALTER TABLE `shop_goods_wealth`
+	ADD COLUMN `apr` INT(11) NULL DEFAULT NULL AFTER `apr_3`;

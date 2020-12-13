@@ -315,6 +315,9 @@ function showAlbum(mob){
     // showDiyWin("附件管理", "{:url('attachment/album')}");
 }
 
+$('body').on('click', '.sale_type', function(){
+	console.log($(this).val())
+});
 //向前移动
 $('body').on('click', '.setPrev', function(){
 	var li = $(this).parent().parent();

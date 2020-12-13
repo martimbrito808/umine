@@ -55,12 +55,22 @@
 					<div class="layui-input-block">
 						<select name="zhouqi" lay-verify="required">
 							<option value=""> 产权</option>
-							<option {if condition="1 eq $rows['zhouqi']"} selected {/if} value="1"> 1天</option>
-							<option {if condition="30 eq $rows['zhouqi']"} selected {/if} value="30"> 30天</option>
-							<option {if condition="60 eq $rows['zhouqi']"} selected {/if} value="60"> 60天</option>
-							<option {if condition="90 eq $rows['zhouqi']"} selected {/if} value="90"> 90天</option>
-							<option {if condition="120 eq $rows['zhouqi']"} selected {/if} value="120"> 120天</option>
+							{volist name='days' id='day'}
+								<option {if condition="$day.days eq $rows['zhouqi']"} selected {/if} value="{$day.days}"> {$day.label}</option>	
+							{/volist}
 						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">认购开始时间：</label>
+					<div class="layui-input-inline">
+						<input type="text" lay-verify="required"  name="rengou_begin" id="rengou_begin" value="{:isset($rows['rengou_begin']) ? $rows['rengou_begin'] : ''}" readonly="readonly" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">认购结束时间：</label>
+					<div class="layui-input-inline">
+						<input type="text" lay-verify="required"  name="rengou_end" id="rengou_end" value="{:isset($rows['rengou_end']) ? $rows['rengou_end'] : ''}" readonly="readonly" autocomplete="off" class="layui-input">
 					</div>
 				</div>
 				<blockquote class="layui-elem-quote layui-quote-nm">

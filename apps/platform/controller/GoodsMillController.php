@@ -145,8 +145,12 @@ class GoodsMillController extends BaseController
         $ipfs_types = Db::name('ipfs_types')
         ->order('uid asc')
         ->select();
+        $days = Db::name('days')
+        ->where('type', 2)
+        ->order('days asc')
+        ->select();
         $this->seo();
-        return view('', compact('rows', 'oc_types', 'ipfs_types' ));
+        return view('', compact('rows', 'oc_types', 'ipfs_types', 'days' ));
     }
 
     /**

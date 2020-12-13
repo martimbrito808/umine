@@ -54,7 +54,7 @@ class MoneyController extends BaseController
         }
 
         $rengou_end = date('Y-m-d H:i:s',strtotime($money['rengou_end']));
-        $money['day'] = date('Y年m月d日起',strtotime('+'.$money['zhouqi'].' day'));//date('Y',$rengou_end).'年'.date('m',$rengou_end).'月'.date('d',$rengou_end).'日起';
+        $money['day'] = date('Y年m月d日起',strtotime('+1 day'));//date('Y',$rengou_end).'年'.date('m',$rengou_end).'月'.date('d',$rengou_end).'日起';
         $money['get_time'] = date('m-d H:i',strtotime($money['rengou_end']) + $money['zhouqi']*60*60*24);
         $money['rengou_begin'] = date('每天 H:i',strtotime($money['rengou_begin']));
         $money['rengou_end'] = date('每天 H:i',strtotime($money['rengou_end']));

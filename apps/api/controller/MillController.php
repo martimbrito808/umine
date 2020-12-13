@@ -66,11 +66,22 @@ class MillController extends BaseController
         
         $selfUsdt = Db::name('user')->where('id',$this->user_id)->value('usdt');
         $info = Db::name('goods_mill')->where('id',$id)->find();
+        $info['buy'] = false;
+        $info['start_day'] = date('Y-m-d',strtotime('+'.($info['zhouqi'] + 1).' day'));
         if( $info['stock'] > 0) {
             if( ($info['type'] == 2 && $info['jieshu_time'] > date('Y-m-d H:i:s'))) {
                 $info['buy'] = true;
             }elseif($info['type'] == 1) {
                 $info['buy'] = true;
+            }
+            $timeNow = date('H:i:s');
+            if($info['rengou_begin'] < $timeNow && $timeNow <= $info['rengou_end'])
+            {
+                $info['buy'] = true;
+            }
+            else
+            {
+                $info['buy'] = false;
             }
         }else{
             $info['buy'] = false;
@@ -146,6 +157,8 @@ class MillController extends BaseController
                     'orderno'       => date('YmdHis').randNum(),
                     'num'           => $param['num'],
                     'price'         => $millInfo['price'],
+                    'zhouqi'        => $millInfo['zhouqi'],
+                    'status'        => 1,
                     'order_price'   => $totalMoney,
                     'create_time'   => time(),
                     'buy_time'      => date('Y-m-d H:i:s'),
