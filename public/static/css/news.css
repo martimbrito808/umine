@@ -528,6 +528,13 @@ h1,h2,h3,h4,h5,p{
 .mill-entity-list>li:last-child{
     margin-right: 0;
 }
+.mill-entity-list-btc>li>span{
+    font-size: 12px !important;
+    width:unset !important;
+}
+.mill-entity-list-btc>li{
+    margin-right: 0.2rem !important;
+}
 .mill-entity-list>li>span:first-child,
 .mill-entity-list>li>span:last-child{
     width: 2.25rem;

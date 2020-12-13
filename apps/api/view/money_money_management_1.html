@@ -58,49 +58,15 @@
                 <span class="management-label">{$money.name}</span>
                 <ul class="management-list">
                     <li>
-                        <span class="percent nianhua">{$money.apr_0}%起</span>
+                        <span class="percent nianhua">{$money.apr}%起</span>
                         <span class="management-name">年化收益率</span>
                     </li>
                     <li>
-                        <span class="period zhouqi">1天起</span>
+                        <span class="period zhouqi">{$money['zhouqi']}天起</span>
                         <span class="management-name">产品周期</span>
                     </li>
                 </ul>
                 <span class="management-tag">{$money.intro}</span>
-                {if $money.type == 1}
-                    <ul class="data-tab">
-                        <li>
-                            <a data-key="1" href="javascript:void(0)" class="active">
-                                1天
-                                <span class="border-active"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="30" href="javascript:void(0)">
-                                30天
-                                <span class="border-active"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="60" href="javascript:void(0)" class="">
-                                60天
-                                <span class="border-active"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="90" href="javascript:void(0)" class="">
-                                90天
-                                <span class="border-active"></span>
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="120" href="javascript:void(0)" class="">
-                                120天
-                                <span class="border-active"></span>
-                            </a>
-                        </li>
-                    </ul>
-                {/if}
                 
             </div>
         </div> 
@@ -118,7 +84,7 @@
                 <span>收益期</span>
             </li>
             <li class="timeline-round">
-                <span class='shouyiqi'>{$money.get_time_1}</span>
+                <span class='shouyiqi'>{$money.get_time}</span>
             </li>
         </ul>
         <div class="product-presentation">
@@ -211,7 +177,7 @@
                     zhouqi = '1天';
                     lang = '1';
                     nianhua = "{$money.apr_0}%";
-                    shouyi = "{$money.get_time_0}";
+                    shouyi = "{$money.get_time_1}";
                     break;
                 case 30:
                     zhouqi = '30天';

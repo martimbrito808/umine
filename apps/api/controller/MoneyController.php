@@ -46,29 +46,34 @@ class MoneyController extends BaseController
             ->where('id',$param['id'])
             ->find();
             
-        $dateNow = date('Y-m-d H:i:s');
-    
-        if( $money['rengou_begin'] < $dateNow && $money['rengou_end'] > $dateNow) {
+        $timeNow = date('H:i:s');
+        if( $money['rengou_begin'] < $timeNow && $money['rengou_end'] > $timeNow) {
             $money['buy'] = true;
         }else{
             $money['buy'] = false;
         }
 
-        $rengou_end = strtotime($money['rengou_end'].' + 1 day');
-        $money['day'] = date('Y',$rengou_end).'年'.date('m',$rengou_end).'月'.date('d',$rengou_end).'日起';
-        $money['rengou_begin'] = date('m-d H:i',strtotime($money['rengou_begin']));
+        $rengou_end = date('Y-m-d H:i:s',strtotime($money['rengou_end']));
+        $money['day'] = date('Y年m月d日起',strtotime('+'.$money['zhouqi'].' day'));//date('Y',$rengou_end).'年'.date('m',$rengou_end).'月'.date('d',$rengou_end).'日起';
         $money['get_time'] = date('m-d H:i',strtotime($money['rengou_end']) + $money['zhouqi']*60*60*24);
-        $money['rengou_end'] = date('m-d H:i',strtotime($money['rengou_end']));
+        $money['rengou_begin'] = date('每天 H:i',strtotime($money['rengou_begin']));
+        $money['rengou_end'] = date('每天 H:i',strtotime($money['rengou_end']));
+        
         $data['selfUsdt'] = Db::name('user')->where('id',$this->user_id)->value('usdt');
         
+        $data['time'] = time();
+        
         if($money['type'] == 1) {
-            $money['get_time_1'] = date('m-d H:i', $rengou_end + 1*60*60*24);
-            $money['get_time_3'] = date('m-d H:i', $rengou_end + 30*60*60*24);
-            $money['get_time_6'] = date('m-d H:i', $rengou_end + 60*60*60*24);
-            $money['get_time_9'] = date('m-d H:i', $rengou_end + 90*60*60*24);
-            $money['get_time_12'] = date('m-d H:i', $rengou_end + 120*60*60*24);
-            $money['zhouqi'] = '1';
+            //section don't user
+            $money['get_time_1'] = date('m-d H:i', strtotime($rengou_end) + 1*60*60*24);
+            $money['get_time_3'] = date('m-d H:i', strtotime($rengou_end) + 30*60*60*24);
+            $money['get_time_6'] = date('m-d H:i', strtotime($rengou_end) + 60*60*60*24);
+            $money['get_time_9'] = date('m-d H:i', strtotime($rengou_end) + 90*60*60*24);
+            $money['get_time_12'] = date('m-d H:i', strtotime($rengou_end) + 120*60*60*24);
+            
             $money['apr'] = $money['apr_0'];
+            $zhouqi = ['1' => 'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+            $money['apr'] = $money[$zhouqi[$money['zhouqi']]];
             return $this->fetch('money_money_management_1', compact('money','data'));
         }else{
             $money = transArray($money);
@@ -305,9 +310,11 @@ class MoneyController extends BaseController
               sendRequest(201, '最少购买'.$min_num);
          }
          //p($goods['rengou_end']);die;
-         if(time()< strtotime($goods['rengou_begin']) || time()>strtotime($goods['rengou_end'])){
+         $timeNow = date('H:i:s');
+         if($timeNow< $goods['rengou_begin'] || $timeNow > $goods['rengou_end']){
              sendRequest(201, '请在认购期内购买');
          }
+         $rengou_end = date('Y-m-d H:i:s',strtotime($goods['rengou_end'].' +'.$goods['zhouqi'].' day'));
          $zhouqi = ['1'=>'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
          $order_arr = [
              'type'=>2,
@@ -316,7 +323,7 @@ class MoneyController extends BaseController
              'orderno'=>time().rand(1000,9999),
              'price'=>toprice($param['num']),
              'duration'=>$goods['zhouqi'],
-             'rengou_end'=>$goods['rengou_end'],
+             'rengou_end'=>$rengou_end,
              'fanxihuobi'=>$goods['fanxihuobi'],
              'apr'=>$goods[$zhouqi[$goods['zhouqi']]],
              'create_time'=>time(),
@@ -370,9 +377,11 @@ class MoneyController extends BaseController
               sendRequest(201, '最少购买'.$min_num);
          }
          //p($goods['rengou_end']);die;
-         if(time()< strtotime($goods['rengou_begin']) || time()>strtotime($goods['rengou_end'])){
+         $timeNow = date('H:i:s');
+         if($timeNow < $goods['rengou_begin'] || $timeNow > $goods['rengou_end']){
              sendRequest(201, '请在认购期内购买');
          }
+         $rengou_end = date('Y-m-d H:i:s',strtotime($goods['rengou_end'].' +'.$param['lang'].' day'));
          $zhouqi = ['1'=>'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
          $order_arr = [
              'type'=>1,
@@ -381,7 +390,7 @@ class MoneyController extends BaseController
              'orderno'=>time().rand(1000,9999),
              'price'=>toprice($param['num']),
              'duration'=>$param['lang'],
-             'rengou_end'=>$goods['rengou_end'],
+             'rengou_end'=>$rengou_end,
              'apr'=>$goods[$zhouqi[$param['lang']]],
              'fanxihuobi'=>$goods['fanxihuobi'],
              'create_time'=>time(),

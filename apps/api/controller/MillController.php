@@ -39,7 +39,11 @@ class MillController extends BaseController
         ->where(['type' => 1,'status' => 1])
         ->order('sort asc, id desc')
         ->select();
-        $mill_list = array_merge($mill_list,$wealth_list);
+        foreach($wealth_list as $key => $wealth)
+        {
+            $zhouqi = ['1' => 'apr_0','30'=>'apr_3','60'=>'apr_6','90'=>'apr_9','120'=>'apr_12'];
+            $wealth_list[$key]['apr'] = $wealth[$zhouqi[$wealth['zhouqi']]];
+        }
         $oc_types = Db::name('oc_types')
         ->order('uid asc')
         ->select();
