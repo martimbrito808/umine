@@ -132,7 +132,8 @@ class IndexController extends BaseController
             ->where([
                 'user_id' => $info['user_id'] , 
                 'goods_mill_id' => $info['mill_id'], 
-                'buy_time' => ['lt', $before18pm]])
+                'buy_time' => ['lt', $before18pm],
+                'status' => 1])
             ->sum('num');
         
         $presellMillCheck = Db::name("goods_mill")

@@ -102,7 +102,51 @@ class TaskController extends Controller{
 		}
 	    return true;
 	}
-	
+    
+    public function colsemileorder()
+    {
+        $orders = Db::name('goods_mill_order')->where('status', 3)->select();
+        foreach($orders as $order)
+        {
+            $mill = Db::name('goods_mill')->where('id',$order['goods_mill_id'])->find();
+            if($mill != null)
+            {
+                $limit_day = date('Y-m-d',strtotime($order['buy_time'].' +'.$order['zhouqi'].' day'));
+                if($limit_day < date('Y-m-d'))
+                {
+                    Db::startTrans();
+                    try
+                    {
+                        Db::name('goods_mill_order')->where('id', $order['id'])->update(['status'=>0]);
+                        if($order['method'] == 2)
+                        {   
+                            Db::name('finance')
+                            ->insert([
+                                'type'          => 13,
+                                'money_type'    => 'usdt',
+                                'mold'          => 'in',
+                                'user_id'       => $order['user_id'],
+                                'money'         => $order['price'],
+                                'create_time'   => time(),
+                            ]);
+                            Db::name('user_mill')
+                            ->where(['user_id' => $order['user_id'], 'mill_id' => $order['goods_mill_id']])
+                            ->setDec('mill_num',$order['num']);
+                            Db::name('user')
+                            ->where(['id' => $order['user_id']])
+                            ->setInc('usdt', $order['price']);
+                        }
+                        Db::commit();   
+                    }
+                    catch(\Exception $e)
+                    {
+                        Db::rollback();
+                    }
+                    
+                }
+            }
+        }
+    }
 	    
     /**
      * 实体矿机收益结算 | 单独执行定时任务
@@ -126,7 +170,8 @@ class TaskController extends Controller{
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
-                    'buy_time' => ['lt', $yesterday_18pm]])
+                    'buy_time' => ['lt', $yesterday_18pm],
+                    'status' => 1])
                 ->sum('num');
 
             $presellMillCheck = Db::name("goods_mill")

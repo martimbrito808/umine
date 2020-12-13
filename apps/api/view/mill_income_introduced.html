@@ -30,17 +30,9 @@
         <div class="income-imgBox">
             <img src="{:getfile($info.cover_2)}" alt="" class="income-img">
         </div>
-        <ul class="timeline-new">
-            <li class="timeline-round">
-                <span>{$info.rengou_begin}</span>
-            </li>
-            <li class="timeline-line">
-                <span>认购期</span>
-            </li>
-            <li class="timeline-round">
-                <span>{$info.rengou_end}</span>
-            </li>
-        </ul>
+        <div class='mill-timeboard'>
+            认购期：每天 {$info.rengou_begin} - {$info.rengou_end}， {$info.rengou_begin_day} - {$info.rengou_end_day}
+        </div>
         <div class="income-box">
             <h3 class="income-num">{:showprice($info.price)}<span class="income-font">USDT</span></h3>
             <p class="income-row">

@@ -24,7 +24,11 @@ class MillController extends BaseController
             ->where(['status' => 1,'stock' => ['gt','0']])
             ->order('sort asc, id desc')
             ->select();
-            
+        foreach($mill_list as $key => $mill) 
+        {
+            $mill_list[$key]['rengou_begin'] = date('H:i',strtotime($mill['rengou_begin']));
+            $mill_list[$key]['rengou_begin_day'] = date('H:i',strtotime($mill['rengou_begin_day']));
+        }
         $mill_disabled_list = Db::name('goods_mill')->alias('gm')
             ->join('ocTypes o','gm.oc_type = o.id','LEFT')
             ->field('o.label as olabel, gm.*')
@@ -51,7 +55,7 @@ class MillController extends BaseController
         $ipfs_types = Db::name('ipfs_types')
         ->order('uid asc')
         ->select();
-        
+
         return $this->fetch('', compact('auth', 'mill_list','mill_disabled_list','wealth_list', 'oc_types', 'ipfs_types'));
     }
     
@@ -80,12 +84,21 @@ class MillController extends BaseController
                 $info['buy'] = true;
             }
             else
+            if($info['rengou_begin_day'] < $timeNow && $timeNow <= $info['rengou_end_day'])
+            {
+                $info['buy'] = true;
+            }
+            else
             {
                 $info['buy'] = false;
             }
         }else{
             $info['buy'] = false;
         }
+        $info['rengou_begin'] = date('H : i', strtotime($info['rengou_begin']));
+        $info['rengou_end'] = date('H : i', strtotime($info['rengou_end']));
+        $info['rengou_begin_day'] = date('H : i', strtotime($info['rengou_begin_day']));
+        $info['rengou_end_day'] = date('H : i', strtotime($info['rengou_end_day']));
         return $this->fetch('',compact('info', 'auth','selfUsdt'));
     }
     

@@ -30,3 +30,7 @@ ALTER TABLE `shop_goods_mill`
 	CHANGE COLUMN `sale_type` `category` TINYINT(4) NOT NULL DEFAULT '1' AFTER `ipfs_type`;
 	ALTER TABLE `shop_goods_mill_order`
 	ADD COLUMN `method` TINYINT(1) NOT NULL DEFAULT '1' AFTER `type`;
+
+	ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `rengou_begin_day` TIME NULL DEFAULT NULL AFTER `rengou_end`,
+	ADD COLUMN `rengou_end_day` TIME NULL DEFAULT NULL AFTER `rengou_begin_day`;
