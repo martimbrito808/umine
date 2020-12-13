@@ -119,7 +119,11 @@ class MillController extends BaseController
         if($userInfo['usdt'] < $totalMoney) {
              sendRequest(201, '余额不足，请先充值');
         }
-        
+        $method = 1;
+        if($millInfo['category'] == 3)
+        {
+            $method = 2;
+        }
         // 1.减少用户余额
         // 2.减少矿机表库存
         // 3.写入到用户矿机表
@@ -162,6 +166,7 @@ class MillController extends BaseController
                     'order_price'   => $totalMoney,
                     'create_time'   => time(),
                     'buy_time'      => date('Y-m-d H:i:s'),
+                    'method'        => $method
                 ]);
                 
             Db::name('finance')

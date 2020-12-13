@@ -146,9 +146,8 @@ class GoodsMillController extends BaseController
         ->order('uid asc')
         ->select();
         $days = Db::name('days')
-        ->where('type', 2)
-        ->order('days asc')
-        ->select();
+                ->order('days asc')
+                ->select();
         $this->seo();
         return view('', compact('rows', 'oc_types', 'ipfs_types', 'days' ));
     }

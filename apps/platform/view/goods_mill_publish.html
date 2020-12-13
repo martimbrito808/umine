@@ -51,16 +51,29 @@
 				</div>
 
 				<div class="layui-form-item">
-					<label class="layui-form-label">产品周期（天）：</label>
+					<label class="layui-form-label">分类3：</label>
 					<div class="layui-input-block">
-						<select name="zhouqi" lay-verify="required">
+						<select name="category" id="category" class='category' onchange="() => console.log('hi')">
+							<option value=""> 请选择</option>
+							<option {if condition="1 eq $rows['category']"} selected {/if} value="1"> 实体矿机购买 </option>
+							<option {if condition="2 eq $rows['category']"} selected {/if} value="2"> 云算力购买 </option>
+							<option {if condition="3 eq $rows['category']"} selected {/if} value="3"> 云算力租赁 </option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">产品周期（天）购买：</label>
+					<div class="layui-input-block">
+						<select name="zhouqi" id="zhouqi" lay-verify="required">
 							<option value=""> 产权</option>
 							{volist name='days' id='day'}
-								<option {if condition="$day.days eq $rows['zhouqi']"} selected {/if} value="{$day.days}"> {$day.label}</option>	
+								<option {if condition="$day.days eq $rows['zhouqi']"} selected {/if} value="{$day.days}"> {$day.label}</option>
 							{/volist}
 						</select>
 					</div>
 				</div>
+
 				<div class="layui-form-item">
 					<label class="layui-form-label">认购开始时间：</label>
 					<div class="layui-input-inline">
@@ -339,3 +352,22 @@
 
 {include file="public:script" /}
 {include file="public:footer" /}
+<script>
+	layui.use(['form'], function(){
+		$('#category').on('change',function(){
+			console.log('hi')
+		})
+		
+	})
+	const days = JSON.parse('{:json_encode($days)}')
+	const changeZhouqi = (type) => {
+		let html = '<option value=""> 请选择</option>'
+		days.forEach(day => {
+			if(day.type == type)
+			{
+				html += '<option value="' + day.days + '">' + day.label + '</option>'
+			}
+		});
+		$('#zhouqi').html(html)
+	}
+</script>

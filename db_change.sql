@@ -23,3 +23,10 @@ ALTER TABLE `shop_goods_mill`
 
 ALTER TABLE `shop_goods_wealth`
 	ADD COLUMN `apr` INT(11) NULL DEFAULT NULL AFTER `apr_3`;
+
+ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `sale_type` TINYINT NOT NULL DEFAULT 1 AFTER `ipfs_type`;
+	ALTER TABLE `shop_goods_mill`
+	CHANGE COLUMN `sale_type` `category` TINYINT(4) NOT NULL DEFAULT '1' AFTER `ipfs_type`;
+	ALTER TABLE `shop_goods_mill_order`
+	ADD COLUMN `method` TINYINT(1) NOT NULL DEFAULT '1' AFTER `type`;

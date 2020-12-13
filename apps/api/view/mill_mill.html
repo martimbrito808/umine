@@ -144,8 +144,8 @@
                     <div id="panel-btc-list" class="mill mill-btc-sub mill-active">
                         <ul class="mill-entity">
                             {volist name='mill_list' id='moc1'} 
-                                {if $moc1.oc_type == 1}  <!--现货-->
-                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}">
+                                {if $moc1.category == 1}  <!--现货-->
+                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=1">
                                         <li class="brown-bg">
                                             <div class="mill-entity-box">
                                                 <div class="mill-entity-top">
@@ -185,8 +185,93 @@
                                 {/if}
                             {/volist}
                             {volist name='mill_disabled_list' id='mdl'} 
-                            {if $mdl.oc_type == 1}
-                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                                {if $mdl.category == 1}
+                                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                                        <li>
+                                            <div class="mill-entity-box">
+                                                <div class="mill-entity-top">
+                                                    <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
+                                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                                </div>
+                                                <div class="mill-entity-bottom">
+                                                    <ul class="mill-entity-list mill-entity-list-btc">
+                                                        <li>
+                                                            <span class="gray-font">价格</span>
+                                                            <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
+                                                        </li>
+                                                        <li>
+                                                            <span class="gray-font">预计回报率</span>
+                                                            <span class="gray-font">{$mdl.huibaolv}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($mdl.dianfei,2)}元/度</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>产权</span>
+                                                            <span>{$mdl.zhouqi}天</span>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="mill-tag-box">
+                                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/volist}
+                        </ul>
+                    </div>
+            
+                    <!--云算力矿机-->
+                    <div id="panel-could-buy" class="mill mill-btc-sub">
+                        <ul class="mill-entity">
+                            {volist name='mill_list' id='moc1'} 
+                                {if $moc1.category == 2}  <!--现货-->
+                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
+                                        <li class="brown-bg">
+                                            <div class="mill-entity-box">
+                                                <div class="mill-entity-top">
+                                                    <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
+                                                    <p class="mill-entity-title">{$moc1.name}</p>
+                                                </div>
+                                                <div class="mill-entity-bottom">
+                                                    <ul class="mill-entity-list mill-entity-list-btc">
+                                                        <li>
+                                                            <span>价格</span>
+                                                            <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>预计回报率</span>
+                                                            <span>{$moc1.huibaolv}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($moc0.dianfei,2)}元/度</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>产权</span>
+                                                            <span>{$moc0.zhouqi}天</span>
+                                                        </li>
+                                                    </ul>
+                                                    <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
+                                                </div>
+                                            </div>
+                                            <div class="mill-entity-foot">
+                                                <a class="go-link">
+                                                    立即抢购
+                                                    <img src="../../public/static/images/right_icon4.png" alt="">
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/volist}
+                            {volist name='mill_disabled_list' id='mdl'} 
+                            {if $mdl.category == 2}
+                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=1">
                                 <li>
                                     <div class="mill-entity-box">
                                         <div class="mill-entity-top">
@@ -224,57 +309,86 @@
                             {/volist}
                         </ul>
                     </div>
-            
-                    <!--云算力矿机-->
-                    <div id="panel-could-buy" class="mill mill-btc-sub">
-                        <ul class="mill-entity">
-                            {volist name="wealth_list" id="wl"}
-                                <li>
-                                    <a href="/api/money/money_management?token={$auth.token}&id={$wl.id}&method=0">
-                                        <div class="mill-module">
-                                            <p class="mill-module-row">
-                                                <img src="{:getfile($wl.cover)}" alt="">
-                                                <span>{$wl.name}</span>
-                                            </p>
-                                            <ul class="mill-module-list">
-                                                <li>
-                                                    <span class="mill-module-num">{$wl.apr}%</span>
-                                                    <span class="mill-module-font">年化收益</span>
-                                                </li>
-                                                <li>
-                                                    <span class="mill-module-num2">产品周期：{$wl.zhouqi}天</span>
-                                                    <span class="mill-module-font2">{$wl.intro}</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </a>
-                                </li>
-                            {/volist}
-                        </ul>
-                    </div>
                     <div id="panel-cloud-rent" class="mill mill-btc-sub">
                         <ul class="mill-entity">
-                            {volist name="wealth_list" id="wl"}
+                            {volist name='mill_list' id='moc1'} 
+                                {if $moc1.category == 3}  <!--现货-->
+                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
+                                        <li class="brown-bg">
+                                            <div class="mill-entity-box">
+                                                <div class="mill-entity-top">
+                                                    <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
+                                                    <p class="mill-entity-title">{$moc1.name}</p>
+                                                </div>
+                                                <div class="mill-entity-bottom">
+                                                    <ul class="mill-entity-list mill-entity-list-btc">
+                                                        <li>
+                                                            <span>价格</span>
+                                                            <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>预计回报率</span>
+                                                            <span>{$moc1.huibaolv}</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($moc0.dianfei,2)}元/度</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>产权</span>
+                                                            <span>{$moc0.zhouqi}天</span>
+                                                        </li>
+                                                    </ul>
+                                                    <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
+                                                </div>
+                                            </div>
+                                            <div class="mill-entity-foot">
+                                                <a class="go-link">
+                                                    立即抢购
+                                                    <img src="../../public/static/images/right_icon4.png" alt="">
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/volist}
+                            {volist name='mill_disabled_list' id='mdl'} 
+                            {if $mdl.category == 3}
+                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=2">
                                 <li>
-                                    <a href="/api/money/money_management?token={$auth.token}&id={$wl.id}&method=1">
-                                        <div class="mill-module">
-                                            <p class="mill-module-row">
-                                                <img src="{:getfile($wl.cover)}" alt="">
-                                                <span>{$wl.name}</span>
-                                            </p>
-                                            <ul class="mill-module-list">
+                                    <div class="mill-entity-box">
+                                        <div class="mill-entity-top">
+                                            <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
+                                            <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                        </div>
+                                        <div class="mill-entity-bottom">
+                                            <ul class="mill-entity-list mill-entity-list-btc">
                                                 <li>
-                                                    <span class="mill-module-num">{$wl.apr}%</span>
-                                                    <span class="mill-module-font">年化收益</span>
+                                                    <span class="gray-font">价格</span>
+                                                    <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
                                                 </li>
                                                 <li>
-                                                    <span class="mill-module-num2">产品周期：{$wl.zhouqi}天</span>
-                                                    <span class="mill-module-font2">{$wl.intro}</span>
+                                                    <span class="gray-font">预计回报率</span>
+                                                    <span class="gray-font">{$mdl.huibaolv}</span>
+                                                </li>
+                                                <li>
+                                                    <span>电费</span>
+                                                    <span>{:showprice($mdl.dianfei,2)}元/度</span>
+                                                </li>
+                                                <li>
+                                                    <span>产权</span>
+                                                    <span>{$mdl.zhouqi}天</span>
                                                 </li>
                                             </ul>
+                                            <div class="mill-tag-box">
+                                                <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                                <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                            </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 </li>
+                            </a>
+                            {/if}
                             {/volist}
                         </ul>
                     </div>
