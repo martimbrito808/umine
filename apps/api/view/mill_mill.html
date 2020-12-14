@@ -91,7 +91,7 @@
                                     <p class="mill-entity-title2 gray-font">{$mdocl.name}</p>
                                 </div>
                                 <div class="mill-entity-bottom">
-                                    <ul class="mill-entity-list">
+                                    <ul class="mill-entity-list mill-entity-list-btc">
                                         <li>
                                             <span class="gray-font">价格</span>
                                             <span class="gray-font">{:showprice($mdocl.price,2)}USDT/台</span>
@@ -101,12 +101,12 @@
                                             <span class="gray-font">{$mdocl.huibaolv}</span>
                                         </li>
                                         <li>
-                                            <span>电费</span>
-                                            <span>{:showprice($moc0.dianfei,2)}元/度</span>
+                                            <span class="gray-font">电费</span>
+                                            <span class="gray-font">{:showprice($moc0.dianfei,2)}元/度</span>
                                         </li>
                                         <li>
-                                            <span>产权</span>
-                                            <span>{$moc0.zhouqi}天</span>
+                                            <span class="gray-font">产权</span>
+                                            <span class="gray-font">{$moc0.zhouqi}天</span>
                                         </li>
                                     </ul>
                                     <div class="mill-tag-box">
@@ -181,17 +181,27 @@
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">上午抢购时间{$moc1.rengou_begin}</span>
+                                                            <span>上午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
                                                         </li>
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">下午抢购时间{$moc1.rengou_begin_day}</span>
+                                                            <span>下午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="mill-entity-foot">
+                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                    <span class="jieshu_time_comma">后结束</span>
+                                                </div>
                                                 <a class="go-link">
                                                     立即抢购
                                                     <img src="../../public/static/images/right_icon4.png" alt="">
@@ -229,12 +239,12 @@
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span>电费</span>
-                                                            <span>{:showprice($mdl.dianfei,2)}元/度</span>
+                                                            <span class="gray-font">电费</span>
+                                                            <span class="gray-font">{:showprice($mdl.dianfei,2)}元/度</span>
                                                         </li>
                                                         <li>
-                                                            <span>产权</span>
-                                                            <span>{$mdl.zhouqi}天</span>
+                                                            <span class="gray-font">产权</span>
+                                                            <span class="gray-font">{$mdl.zhouqi}天</span>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -287,17 +297,28 @@
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">上午抢购时间{$moc1.rengou_begin}</span>
+                                                            <span>上午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
                                                         </li>
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">下午抢购时间{$moc1.rengou_begin_day}</span>
+                                                            <span>下午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="mill-entity-foot">
+                                            
+                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                    <span class="jieshu_time_comma">后结束</span>
+                                                </div>
                                                 <a class="go-link">
                                                     立即抢购
                                                     <img src="../../public/static/images/right_icon4.png" alt="">
@@ -392,17 +413,28 @@
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">上午抢购时间{$moc1.rengou_begin}</span>
+                                                            <span>上午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
                                                         </li>
                                                         <li>
-                                                            <span></span>
-                                                            <span style="font-size:0.25rem;">下午抢购时间{$moc1.rengou_begin_day}</span>
+                                                            <span>下午抢购时间</span>
+                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="mill-entity-foot">
+                                            
+                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                    <span class="jieshu_time_comma">后结束</span>
+                                                </div>
                                                 <a class="go-link">
                                                     立即抢购
                                                     <img src="../../public/static/images/right_icon4.png" alt="">
@@ -751,6 +783,70 @@
     <script src="../../public/static/js/jquery-3.2.1.js"></script>
     <script src="../../public/static/layer/layer.js"></script>
     <script>
+        let jieshu_times = JSON.parse('{:json_encode($jieshu_times)}')
+        
+        const count_jieshu_time = () => {
+            jieshu_times.forEach((element, key) => {
+                let {id,time} = element
+                
+                if(time < 1)
+                {
+                    $('#mill-entity-jieshu-time' + element.id).empty()
+                    $('#mill-entity-jieshu-time' + element.id).html('     ')
+                    return false
+                }
+                const day = parseInt(time / (24 * 3600))
+                time = time % (24 * 3600)
+                const hour = parseInt(time / 3600)
+                time = time % 3600
+                const min = parseInt(time / 60)
+                time = time % 60
+                const sec = time
+                $('#jieshu_time_day' + element.id).text(new Date(element.time * 1000).toISOString().substr(11, 8))
+                let b_parent_zero = false
+                if(day <= 0)
+                {
+                    b_parent_zero = true
+                    $('#jieshu_time_day' + element.id).hide()
+                    $('#jieshu_time_comma_day' + element.id).hide()
+                }
+                else
+                {
+                    $('#jieshu_time_day' + element.id).text(day)
+                }
+                if(hour <= 0 && b_parent_zero)
+                {
+                    $('#jieshu_time_hour' + element.id).hide()
+                    $('#jieshu_time_comma_hour' + element.id).hide()
+                }
+                else
+                {
+                    $('#jieshu_time_hour' + element.id).text(hour)
+                    b_parent_zero = false
+                }
+                
+                if(min <= 0 && b_parent_zero)
+                {
+                    $('#jieshu_time_min' + element.id).hide()
+                    $('#jieshu_time_comma_min' + element.id).hide()
+                }
+                else
+                {
+                    $('#jieshu_time_min' + element.id).text(min)
+                }
+                
+                if(sec <= 0 && b_parent_zero)
+                {
+                    $('#jieshu_time_sec' + element.id).hide()
+                }
+                else
+                {
+                    $('#jieshu_time_sec' + element.id).text(sec)
+                }
+                jieshu_times[key].time --;
+            });
+        }
+        setInterval(count_jieshu_time, 1000);
         //选项卡
         $('.mill-tab-oc li a').click(function () {
             var that = $(this);

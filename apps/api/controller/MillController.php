@@ -24,10 +24,13 @@ class MillController extends BaseController
             ->where(['status' => 1,'stock' => ['gt','0']])
             ->order('sort asc, id desc')
             ->select();
+        $jieshu_times = [];
+        $today = strtotime(date('Y-m-d H:i:s'));
         foreach($mill_list as $key => $mill) 
         {
             $mill_list[$key]['rengou_begin'] = date('H:i',strtotime($mill['rengou_begin']));
             $mill_list[$key]['rengou_begin_day'] = date('H:i',strtotime($mill['rengou_begin_day']));
+            $jieshu_times[] = ['id' => $mill['id'], 'time' => strtotime($mill['jieshu_time']) - $today];
         }
         $mill_disabled_list = Db::name('goods_mill')->alias('gm')
             ->join('ocTypes o','gm.oc_type = o.id','LEFT')
@@ -56,7 +59,7 @@ class MillController extends BaseController
         ->order('uid asc')
         ->select();
 
-        return $this->fetch('', compact('auth', 'mill_list','mill_disabled_list','wealth_list', 'oc_types', 'ipfs_types'));
+        return $this->fetch('', compact('auth', 'mill_list','mill_disabled_list','wealth_list', 'oc_types', 'ipfs_types', 'jieshu_times'));
     }
     
     
