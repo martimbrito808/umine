@@ -46,15 +46,21 @@
                                     <p class="mill-entity-title">{$moc0.name}</p>
                                 </div>
                                 <div class="mill-entity-bottom">
-                                    <ul class="mill-entity-list mill-entity-list-btc">
+                                    <ul class="mill-entity-list">
                                         <li>
                                             <span>价格</span>
-                                            <span>{:showprice($moc0.price,2)}USDT/台</span>
+                                            <span>{:showprice($moc0.price,0)}USDT/台</span>
                                         </li>
                                         <li>
                                             <span>预计回报率</span>
                                             <span>{$moc0.huibaolv}</span>
                                         </li>
+                                    </ul>
+                                    <img src="{:getfile($moc0.cover)}" alt="" class="mill-entity-img">
+                                </div>
+                                
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
                                         <li>
                                             <span>电费</span>
                                             <span>{:showprice($moc0.dianfei,2)}元/度</span>
@@ -64,10 +70,32 @@
                                             <span>{$moc0.zhouqi}天</span>
                                         </li>
                                     </ul>
-                                    <img src="{:getfile($moc0.cover)}" alt="" class="mill-entity-img">
+                                </div>
+                                
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span>上午抢购时间</span>
+                                            <span>{$moc0.rengou_begin}</span>
+                                        </li>
+                                        <li>
+                                            <span>下午抢购时间</span>
+                                            <span>{$moc0.rengou_begin_day}</span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <div class="mill-entity-foot">
+                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time-all{$moc0.id}">
+                                    <div id="jieshu_time_day_all{$moc0.id}">1</div>
+                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day_all{$moc0.id}">天</span>
+                                    <div id="jieshu_time_hour_all{$moc0.id}">1</div>
+                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour_all{$moc0.id}">:</span>
+                                    <div id="jieshu_time_min_all{$moc0.id}">12</div>
+                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min_all{$moc0.id}">:</span>
+                                    <div id="jieshu_time_sec_all{$moc0.id}">23</div>
+                                    <span class="jieshu_time_comma">后结束</span>
+                                </div>
                                 <a class="go-link">
                                     立即抢购
                                     <img src="../../public/static/images/right_icon4.png" alt="">
@@ -88,25 +116,43 @@
                                     <ul class="mill-entity-list mill-entity-list-btc">
                                         <li>
                                             <span class="gray-font">价格</span>
-                                            <span class="gray-font">{:showprice($mdocl.price,2)}USDT/台</span>
+                                            <span class="gray-font">{:showprice($mdocl.price,0)}USDT/台</span>
                                         </li>
                                         <li>
                                             <span class="gray-font">预计回报率</span>
                                             <span class="gray-font">{$mdocl.huibaolv}</span>
-                                        </li>
-                                        <li>
-                                            <span class="gray-font">电费</span>
-                                            <span class="gray-font">{:showprice($moc0.dianfei,2)}元/度</span>
-                                        </li>
-                                        <li>
-                                            <span class="gray-font">产权</span>
-                                            <span class="gray-font">{$moc0.zhouqi}天</span>
                                         </li>
                                     </ul>
                                     <div class="mill-tag-box">
                                         <img src="{:getfile($mdocl.cover)}" alt="" class="mill-entity-img">
                                         <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
                                     </div>
+                                </div>
+                                
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span>电费</span>
+                                            <span>{:showprice($mdocl.dianfei,2)}元/度</span>
+                                        </li>
+                                        <li>
+                                            <span>产权</span>
+                                            <span>{$mdocl.zhouqi}天</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="mill-entity-bottom">
+                                    <ul class="mill-entity-list">
+                                        <li>
+                                            <span>上午抢购时间</span>
+                                            <span>{$mdocl.rengou_begin}</span>
+                                        </li>
+                                        <li>
+                                            <span>下午抢购时间</span>
+                                            <span>{$mdocl.rengou_begin_day}</span>
+                                        </li>
+                                    </ul>
                                 </div>
                                 <!--<div class="mill-tag">永久产权</div>-->
                             </div>
@@ -151,7 +197,7 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>价格</span>
-                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                    <span>{:showprice($moc1.price,0)}USDT/台</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>预计回报率</span>
@@ -177,11 +223,11 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>上午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                    <span>{$moc1.rengou_begin}</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>下午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                    <span>{$moc1.rengou_begin_day}</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -219,7 +265,7 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span class="gray-font">价格</span>
-                                                                    <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
+                                                                    <span class="gray-font">{:showprice($mdl.price,0)}USDT/台</span>
                                                                 </li>
                                                                 <li>
                                                                     <span class="gray-font">预计回报率</span>
@@ -267,7 +313,7 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>价格</span>
-                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                    <span>{:showprice($moc1.price,0)}USDT/台</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>预计回报率</span>
@@ -293,11 +339,11 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>上午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                    <span>{$moc1.rengou_begin}</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>下午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                    <span>{$moc1.rengou_begin_day}</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -336,7 +382,7 @@
                                                     <ul class="mill-entity-list">
                                                         <li>
                                                             <span class="gray-font">价格</span>
-                                                            <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
+                                                            <span class="gray-font">{:showprice($mdl.price,0)}USDT/台</span>
                                                         </li>
                                                         <li>
                                                             <span class="gray-font">预计回报率</span>
@@ -383,7 +429,7 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>价格</span>
-                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                    <span>{:showprice($moc1.price,0)}USDT/台</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>预计回报率</span>
@@ -409,11 +455,11 @@
                                                             <ul class="mill-entity-list">
                                                                 <li>
                                                                     <span>上午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                    <span>{$moc1.rengou_begin}</span>
                                                                 </li>
                                                                 <li>
                                                                     <span>下午抢购时间</span>
-                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                    <span>{$moc1.rengou_begin_day}</span>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -518,7 +564,7 @@
                                                 <ul class="mill-entity-list">
                                                     <li>
                                                         <span>价格</span>
-                                                        <span>{:showprice($moc0.price,2)}USDT/台</span>
+                                                        <span>{:showprice($moc0.price,0)}USDT/台</span>
                                                     </li>
                                                     <li>
                                                         <span>预计回报率</span>
@@ -611,7 +657,7 @@
                                                     <ul class="mill-entity-list">
                                                         <li>
                                                             <span>价格</span>
-                                                            <span>{:showprice($moc0.price,2)}USDT/台</span>
+                                                            <span>{:showprice($moc0.price,0)}USDT/台</span>
                                                         </li>
                                                         <li>
                                                             <span>预计回报率</span>
@@ -656,7 +702,7 @@
                                                     <ul class="mill-entity-list">
                                                         <li>
                                                             <span class="gray-font">价格</span>
-                                                            <span class="gray-font">{:showprice($mdocl.price,2)}USDT/台</span>
+                                                            <span class="gray-font">{:showprice($mdocl.price,0)}USDT/台</span>
                                                         </li>
                                                         <li>
                                                             <span class="gray-font">预计回报率</span>
@@ -760,6 +806,8 @@
                 {
                     $('#mill-entity-jieshu-time' + element.id).empty()
                     $('#mill-entity-jieshu-time' + element.id).html('     ')
+                    $('#mill-entity-jieshu-time-all' + element.id).empty()
+                    $('#mill-entity-jieshu-time-all' + element.id).html('     ')
                     return false
                 }
                 const day = parseInt(time / (24 * 3600))
@@ -776,19 +824,26 @@
                     b_parent_zero = true
                     $('#jieshu_time_day' + element.id).hide()
                     $('#jieshu_time_comma_day' + element.id).hide()
+                    $('#jieshu_time_day_all' + element.id).hide()
+                    $('#jieshu_time_comma_day_all' + element.id).hide()
+                    
                 }
                 else
                 {
                     $('#jieshu_time_day' + element.id).text(day)
+                    $('#jieshu_time_day_all' + element.id).text(day)
                 }
                 if(hour <= 0 && b_parent_zero)
                 {
                     $('#jieshu_time_hour' + element.id).hide()
                     $('#jieshu_time_comma_hour' + element.id).hide()
+                    $('#jieshu_time_hour_all' + element.id).hide()
+                    $('#jieshu_time_comma_hour_all' + element.id).hide()
                 }
                 else
                 {
                     $('#jieshu_time_hour' + element.id).text(hour)
+                    $('#jieshu_time_hour_all' + element.id).text(hour)
                     b_parent_zero = false
                 }
                 
@@ -796,19 +851,24 @@
                 {
                     $('#jieshu_time_min' + element.id).hide()
                     $('#jieshu_time_comma_min' + element.id).hide()
+                    $('#jieshu_time_min_all' + element.id).hide()
+                    $('#jieshu_time_comma_min_all' + element.id).hide()
                 }
                 else
                 {
                     $('#jieshu_time_min' + element.id).text(min)
+                    $('#jieshu_time_min_all' + element.id).text(min)
                 }
                 
                 if(sec <= 0 && b_parent_zero)
                 {
                     $('#jieshu_time_sec' + element.id).hide()
+                    $('#jieshu_time_sec_all' + element.id).hide()
                 }
                 else
                 {
                     $('#jieshu_time_sec' + element.id).text(sec)
+                    $('#jieshu_time_sec_all' + element.id).text(sec)
                 }
                 jieshu_times[key].time --;
             });
@@ -847,11 +907,11 @@
             overflow: scroll;
         }
         
-        .mill-tab-oc{  
+        .mill-tab-parent{  
             white-space: nowrap;
             overflow: scroll;
         }
-        .mill-tab-oc > li {
+        .mill-tab-parent > li {
             margin-right: 10px;
         }
         .mill-tab-sub > li {

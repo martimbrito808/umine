@@ -26,11 +26,21 @@ class MillController extends BaseController
             ->select();
         $jieshu_times = [];
         $today = strtotime(date('Y-m-d H:i:s'));
+        $days = Db::name('days')
+                ->order('days asc')
+                ->select();
+        $days_sorted = [];
+        foreach($days as $day)
+        {
+            $days_sorted[$day['days']] = $day['label'];
+        }
         foreach($mill_list as $key => $mill) 
         {
             $mill_list[$key]['rengou_begin'] = date('H:i',strtotime($mill['rengou_begin']));
             $mill_list[$key]['rengou_begin_day'] = date('H:i',strtotime($mill['rengou_begin_day']));
+            $mill_list[$key]['zhouqi'] = $days_sorted[$mill['zhouqi']];
             $jieshu_times[] = ['id' => $mill['id'], 'time' => strtotime($mill['jieshu_time']) - $today];
+
         }
         $mill_disabled_list = Db::name('goods_mill')->alias('gm')
             ->join('ocTypes o','gm.oc_type = o.id','LEFT')

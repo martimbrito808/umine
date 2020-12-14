@@ -100,23 +100,13 @@
                 
             </div>
         </div> 
-        <ul class="timeline-new">
-            <li class="timeline-round">
-                <span>{$money.rengou_begin}</span>
-            </li>
-            <li class="timeline-line">
-                <span>认购期</span>
-            </li>
-            <li class="timeline-round">
-                <span>{$money.rengou_end}</span>
-            </li>
-            <li class="timeline-line" style="padding-left: 1rem;">
-                <span>收益期</span>
-            </li>
-            <li class="timeline-round">
-                <span>{$money.get_time}</span>
-            </li>
-        </ul>
+        <div class="money-time-card">
+            <p>抢购时间:</p>
+            <p>{$money.rengou_begin} - {$money.rengou_end}</p>
+            <p>收益期:</p>
+            <p>{$money.get_time}</p>
+        </div>
+        <div class="money-divline"></div>
         <div class="product-presentation">
             <h3>产品介绍</h3>
             <p>

@@ -318,6 +318,19 @@ h1,h2,h3,h4,h5,p{
     right: 0.16rem;
     bottom: 0.1rem;
 }
+.money-divline{
+    height: 0px;
+    border-bottom: 0.17rem solid #F8F8F8;
+}
+.money-time-card{
+    background: white;
+    padding: 0 0.29rem;
+}
+.money-time-card > p{
+    font-size: 14px;
+    color: #333333;
+    padding: 5px 0px;
+}
 .timeLine {
     width: 100%;
     overflow: hidden;
@@ -544,6 +557,7 @@ h1,h2,h3,h4,h5,p{
     white-space:nowrap;
 }
 .mill-entity-list>li>span:first-child{
+    width: 2.5rem;
     color: #8A8D98;
     font-size: 0.24rem;
     margin-bottom: 0.03rem;
@@ -1332,8 +1346,9 @@ h1,h2,h3,h4,h5,p{
     height: 4.7rem
 }
 .mill-timeboard{
-    margin: 0.2rem auto;
-    padding: 0.4rem;
+    margin: 0.1rem auto;
+}
+.mill-timeboard > p{
     color: #4c5053;
     font-weight: bold;
     font-size: 14px;
