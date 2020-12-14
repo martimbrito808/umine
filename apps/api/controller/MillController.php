@@ -48,7 +48,10 @@ class MillController extends BaseController
             ->where(['status' => 1, 'stock' => 0])
             ->order('sort asc, id desc')
             ->select();
-            
+        foreach($mill_disabled_list as $key => $mill) 
+        {
+            $mill_disabled_list[$key]['zhouqi'] = $days_sorted[$mill['zhouqi']];
+        }
         //租赁矿机
         $wealth_list = Db::name('goods_wealth')->alias('gm')
         ->join('ocTypes o','gm.oc_type = o.id','LEFT')
