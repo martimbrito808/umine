@@ -524,7 +524,7 @@ h1,h2,h3,h4,h5,p{
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-right: 0.5rem;
+    margin-right: 0.1rem;
 }
 .mill-entity-list>li:last-child{
     margin-right: 0;
@@ -534,7 +534,7 @@ h1,h2,h3,h4,h5,p{
     width:unset !important;
 }
 .mill-entity-list-btc>li{
-    margin-right: 0.2rem !important;
+    margin-right: 0.1rem !important;
 }
 .mill-entity-list>li>span:first-child,
 .mill-entity-list>li>span:last-child{
@@ -571,10 +571,10 @@ h1,h2,h3,h4,h5,p{
     padding: 5px;
 }
 .mill-entity-jieshu-time > div{
-    margin: 5px;
+    margin: 0px 0.1rem;
     border: 1px solid #a2a2a2;
     border-radius: 4px;
-    padding: 1px 8px;
+    padding: 1px 0.1rem;
 }
 .jieshu_time_comma{
     margin: auto;
@@ -1336,6 +1336,7 @@ h1,h2,h3,h4,h5,p{
     padding: 0.4rem;
     color: #4c5053;
     font-weight: bold;
+    font-size: 14px;
 }
 .income-box{
     width: calc(100% - 0.66rem);

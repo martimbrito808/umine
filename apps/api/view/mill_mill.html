@@ -19,7 +19,7 @@
     <div class="index-wrapper">
         <div class="mill-wrap">
             <img src="../../public/static/images/bg5.png" alt="" class="mill-logo">
-            <ul class="mill-tab mill-tab-oc">
+            <ul class="mill-tab mill-tab-parent">
                 <li>
                     <a data-key="octype0" class="active" href="javascript:void(0)">
                         全部
@@ -34,14 +34,8 @@
                     </a>
                 </li>
                 {/volist}
-                <li>
-                    <a data-key="octypeextra" href="javascript:void(0)">
-                        限时活动
-                        <span class="border"></span>
-                    </a>
-                </li>
             </ul>
-            <div id="octype0" class="mill mill-oc mill-active">
+            <div id="octype0" class="mill mill-parent mill-active">
                 <ul class="mill-entity">
                     {volist name='mill_list' id='moc0'} 
                     <a href="/api/mill/income_introduced?id={$moc0.id}&token={$auth.token}">
@@ -121,99 +115,333 @@
                     {/volist}
                 </ul>
             </div>
-
-            <div id="octype1" class="mill mill-btc">
-                <div class="mill-wrap mill-wrap-btc" style="padding:0">
-                    <ul class="mill-tab mill-tab-btc mill-tab-sub">
-                        <li>
-                            <a data-key="panel-btc-list" class="active" href="javascript:void(0)">
-                                实体矿机购买
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="panel-could-buy" href="javascript:void(0)">
-                                云算力购买
-                            </a>
-                        </li>
-                        <li>
-                            <a data-key="panel-cloud-rent" href="javascript:void(0)">
-                                云算力租赁
-                            </a>
-                        </li>
-                    </ul>
-                    <div id="panel-btc-list" class="mill mill-btc-sub mill-active">
-                        <ul class="mill-entity">
-                            {volist name='mill_list' id='moc1'} 
-                                {if $moc1.oc_type == 1 && $moc1.category == 1}  <!--现货-->
-                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=1">
-                                        <li class="brown-bg">
+            {volist name='oc_types' id='oc_type'}
+                {if $oc_type.id != 3}
+                    <div id="octype{$oc_type.id}" class="mill mill-parent">
+                        <div class="mill-wrap mill-wrap-btc" style="padding:0">
+                            <ul class="mill-tab mill-tab-sub">
+                                <li>
+                                    <a data-key="panel-btc-list{$oc_type.id}" class="active" href="javascript:void(0)">
+                                        实体矿机购买
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-key="panel-could-buy{$oc_type.id}" href="javascript:void(0)">
+                                        云算力购买
+                                    </a>
+                                </li>
+                                <li>
+                                    <a data-key="panel-cloud-rent{$oc_type.id}" href="javascript:void(0)">
+                                        云算力租赁
+                                    </a>
+                                </li>
+                            </ul>
+                            <div id="panel-btc-list{$oc_type.id}" class="mill mill-sub mill-active">
+                                <ul class="mill-entity">
+                                    {volist name='mill_list' id='moc1'} 
+                                        {if $moc1.oc_type == $oc_type.id && $moc1.category == 1}  <!--现货-->
+                                            <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=1">
+                                                <li class="brown-bg">
+                                                    <div class="mill-entity-box">
+                                                        <div class="mill-entity-top">
+                                                            <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
+                                                            <p class="mill-entity-title">{$moc1.name}</p>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>价格</span>
+                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>预计回报率</span>
+                                                                    <span>{$moc1.huibaolv}</span>
+                                                                </li>
+                                                            </ul>
+                                                            <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>电费</span>
+                                                                    <span>{:showprice($moc1.dianfei,2)}元/度</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>产权</span>
+                                                                    <span>{$moc1.zhouqi}天</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>上午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>下午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                        <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                            <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                            <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                            <span class="jieshu_time_comma">后结束</span>
+                                                        </div>
+                                                        <a class="go-link">
+                                                            立即抢购
+                                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        {/if}
+                                    {/volist}
+                                    {volist name='mill_disabled_list' id='mdl'} 
+                                        {if  $mdl.oc_type == $oc_type.id && $mdl.category == 1}
+                                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                                                <li>
+                                                    <div class="mill-entity-box">
+                                                        <div class="mill-entity-top">
+                                                            <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
+                                                            <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span class="gray-font">价格</span>
+                                                                    <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="gray-font">预计回报率</span>
+                                                                    <span class="gray-font">{$mdl.huibaolv}</span>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="mill-tag-box">
+                                                                <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                                                <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                                            </div>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span class="gray-font">电费</span>
+                                                                    <span class="gray-font">{:showprice($mdl.dianfei,2)}元/度</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="gray-font">产权</span>
+                                                                    <span class="gray-font">{$mdl.zhouqi}天</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        {/if}
+                                    {/volist}
+                                </ul>
+                            </div>
+                    
+                            <!--云算力矿机-->
+                            <div id="panel-could-buy{$oc_type.id}" class="mill mill-sub">
+                                <ul class="mill-entity">
+                                    {volist name='mill_list' id='moc1'} 
+                                        {if $moc1.oc_type == $oc_type.id && $moc1.category == 2}  <!--现货-->
+                                            <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
+                                                <li class="brown-bg">
+                                                    <div class="mill-entity-box">
+                                                        <div class="mill-entity-top">
+                                                            <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
+                                                            <p class="mill-entity-title">{$moc1.name}</p>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>价格</span>
+                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>预计回报率</span>
+                                                                    <span>{$moc1.huibaolv}</span>
+                                                                </li>
+                                                            </ul>
+                                                            <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
+                                                        </div>
+                                                        
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>电费</span>
+                                                                    <span>{:showprice($moc1.dianfei,2)}元/度</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>产权</span>
+                                                                    <span>{$moc1.zhouqi}天</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>上午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>下午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                        <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                            <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                            <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                            <span class="jieshu_time_comma">后结束</span>
+                                                        </div>
+                                                        <a class="go-link">
+                                                            立即抢购
+                                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        {/if}
+                                    {/volist}
+                                    {volist name='mill_disabled_list' id='mdl'} 
+                                    {if $mdl.oc_type == $oc_type.id && $mdl.category == 2}
+                                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=1">
+                                        <li>
                                             <div class="mill-entity-box">
                                                 <div class="mill-entity-top">
-                                                    <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
-                                                    <p class="mill-entity-title">{$moc1.name}</p>
+                                                    <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
+                                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
                                                 </div>
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span>价格</span>
-                                                            <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                            <span class="gray-font">价格</span>
+                                                            <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
                                                         </li>
                                                         <li>
-                                                            <span>预计回报率</span>
-                                                            <span>{$moc1.huibaolv}</span>
+                                                            <span class="gray-font">预计回报率</span>
+                                                            <span class="gray-font">{$mdl.huibaolv}</span>
                                                         </li>
                                                     </ul>
-                                                    <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
-                                                </div>
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>电费</span>
-                                                            <span>{:showprice($moc1.dianfei,2)}元/度</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>产权</span>
-                                                            <span>{$moc1.zhouqi}天</span>
-                                                        </li>
-                                                    </ul>
+                                                    <div class="mill-tag-box">
+                                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
+                                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
+                                                    </div>
                                                 </div>
                                                 
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span>上午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($md1.dianfei,2)}元/度</span>
                                                         </li>
                                                         <li>
-                                                            <span>下午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                            <span>产权</span>
+                                                            <span>{$md1.zhouqi}天</span>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
-                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
-                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
-                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
-                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
-                                                    <span class="jieshu_time_comma">后结束</span>
-                                                </div>
-                                                <a class="go-link">
-                                                    立即抢购
-                                                    <img src="../../public/static/images/right_icon4.png" alt="">
-                                                </a>
-                                            </div>
                                         </li>
                                     </a>
-                                {/if}
-                            {/volist}
-                            {volist name='mill_disabled_list' id='mdl'} 
-                                {if  $mdl.oc_type == 1 && $mdl.category == 1}
-                                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
+                                    {/if}
+                                    {/volist}
+                                </ul>
+                            </div>
+                            <div id="panel-cloud-rent{$oc_type.id}" class="mill mill-sub">
+                                <ul class="mill-entity">
+                                    {volist name='mill_list' id='moc1'} 
+                                        {if  $moc1.oc_type == $oc_type.id && $moc1.category == 3}  <!--现货-->
+                                            <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
+                                                <li class="brown-bg">
+                                                    <div class="mill-entity-box">
+                                                        <div class="mill-entity-top">
+                                                            <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
+                                                            <p class="mill-entity-title">{$moc1.name}</p>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>价格</span>
+                                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>预计回报率</span>
+                                                                    <span>{$moc1.huibaolv}</span>
+                                                                </li>
+                                                            </ul>
+                                                            <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
+                                                        </div>
+                                                    
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>电费</span>
+                                                                    <span>{:showprice($moc1.dianfei,2)}元/度</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>产权</span>
+                                                                    <span>{$moc1.zhouqi}天</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="mill-entity-bottom">
+                                                            <ul class="mill-entity-list">
+                                                                <li>
+                                                                    <span>上午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
+                                                                </li>
+                                                                <li>
+                                                                    <span>下午抢购时间</span>
+                                                                    <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                                        <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
+                                                            <div id="jieshu_time_day{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
+                                                            <div id="jieshu_time_hour{$moc1.id}">1</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_min{$moc1.id}">12</div>
+                                                            <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
+                                                            <div id="jieshu_time_sec{$moc1.id}">23</div>
+                                                            <span class="jieshu_time_comma">后结束</span>
+                                                        </div>
+                                                        <a class="go-link">
+                                                            立即抢购
+                                                            <img src="../../public/static/images/right_icon4.png" alt="">
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </a>
+                                        {/if}
+                                    {/volist}
+                                    {volist name='mill_disabled_list' id='mdl'} 
+                                    {if  $mdl.oc_type == $oc_type.id && $mdl.category == 3}
+                                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=2">
                                         <li>
                                             <div class="mill-entity-box">
                                                 <div class="mill-entity-top">
@@ -239,330 +467,29 @@
                                                 <div class="mill-entity-bottom">
                                                     <ul class="mill-entity-list">
                                                         <li>
-                                                            <span class="gray-font">电费</span>
-                                                            <span class="gray-font">{:showprice($mdl.dianfei,2)}元/度</span>
-                                                        </li>
-                                                        <li>
-                                                            <span class="gray-font">产权</span>
-                                                            <span class="gray-font">{$mdl.zhouqi}天</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </a>
-                                {/if}
-                            {/volist}
-                        </ul>
-                    </div>
-            
-                    <!--云算力矿机-->
-                    <div id="panel-could-buy" class="mill mill-btc-sub">
-                        <ul class="mill-entity">
-                            {volist name='mill_list' id='moc1'} 
-                                {if $moc1.oc_type == 1 && $moc1.category == 2}  <!--现货-->
-                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
-                                        <li class="brown-bg">
-                                            <div class="mill-entity-box">
-                                                <div class="mill-entity-top">
-                                                    <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
-                                                    <p class="mill-entity-title">{$moc1.name}</p>
-                                                </div>
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>价格</span>
-                                                            <span>{:showprice($moc1.price,2)}USDT/台</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>预计回报率</span>
-                                                            <span>{$moc1.huibaolv}</span>
-                                                        </li>
-                                                    </ul>
-                                                    <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
-                                                </div>
-                                                
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
                                                             <span>电费</span>
-                                                            <span>{:showprice($moc1.dianfei,2)}元/度</span>
+                                                            <span>{:showprice($md1.dianfei,2)}元/度</span>
                                                         </li>
                                                         <li>
                                                             <span>产权</span>
-                                                            <span>{$moc1.zhouqi}天</span>
+                                                            <span>{$md1.zhouqi}天</span>
                                                         </li>
                                                     </ul>
                                                 </div>
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>上午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>下午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
-                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
-                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
-                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
-                                                    <span class="jieshu_time_comma">后结束</span>
-                                                </div>
-                                                <a class="go-link">
-                                                    立即抢购
-                                                    <img src="../../public/static/images/right_icon4.png" alt="">
-                                                </a>
                                             </div>
                                         </li>
                                     </a>
-                                {/if}
-                            {/volist}
-                            {volist name='mill_disabled_list' id='mdl'} 
-                            {if $mdl.oc_type == 1 && $mdl.category == 2}
-                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=1">
-                                <li>
-                                    <div class="mill-entity-box">
-                                        <div class="mill-entity-top">
-                                            <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
-                                            <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
-                                        </div>
-                                        <div class="mill-entity-bottom">
-                                            <ul class="mill-entity-list">
-                                                <li>
-                                                    <span class="gray-font">价格</span>
-                                                    <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
-                                                </li>
-                                                <li>
-                                                    <span class="gray-font">预计回报率</span>
-                                                    <span class="gray-font">{$mdl.huibaolv}</span>
-                                                </li>
-                                            </ul>
-                                            <div class="mill-tag-box">
-                                                <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
-                                                <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="mill-entity-bottom">
-                                            <ul class="mill-entity-list">
-                                                <li>
-                                                    <span>电费</span>
-                                                    <span>{:showprice($md1.dianfei,2)}元/度</span>
-                                                </li>
-                                                <li>
-                                                    <span>产权</span>
-                                                    <span>{$md1.zhouqi}天</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </a>
-                            {/if}
-                            {/volist}
-                        </ul>
-                    </div>
-                    <div id="panel-cloud-rent" class="mill mill-btc-sub">
-                        <ul class="mill-entity">
-                            {volist name='mill_list' id='moc1'} 
-                                {if  $moc1.oc_type == 1 && $moc1.category == 3}  <!--现货-->
-                                    <a href="/api/mill/income_introduced?id={$moc1.id}&token={$auth.token}&method=2">
-                                        <li class="brown-bg">
-                                            <div class="mill-entity-box">
-                                                <div class="mill-entity-top">
-                                                    <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
-                                                    <p class="mill-entity-title">{$moc1.name}</p>
-                                                </div>
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>价格</span>
-                                                            <span>{:showprice($moc1.price,2)}USDT/台</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>预计回报率</span>
-                                                            <span>{$moc1.huibaolv}</span>
-                                                        </li>
-                                                    </ul>
-                                                    <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
-                                                </div>
-                                            
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>电费</span>
-                                                            <span>{:showprice($moc1.dianfei,2)}元/度</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>产权</span>
-                                                            <span>{$moc1.zhouqi}天</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="mill-entity-bottom">
-                                                    <ul class="mill-entity-list">
-                                                        <li>
-                                                            <span>上午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin}</span>
-                                                        </li>
-                                                        <li>
-                                                            <span>下午抢购时间</span>
-                                                            <span style="font-size:0.25rem;">{$moc1.rengou_begin_day}</span>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="mill-entity-foot mill-entity-jieshu-time-foot">
-                                                <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc1.id}">
-                                                    <div id="jieshu_time_day{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc1.id}">天</span>
-                                                    <div id="jieshu_time_hour{$moc1.id}">1</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_min{$moc1.id}">12</div>
-                                                    <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc1.id}">:</span>
-                                                    <div id="jieshu_time_sec{$moc1.id}">23</div>
-                                                    <span class="jieshu_time_comma">后结束</span>
-                                                </div>
-                                                <a class="go-link">
-                                                    立即抢购
-                                                    <img src="../../public/static/images/right_icon4.png" alt="">
-                                                </a>
-                                            </div>
-                                        </li>
-                                    </a>
-                                {/if}
-                            {/volist}
-                            {volist name='mill_disabled_list' id='mdl'} 
-                            {if  $mdl.oc_type == 1 && $mdl.category == 3}
-                            <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}&method=2">
-                                <li>
-                                    <div class="mill-entity-box">
-                                        <div class="mill-entity-top">
-                                            <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
-                                            <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
-                                        </div>
-                                        <div class="mill-entity-bottom">
-                                            <ul class="mill-entity-list">
-                                                <li>
-                                                    <span class="gray-font">价格</span>
-                                                    <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
-                                                </li>
-                                                <li>
-                                                    <span class="gray-font">预计回报率</span>
-                                                    <span class="gray-font">{$mdl.huibaolv}</span>
-                                                </li>
-                                            </ul>
-                                            <div class="mill-tag-box">
-                                                <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
-                                                <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
-                                            </div>
-                                        </div>
-                                        <div class="mill-entity-bottom">
-                                            <ul class="mill-entity-list">
-                                                <li>
-                                                    <span>电费</span>
-                                                    <span>{:showprice($md1.dianfei,2)}元/度</span>
-                                                </li>
-                                                <li>
-                                                    <span>产权</span>
-                                                    <span>{$md1.zhouqi}天</span>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                            </a>
-                            {/if}
-                            {/volist}
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-
-            <div id="octype2" class="mill mill-oc">
-                <ul class="mill-entity">
-                    {volist name='mill_list' id='moc1'} 
-                        {if $moc1.oc_type == 2}  <!--现货-->
-                            <a href="/api/mill/income_introduced?id={$mocl.id}&token={$auth.token}">
-                                <li class="brown-bg">
-                                    <div class="mill-entity-box">
-                                        <div class="mill-entity-top">
-                                            <span class="mill-entity-status spot-goods">{$moc1.olabel}</span>
-                                            <p class="mill-entity-title">{$moc1.name}</p>
-                                        </div>
-                                        <div class="mill-entity-bottom">
-                                            <ul class="mill-entity-list">
-                                                <li>
-                                                    <span>价格</span>
-                                                    <span>{:showprice($moc1.price,2)}USDT/台</span>
-                                                </li>
-                                                <li>
-                                                    <span>预计回报率</span>
-                                                    <span>{$moc1.huibaolv}</span>
-                                                </li>
-                                            </ul>
-                                            <img src="{:getfile($moc1.cover)}" alt="" class="mill-entity-img">
-                                        </div>
-                                    </div>
-                                    <div class="mill-entity-foot">
-                                        <a class="go-link">
-                                            立即抢购
-                                            <img src="../../public/static/images/right_icon4.png" alt="">
-                                        </a>
-                                    </div>
-                                </li>
-                            </a>
-                        {/if}
-                    {/volist}
-                    {volist name='mill_disabled_list' id='mdl'} 
-                    {if $mdl.oc_type == 2}
-                    <a href="/api/mill/income_introduced?id={$mdl.id}&token={$auth.token}">
-                        <li>
-                            <div class="mill-entity-box">
-                                <div class="mill-entity-top">
-                                    <span class="mill-entity-status lose-efficacy">{$mdl.olabel}</span>
-                                    <p class="mill-entity-title2 gray-font">{$mdl.name}</p>
-                                </div>
-                                <div class="mill-entity-bottom">
-                                    <ul class="mill-entity-list">
-                                        <li>
-                                            <span class="gray-font">价格</span>
-                                            <span class="gray-font">{:showprice($mdl.price,2)}USDT/台</span>
-                                        </li>
-                                        <li>
-                                            <span class="gray-font">预计回报率</span>
-                                            <span class="gray-font">{$mdl.huibaolv}</span>
-                                        </li>
-                                    </ul>
-                                    <div class="mill-tag-box">
-                                        <img src="{:getfile($mdl.cover)}" alt="" class="mill-entity-img">
-                                        <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
-                                    </div>
-                                </div>
+                                    {/if}
+                                    {/volist}
+                                </ul>
                             </div>
-                        </li>
-                    </a>
-                    {/if}
-                    {/volist}
-                </ul>
-            </div>
-
-            <div id="octype3" class="mill mill-ipfs">
+                        </div>
+                    </div>
+                {/if}
+            {/volist}
+            <div id="octype3" class="mill mill-parent">
                 <div class="mill-wrap mill-wrap-ipfs">
-                    <ul class="mill-tab mill-tab-ipfs mill-tab-sub">
+                    <ul class="mill-tab mill-tab-sub">
                         <li>
                             <a data-key="ipfstype0" class="active" href="javascript:void(0)">
                                 全部
@@ -576,7 +503,7 @@
                         </li>
                         {/volist}
                     </ul>
-                    <div id="ipfstype0" class="mill mill-ipfs-sub mill-active">
+                    <div id="ipfstype0" class="mill mill-sub mill-active">
                         <ul class="mill-entity">
                             {volist name='mill_list' id='moc0'} 
                                 {if $moc0.oc_type == 3}
@@ -597,6 +524,11 @@
                                                         <span>预计回报率</span>
                                                         <span>{$moc0.huibaolv}</span>
                                                     </li>
+                                                </ul>
+                                                <img src="{:getfile($moc0.cover)}" alt="" class="mill-entity-img">
+                                            </div>
+                                            <div class="mill-entity-bottom">
+                                                <ul class="mill-entity-list">
                                                     <li>
                                                         <span>电费</span>
                                                         <span>{:showprice($moc0.dianfei,2)}元/度</span>
@@ -606,7 +538,6 @@
                                                         <span>{$moc0.zhouqi}天</span>
                                                     </li>
                                                 </ul>
-                                                <img src="{:getfile($moc0.cover)}" alt="" class="mill-entity-img">
                                             </div>
                                         </div>
                                         <div class="mill-entity-foot">
@@ -644,6 +575,18 @@
                                                     <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
                                                 </div>
                                             </div>
+                                            <div class="mill-entity-bottom">
+                                                <ul class="mill-entity-list">
+                                                    <li>
+                                                        <span>电费</span>
+                                                        <span>{:showprice($moc0.dianfei,2)}元/度</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>产权</span>
+                                                        <span>{$moc0.zhouqi}天</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                             <!--<div class="mill-tag">永久产权</div>-->
                                         </div>
                                     </li>
@@ -653,10 +596,10 @@
                         </ul>
                     </div>
                     {volist name='ipfs_types' id='oc_type'}
-                        <div id="ipfstype{$oc_type.id}" class="mill mill-ipfs-sub">
+                        <div id="ipfstype{$oc_type.id}" class="mill mill-sub">
                             <ul class="mill-entity">
                                 {volist name='mill_list' id='moc0'} 
-                                    {if $moc0.ipfs_type == $oc_type.id}
+                                    {if $moc0.ipfs_type == $oc_type.id && $moc0.oc_type == 3}
                                     <a href="/api/mill/income_introduced?id={$moc0.id}&token={$auth.token}">
                                         <li class="orange-bg">
                                             <div class="mill-entity-box">
@@ -677,6 +620,18 @@
                                                     </ul>
                                                     <img src="{:getfile($moc0.cover)}" alt="" class="mill-entity-img">
                                                 </div>
+                                                <div class="mill-entity-bottom">
+                                                    <ul class="mill-entity-list">
+                                                        <li>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($moc0.dianfei,2)}元/度</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>产权</span>
+                                                            <span>{$moc0.zhouqi}天</span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="mill-entity-foot">
                                                 <a class="go-link">
@@ -689,7 +644,7 @@
                                     {/if}
                                 {/volist}
                                 {volist name='mill_disabled_list' id='mdocl'}
-                                    {if $mdocl.ipfs_type == $oc_type.id} 
+                                    {if $mdocl.ipfs_type == $oc_type.id && $mdocl.oc_type == 3} 
                                     <a href="/api/mill/income_introduced?id={$mdocl.id}&token={$auth.token}">
                                         <li>
                                             <div class="mill-entity-box">
@@ -712,6 +667,18 @@
                                                         <img src="{:getfile($mdocl.cover)}" alt="" class="mill-entity-img">
                                                         <img src="../../public/static/images/tag.png" alt="" class="mill-tag-img">
                                                     </div>
+                                                </div>
+                                                <div class="mill-entity-bottom">
+                                                    <ul class="mill-entity-list">
+                                                        <li>
+                                                            <span>电费</span>
+                                                            <span>{:showprice($mdocl.dianfei,2)}元/度</span>
+                                                        </li>
+                                                        <li>
+                                                            <span>产权</span>
+                                                            <span>{$mdocl.zhouqi}天</span>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                                 <!--<div class="mill-tag">永久产权</div>-->
                                             </div>
@@ -848,38 +815,24 @@
         }
         setInterval(count_jieshu_time, 1000);
         //选项卡
-        $('.mill-tab-oc li a').click(function () {
+        $('.mill-tab-parent li a').click(function () {
             var that = $(this);
             var key = that.data('key');
-            $('.mill-tab-oc li a').removeClass('active');
+            $('.mill-tab-parent li a').removeClass('active');
             that.addClass('active');
-            $('.mill').removeClass('mill-active');
+            $('.mill-parent').removeClass('mill-active');
             $('#' + key).addClass('mill-active');
-            if(key == 'octype3')
-            {
-                $('#ipfstype0').addClass('mill-active');
-            }
-            if(key == 'octype1')
-            {
-                $('#panel-btc-list').addClass('mill-active');
-            }
+            $('#' + key).find(":first-child").find('.mill-sub:first').addClass('mill-active')
+            console.log($('#' + key).find(":first-child").find('.mill-sub').attr('class'))
         });
-        $('.mill-tab-btc li a').click(function () {
+        $('.mill-tab-sub li a').click(function () {
             var that = $(this);
             var key = that.data('key');
-            $('.mill-tab-btc li a').removeClass('active');
+            $('.mill-tab-sub li a').removeClass('active');
             that.addClass('active');
-            $('.mill-btc-sub').removeClass('mill-active');
+            $('.mill-sub').removeClass('mill-active');
             $('#' + key).addClass('mill-active');
         })
-        $('.mill-tab-ipfs li a').click(function () {
-            var that = $(this);
-            var key = that.data('key');
-            $('.mill-tab-ipfs li a').removeClass('active');
-            that.addClass('active');
-            $('.mill-ipfs-sub').removeClass('mill-active');
-            $('#' + key).addClass('mill-active');
-        });
     </script>
     <style>
         .mill-tab-sub{
