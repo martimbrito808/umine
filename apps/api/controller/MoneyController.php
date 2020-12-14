@@ -91,7 +91,9 @@ class MoneyController extends BaseController
     public function property()
     {
         $info = Db::name('user')->where(['id' => $this->user_id])->find();
-        $info['btc_cny'] = showprice($info['btc'] * getconfig('btc_parities'), 2);
+        $rate = getExchangeRate();
+        $info['btc'] = $info['btc'] + ($info['usdt'] * $rate);
+        $info['btc_cny'] = showprice($info['btc'] * getconfig('btc_parities'));
     
         if(empty($info)) {
              sendRequest(201, '获取数据失败，请稍后再试');

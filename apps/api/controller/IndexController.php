@@ -71,7 +71,7 @@ class IndexController extends BaseController
         $list = Db::name('finance')->where($map)->order("id desc")->select();
         foreach($list as $k => &$v) {
             $v['money_type'] = strtoupper($v['money_type']);
-            $v['money'] = showprice($v['money']);
+            $v['money'] = showprice($v['money'],2);
             if($v['mold'] == 'in') {
                 $v['money'] = '+' .$v['money'] . $v['money_type'];
             }else{

@@ -481,7 +481,26 @@ function arrData($msg, $error = 1, $data = array())
     );
     return $returnData;
 }
-
+function getExchangeRate()
+{
+    $res = json_decode(httpGet('https://www.okex.com/api/index/v3/BTC-USD/constituents'));
+    
+    $rate = 0;
+    if($res->error_code == 0)
+    {
+        try {
+            $rate = 1.00 / $res->data->last;
+        } catch (Exception $e) {
+            $rate = 0;
+        }
+    }
+    else
+    {
+        return json_encode($res);
+    }
+    
+    return $rate;
+}
 /**
  * 发起一个post请求到指定接口
  *

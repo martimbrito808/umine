@@ -32,9 +32,9 @@ class MyController extends BaseController
         if($userInfo['username'] == ''){
             $userInfo['username'] = $userInfo['tel'];
         }
-        
+        $rate = getExchangeRate();
+        //$userInfo['btc'] = $userInfo['btc'] + showPrice($userInfo['usdt'] * $rate);
         $userInfo['cny'] = showPrice($userInfo['btc'] * getconfig('btc_parities'));
-        
         $this->assign('data',$data);
         return $this->fetch('', compact('userInfo'));
     }
