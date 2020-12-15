@@ -33,14 +33,16 @@
         </button>
         <ul class="record_list">
             <li>
-                <span>时间</span>
-                <span>金额</span>
+                <span class="time">时间</span>
+                <span class="amount">金额</span>
+                <span class='reason'>途径</span>
             </li>
             {if !empty($list)} 
                 {volist name='list' id='ll'}
                     <li>
-                        <span>{:date('Y-m-d H:i:s', $ll.create_time)}</span>
-                        <span>{$ll.money}</span>
+                        <span class="time">{:date('Y-m-d H:i:s', $ll.create_time)}</span>
+                        <span class="amount">{$ll.money}</span>
+                        <span class="reason">{$ll.flabel}</span>
                     </li>
                 {/volist}
             </ul>

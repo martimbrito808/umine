@@ -91,7 +91,7 @@ class MoneyController extends BaseController
     public function property()
     {
         $info = Db::name('user')->where(['id' => $this->user_id])->find();
-        $rate = getExchangeRate();
+        $rate = 1;//getExchangeRate();
         //$rate = 1;
         $info['btc_total'] = $info['btc'] + ($info['usdt'] * $rate);
         $info['btc_cny'] = showprice($info['btc_total'] * getconfig('btc_parities'));
@@ -278,6 +278,14 @@ class MoneyController extends BaseController
                 'rate_num'     => toprice($money["withdrawal_fee"]),
                 'pay_num'      => toprice($param['money'] - $money['withdrawal_fee']),
                 'create_time'  => time()            
+            ]);
+            Db::name('finance')->insert([
+                'type'        => 15,
+                'money_type'  => $type,
+                'mold'        => 'out',
+                'user_id'     => $this->user_id,
+                'money'       => toprice($param['money']),
+                'create_time' => time(),
             ]);
             //减少用户金额
             Db::name('user')->where(['id' => $this->user_id])->setDec($type, toprice($param['money']));

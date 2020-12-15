@@ -479,7 +479,7 @@ class MyController extends BaseController
         }
         $convert_min_price = getConfig('convert_min_price');
         $convert_max_price = getConfig('convert_max_price');
-        $convert_exchange_rate = getExchangeRate(2);
+        $convert_exchange_rate = 1;//getExchangeRate(2);
         
         if(request()->isAjax()){
             if($param['num'] <= 0){

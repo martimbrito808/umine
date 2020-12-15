@@ -68,7 +68,10 @@ class IndexController extends BaseController
             $map['money_type'] = $param['class'];
         }
         
-        $list = Db::name('finance')->where($map)->order("id desc")->select();
+        $list = Db::name('finance')->alias('f')
+                ->join('financeTypes ft','f.type = ft.id','LEFT')
+                ->field('ft.label as flabel, f.*')
+                ->where($map)->order("id desc")->select();
         foreach($list as $k => &$v) {
             $v['money'] = $v['money_type'] == 'btc'?showprice($v['money']):showprice($v['money'],2);
             $v['money_type'] = strtoupper($v['money_type']);
