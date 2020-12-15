@@ -14,7 +14,13 @@ function getFullPath($filename)
 {
     return \think\Request::instance()->domain() . $filename;
 }
+function getMillEfee($mill, $days, $rebate = 0)
+{
+    $fee = ($mill['gonghaobi'] / 1000.00)*$mill['dianfei'] * $days;
+    $fee -= $fee * $rebate / 100.00;
 
+    return $fee;
+}
 /**
  * 富文本编辑器替换图片路径添加域名
  * @param $content

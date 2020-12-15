@@ -230,7 +230,7 @@
             </div>
             <div class="parameter-box">
                 <span class="window-label">购买数量</span>
-                <div class="parameter-row">
+                <div class="parameter-row param-num">
                     <button data-val='1'>1</button>
                     <button data-val='2'>2</button>
                     <button data-val='5'>5</button>
@@ -248,11 +248,24 @@
                 <span class="window-label">订单金额</span>
                 <span class="order-amount"> <span class='danjia'>{:showprice($info.price)}</span><span class="fontSmall">USDT</span></span>
             </div>
+            <div class="parameter-box">
+                <span class="window-label">电费=当</span>
+                <div class="parameter-row param-efee">
+                    {volist name='efees' id='efee'}
+                        <button data-val='{$efee.id}' amount='{$efee.amount}' selected {/if}>{$efee.days}</button>
+                    {/volist}
+                </div>
+            </div>
+            <div class="window_row_between">
+                <span class="window-label">金额</span>
+                <span class="order-amount"><span class='efee'>0</span><span class="fontSmall">USDT</span></span>
+            </div>
         </div>
         <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
         <div class="window_bottom">
             <input type="hidden" id="mill_id" value="{$info.id}" />
             <input type="hidden" id="num" value="" />
+            <input type="hidden" id="efee_id" value="0" />
             <button id='buynow'>购买</button>
         </div>
     </div>
@@ -279,7 +292,7 @@
         })
 
         //购买数量选择
-        $('.parameter-row button').click(function () {
+        $('.param-num button').click(function () {
             var that = $(this);
             var num = that.data('val');
             var money = "{:showprice($info.price)}"
@@ -289,10 +302,28 @@
             that.addClass('selected');
             $('.danjia').text(allmoney);
         });
+        //购买数量选择
+        $('.param-efee button').click(function () {
+            var that = $(this);
+            var id = that.data('val');
+            var selected_val = $('#efee_id').val()
+            var amount = that.attr('amount');
+            that.siblings().removeClass('selected');
+            that.addClass('selected');
+            if(id == selected_val)
+            {
+                amount = 0
+                id = 0;
+                that.removeClass('selected');
+            }
+            $('#efee_id').val(id)
+            $('.efee').text(amount);
+        });
         
         let lock = false;
         $('#buynow').click(function () {
             let mill_id = $('#mill_id').val();
+            const efee_id = $('#efee_id').val()
             let num = $('#num').val();
             let token = localStorage.getItem('token');
  
@@ -316,7 +347,8 @@
                 data : JSON.stringify({
                     mill_id:mill_id,
                     num: num,
-                    token: token
+                    token: token,
+                    efee_id:efee_id
                 }),
                 success : function(result) {
                     if(result.code == 200) {

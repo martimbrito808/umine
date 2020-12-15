@@ -34,3 +34,12 @@ ALTER TABLE `shop_goods_mill`
 	ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `rengou_begin_day` TIME NULL DEFAULT NULL AFTER `rengou_end`,
 	ADD COLUMN `rengou_end_day` TIME NULL DEFAULT NULL AFTER `rengou_begin_day`;
+
+	ALTER TABLE `shop_goods_mill_order`
+	ADD COLUMN `efee_limit` DATETIME NULL DEFAULT NULL AFTER `buy_time`;
+	ALTER TABLE `shop_goods_mill_order`
+	CHANGE COLUMN `efee_limit` `efee_limit` DATE NULL DEFAULT NULL AFTER `buy_time`;
+	ALTER TABLE `shop_goods_mill_order`
+	ADD COLUMN `efee` VARCHAR(100) NOT NULL DEFAULT '0' AFTER `order_price`;
+	efee_rebate
+	mill_order_efee
