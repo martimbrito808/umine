@@ -147,7 +147,31 @@ class TaskController extends Controller{
             }
         }
     }
-	    
+    public function checkEfeeLimit()
+    {
+        $dateToday = date('Y-m-d');
+        $date5DayPlus = date('Y-m-d', strtotime('+5 day'));
+        $limitedOrders = Db::name('goods_mill_order')
+                ->where([ 
+                    'efee_limit' => ['lt', $dateToday],
+                    'status' => 1])
+                ->update(['status' => 5]);
+        
+        $limitOrdersAfter5Day = Db::name('goods_mill_order')->alias('g')
+                                ->join('user u','g.user_id = u.id','LEFT')
+                                ->field('g.*, u.username, u.tel')
+                                ->where([ 
+                                    'efee_limit' => $date5DayPlus,
+                                    'g.status' => 1])
+                                ->select();
+        foreach($limitOrdersAfter5Day as $order)
+        {
+            $tel = $order['tel'];
+            sendSms($tel, getconfig('efee_limited_sms'));
+        }
+        echo count($limitedOrders);
+        exit;
+    }
     /**
      * 实体矿机收益结算 | 单独执行定时任务
      * 执行时间 24:00  

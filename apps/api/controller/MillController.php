@@ -149,55 +149,15 @@ class MillController extends BaseController
         if($millInfo['stock'] - $param['num'] < 0 ) {
             sendRequest(201, '购买失败，库存不足');
         }
-        //calc efee
-        $total_efee = getMillEfee($millInfo, 30);
-        $days = 30;
-        $efee_data = [
-            [
-                'amount' => $total_efee,
-                'days' => 30,
-                'type' => 1,
-                'paid_at' => date('Y-m-d H:i:s')
-            ]
-        ];
-        $efee_finance_data = [
-            [
-                'type' => 16,
-                'money_type'    => 'usdt',
-                'mold'          => 'out',
-                'user_id'       => $this->user_id,
-                'money'         => $total_efee,
-                'create_time'   => time(),
-            ]
-        ];
-        if($param['efee_id'] != 0)
-        {
-            $selected_efee = Db::name('efee_rebate')->find($param['efee_id']);
-            $selected_efee_amount = getMillEfee($millInfo, $selected_efee['days'],$selected_efee['rebate']);
-            $efee_data[] = 
-                [
-                    'amount' => $selected_efee_amount,
-                    'days' => $selected_efee['days'],
-                    'type' => 2,
-                    'paid_at' => date('Y-m-d H:i:s')
-                ];
-            $efee_finance_data[] = [
-                'type' => 16,
-                'money_type'    => 'usdt',
-                'mold'          => 'out',
-                'user_id'       => $this->user_id,
-                'money'         => $selected_efee_amount,
-                'create_time'   => time(),
-            ];
-            $total_efee += $selected_efee_amount;
-            $days += $efee['days'];
-        }
+        //upfront efee
+        $efee = Db::name('efee_rebate')->find($param['efee_id']);
+        $efee_amount = getMillEfee($millInfo, $efee['days'],$efee['rebate'], $param['num']);
         
-        $efee_limit = date('Y-m-d', strtotime('+'.$days.' day'));
+        $efee_limit = date('Y-m-d', strtotime('+'.$efee['days'].' day'));
 
         $userInfo = Db::name('user')->where(['id' => $this->user_id])->find();
-        $totalMoney = $millInfo['price'] * $param['num'] + $total_efee;
-        if($userInfo['usdt'] < ($totalMoney + $total_efee)) {
+        $totalMoney = $millInfo['price'] * $param['num'] + $efee_amount;
+        if($userInfo['usdt'] < ($totalMoney)) {
              sendRequest(201, '余额不足，请先充值');
         }
         
@@ -237,7 +197,7 @@ class MillController extends BaseController
                     ]);
             };
             $res = Db::name('goods_mill_order')
-                ->insertGetId([
+                ->insert([
                     'goods_mill_id' => $param['mill_id'],
                     'user_id'       => $this->user_id,
                     'orderno'       => date('YmdHis').randNum(),
@@ -250,24 +210,15 @@ class MillController extends BaseController
                     'buy_time'      => date('Y-m-d H:i:s'),
                     'method'        => $method,
                     'efee_limit'    => $efee_limit,
-                    'efee'          => $total_efee,
                 ]);
-            //log->efee
-            foreach($efee_data as $key => $efee)
-            {
-                $efee_data[$key]['order_id'] = $res;
-            }
-            Db::name('mill_order_efees')->insertAll($efee_data);
-            //log->finance
-            $efee_finance_data[] = [
+            Db::name('finance')->insert([
                 'type'          => 6,
                 'money_type'    => 'usdt',
                 'mold'          => 'out',
                 'user_id'       => $this->user_id,
                 'money'         => $totalMoney,
                 'create_time'   => time(),
-            ];
-            Db::name('finance')->insertAll($efee_finance_data);
+            ]);
                 
             // 上级返佣
             $commMoney_1 = $totalMoney * (getconfig('commission_1') / 100);

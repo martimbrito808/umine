@@ -14,9 +14,9 @@ function getFullPath($filename)
 {
     return \think\Request::instance()->domain() . $filename;
 }
-function getMillEfee($mill, $days, $rebate = 0)
+function getMillEfee($mill, $days, $rebate = 0, $num = 1)
 {
-    $fee = ($mill['gonghaobi'] / 1000.00)*$mill['dianfei'] * $days;
+    $fee = ( $mill['gonghaobi'] / 100.00 ) * showprice($mill['dianfei']) * 24 * $days * $num; //电力(￥) = 当日持有算力*（功耗比/1000）* 电价 * 24 * 矿机数量
     $fee -= $fee * $rebate / 100.00;
 
     return $fee;
