@@ -33,7 +33,7 @@ class MyController extends BaseController
             $userInfo['username'] = $userInfo['tel'];
         }
         $rate = getExchangeRate();
-        //$userInfo['btc'] = $userInfo['btc'] + showPrice($userInfo['usdt'] * $rate);
+        $userInfo['btc'] = $userInfo['btc'] + $userInfo['usdt'] * $rate;
         $userInfo['cny'] = showPrice($userInfo['btc'] * getconfig('btc_parities'));
         $this->assign('data',$data);
         return $this->fetch('', compact('userInfo'));
@@ -479,7 +479,7 @@ class MyController extends BaseController
         }
         $convert_min_price = getConfig('convert_min_price');
         $convert_max_price = getConfig('convert_max_price');
-        $convert_exchange_rate = getConfig('convert_exchange_rate');
+        $convert_exchange_rate = getExchangeRate(2);
         
         if(request()->isAjax()){
             if($param['num'] <= 0){

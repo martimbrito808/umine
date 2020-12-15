@@ -23,7 +23,7 @@
         <div class="property-wrap">
             <div class="property-card">
                 <span>资产(BTC)</span>
-                <h3>{:showprice($info.btc, 6)}</h3>
+                <h3>{:showprice($info.btc_total, 6)}</h3>
                 <h3>≈¥{$info.btc_cny}</h3>
             </div>
             <ul class="property-list">
@@ -34,7 +34,7 @@
                     </p>
                     <p class="property-msg">
                         <span>可用</span>
-                        <span>{:showprice($info.btc,2)}</span>
+                        <span>{:showprice($info.btc)}</span>
                     </p>
                     <p class="property-msg">
                         <span>冻结</span>

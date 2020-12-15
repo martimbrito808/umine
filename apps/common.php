@@ -481,7 +481,7 @@ function arrData($msg, $error = 1, $data = array())
     );
     return $returnData;
 }
-function getExchangeRate()
+function getExchangeRate($mode = 1)
 {
     $res = json_decode(httpGet('https://www.okex.com/api/index/v3/BTC-USD/constituents'));
     
@@ -489,7 +489,10 @@ function getExchangeRate()
     if($res->error_code == 0)
     {
         try {
-            $rate = 1.00 / $res->data->last;
+            if($mode == 1)
+                $rate = 1.00 / $res->data->last;
+            if($mode == 2)
+                $rate = $res->data->last;
         } catch (Exception $e) {
             $rate = 0;
         }
