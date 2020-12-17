@@ -521,7 +521,7 @@
                 {/if}
             {/volist}
             <div id="octype3" class="mill mill-parent">
-                <div class="mill-wrap mill-wrap-ipfs">
+                <div class="mill-wrap mill-wrap-ipfs"  style="padding:0">
                     <ul class="mill-tab mill-tab-sub">
                         <li>
                             <a data-key="ipfstype0" class="active" href="javascript:void(0)">
@@ -572,8 +572,32 @@
                                                     </li>
                                                 </ul>
                                             </div>
+                                            
+                                            <div class="mill-entity-bottom">
+                                                <ul class="mill-entity-list">
+                                                    <li>
+                                                        <span>上午抢购时间</span>
+                                                        <span>{$moc0.rengou_begin}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span>下午抢购时间</span>
+                                                        <span>{$moc0.rengou_begin_day}</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="mill-entity-foot">
+                                        
+                                        <div class="mill-entity-foot mill-entity-jieshu-time-foot">
+                                            <div class="mill-entity-jieshu-time" id="mill-entity-jieshu-time{$moc0.id}">
+                                                <div id="jieshu_time_day{$moc0.id}">1</div>
+                                                <span class="jieshu_time_comma" id="jieshu_time_comma_day{$moc0.id}"></span>
+                                                <div id="jieshu_time_hour{$moc0.id}">1</div>
+                                                <span class="jieshu_time_comma" id="jieshu_time_comma_hour{$moc0.id}">:</span>
+                                                <div id="jieshu_time_min{$moc0.id}">12</div>
+                                                <span class="jieshu_time_comma" id="jieshu_time_comma_min{$moc0.id}">:</span>
+                                                <div id="jieshu_time_sec{$moc0.id}">23</div>
+                                                <span class="jieshu_time_comma">后结束</span>
+                                            </div>
                                             <a class="go-link" href="/api/mill/income_introduced?id={$moc0.id}&token={$auth.token}">
                                                 立即抢购
                                                 <img src="../../public/static/images/right_icon4.png" alt="">

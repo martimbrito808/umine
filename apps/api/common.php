@@ -4,7 +4,7 @@
  * Date: 2020-07-16
  * Api/common.php
  */
-
+use think\Db;
 /**
  * 获取文件完整路径
  * @param $filename
@@ -14,12 +14,42 @@ function getFullPath($filename)
 {
     return \think\Request::instance()->domain() . $filename;
 }
-function getMillEfee($mill, $days, $rebate = 0, $num = 1)
+function getMillEfee($user_id,$mill, $days, $rebate = 0, $num = 1)
 {
-    $fee = ( $mill['gonghaobi'] / 100.00 ) * showprice($mill['dianfei']) * 24 * $days * $num; //电力(￥) = 当日持有算力*（功耗比/1000）* 电价 * 24 * 矿机数量
+    $suanli = Db::name('user')->where('id',$user_id)->value('suanli');
+    // - $suanli * $num 
+    $fee = ( ( $mill['gonghaobi'] / 100.00 ) * $mill['dianfei'] * 24 * $num ) * $days; //电力(￥) = 当日持有算力*（功耗比/1000）* 电价 * 24 * 矿机数量
     $fee -= $fee * $rebate / 100.00;
 
     return $fee;
+}
+function getRebateMultiple($user_id)
+{
+    $total = Db::name('goods_mill_order')
+                   ->where([
+                    'user_id' => $user_id , 
+                    'method' => 1])
+                   ->sum('order_price');
+    $total = showprice($total);
+    $multiple = 0;
+    if($total > 0 && $total < 10000)
+    {
+        $multiple = 1;
+    }
+    if($total >= 10000 && $total < 30000)
+    {
+        $multiple = 10;
+    }
+    if($total >= 30000 && $total < 100000)
+    {
+        $multiple = 20;
+    }
+    if($total >= 100000)
+    {
+        $multiple = 30;
+    }
+
+    return $multiple;
 }
 /**
  * 富文本编辑器替换图片路径添加域名

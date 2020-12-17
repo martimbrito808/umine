@@ -91,7 +91,7 @@ class MoneyController extends BaseController
     public function property()
     {
         $info = Db::name('user')->where(['id' => $this->user_id])->find();
-        $rate = 1;//getExchangeRate();
+        $rate = getExchangeRate();
         //$rate = 1;
         $info['btc_total'] = $info['btc'] + ($info['usdt'] * $rate);
         $info['btc_cny'] = showprice($info['btc_total'] * getconfig('btc_parities'));

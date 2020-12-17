@@ -97,24 +97,33 @@
     <div class="title">我的矿机</div>
 </div>
 <div class="container">
-    <ul class="my-ltc-list">
-        {volist name="list" id='ll'}
-            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
-                <li class="my-ltc-item">
-                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
-                    <div class="my-ltc-item-right">
-                        <p class="my-ltc-item-title">{$ll.name}</p>
-                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
-                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
-                    </div>
-                    <div class="my-ltc-item-flag">
-                        <img class="bz" src="../../public/static/images/bz.png" alt="">
-                        <span>保障中</span>
-                    </div>
-                </li>
-            </a>
-        {/volist}
-    </ul>
+    
+    {volist name='oc_types' id='oc_type'}
+        <p style="font-size: 500%;margin: .3rem .3rem 0 .3rem;">{$oc_type.label}</p>
+        <ul class="my-ltc-list">
+            {volist name="list" id='ll'}
+                {if $ll.oc_type == $oc_type.id}
+                    <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                        <li class="my-ltc-item">
+                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                            <div class="my-ltc-item-right">
+                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                <p class="my-ltc-item-money">我的算力:</p>
+                                <p class="my-ltc-item-money">购买日期:</p>
+                                <p class="my-ltc-item-money">有效期</p>
+                            </div>
+                            <div class="my-ltc-item-flag">
+                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                <span>保障中</span>
+                            </div>
+                        </li>
+                    </a>
+                {/if}
+            {/volist}
+        </ul>
+    {/volist}
 </div>
 </body>
 </html>

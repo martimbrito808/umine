@@ -1,1 +1,17 @@
 2020-12-04 11:50:52: 
+2020-12-17 12:23:32: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:23:57: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:24:17: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:28:37: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:29:05: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:30:14: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:30:16: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:30:20: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:30:43: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:31:17: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:31:18: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:31:35: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:31:37: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:31:50: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:32:50: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null
+2020-12-17 12:33:51: SQLSTATE[23000]: Integrity constraint violation: 1048 Column 'u_id' cannot be null

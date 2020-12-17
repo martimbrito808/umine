@@ -38,8 +38,8 @@ class IndexController extends BaseController
         //矿机总收益
         $data['totalshouyi'] = Db::name('user_mill')->where(['user_id' => $this->user_id])->sum('count_earnings');
         $data['totalshouyi_cny'] = $data['totalshouyi'] * getconfig('btc_parities');
-        //昨日收益 (真·昨日收益)
-        $data['yesterdayshouyi'] = Db::name('goods_mill_earnings')->where(['user_id' => $this->user_id, 'earnings_date' => date('Y-m-d',strtotime('-1day'))]) -> sum('price');
+        //昨日收益 (真·昨日收益) 'earnings_date' => date('Y-m-d',strtotime('-1day'))
+        $data['yesterdayshouyi'] = Db::name('goods_mill_earnings')->where(['user_id' => $this->user_id, ]) -> sum('price');
         //我的矿机列表
         $data['mill_list'] = Db::name('user_mill')->alias('um')
             ->join('goods_mill gm','um.mill_id = gm.id','LEFT')
@@ -93,11 +93,13 @@ class IndexController extends BaseController
         
         $list = Db::name('user_mill')->alias('um')
         ->join('goods_mill m','um.mill_id = m.id','LEFT')
-        ->field('um.*, m.name, m.cover')
+        ->field('um.*, m.name, m.cover, m.oc_type')
         ->where(['um.user_id' => $this->user_id])
         ->select();
-    
-        return $this->fetch('',compact('list','token'));
+        $oc_types = Db::name('oc_types')
+        ->order('uid asc')
+        ->select();
+        return $this->fetch('',compact('list','token','oc_types'));
     }
     
     

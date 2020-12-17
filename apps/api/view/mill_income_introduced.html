@@ -266,6 +266,7 @@
             <input type="hidden" id="mill_id" value="{$info.id}" />
             <input type="hidden" id="num" value="" />
             <input type="hidden" id="efee_id" value="1" />
+            <input type="hidden" id="efee_amount" value="{$efees[0]['amount']}" />
             <button id='buynow'>购买</button>
         </div>
     </div>
@@ -301,6 +302,7 @@
             that.siblings().removeClass('selected');
             that.addClass('selected');
             $('.danjia').text(allmoney);
+            getEfee();
         });
         //购买数量选择
         $('.param-efee button').click(function () {
@@ -310,9 +312,13 @@
             that.siblings().removeClass('selected');
             that.addClass('selected');
             $('#efee_id').val(id)
-            $('.efee').text(amount);
+            $('#efee_amount').val(amount);
+            getEfee();
         });
-        
+        function getEfee()
+        {
+            $('.efee').text( $('#efee_amount').val() * $('#num').val() )
+        }
         let lock = false;
         $('#buynow').click(function () {
             let mill_id = $('#mill_id').val();

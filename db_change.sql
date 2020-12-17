@@ -39,7 +39,14 @@ ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `efee_limit` DATETIME NULL DEFAULT NULL AFTER `buy_time`;
 	ALTER TABLE `shop_goods_mill_order`
 	CHANGE COLUMN `efee_limit` `efee_limit` DATE NULL DEFAULT NULL AFTER `buy_time`;
-	ALTER TABLE `shop_goods_mill_order`
-	ADD COLUMN `efee` VARCHAR(100) NOT NULL DEFAULT '0' AFTER `order_price`;
-	efee_rebate
-	mill_order_efee
+
+
+
+	/*Buy Rebate*/
+	ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `rp1` FLOAT NOT NULL DEFAULT '5' AFTER `suanli`,
+	ADD COLUMN `rp2` FLOAT NOT NULL DEFAULT '3' AFTER `rp1`,
+	ADD COLUMN `rp3` FLOAT NOT NULL DEFAULT '1' AFTER `rp2`,
+	ADD COLUMN `r1` FLOAT NOT NULL DEFAULT '5' AFTER `rp3`,
+	ADD COLUMN `r2` FLOAT NOT NULL DEFAULT '3' AFTER `r1`,
+	ADD COLUMN `r3` FLOAT NOT NULL DEFAULT '1' AFTER `r2`;

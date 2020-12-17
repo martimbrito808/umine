@@ -105,13 +105,14 @@ class TaskController extends Controller{
     
     public function colsemileorder()
     {
-        $orders = Db::name('goods_mill_order')->where('status', 3)->select();
+        $orders = Db::name('goods_mill_order')->where('status', 1)->select();
         foreach($orders as $order)
         {
             $mill = Db::name('goods_mill')->where('id',$order['goods_mill_id'])->find();
             if($mill != null)
             {
                 $limit_day = date('Y-m-d',strtotime($order['buy_time'].' +'.$order['zhouqi'].' day'));
+                
                 if($limit_day < date('Y-m-d'))
                 {
                     Db::startTrans();
@@ -126,7 +127,7 @@ class TaskController extends Controller{
                                 'money_type'    => 'usdt',
                                 'mold'          => 'in',
                                 'user_id'       => $order['user_id'],
-                                'money'         => $order['price'],
+                                'money'         => $order['order_price'],
                                 'create_time'   => time(),
                             ]);
                             Db::name('user_mill')
@@ -134,7 +135,7 @@ class TaskController extends Controller{
                             ->setDec('mill_num',$order['num']);
                             Db::name('user')
                             ->where(['id' => $order['user_id']])
-                            ->setInc('usdt', $order['price']);
+                            ->setInc('usdt', $order['order_price']);
                         }
                         Db::commit();   
                     }
@@ -151,11 +152,12 @@ class TaskController extends Controller{
     {
         $dateToday = date('Y-m-d');
         $date5DayPlus = date('Y-m-d', strtotime('+5 day'));
-        $limitedOrders = Db::name('goods_mill_order')
-                ->where([ 
-                    'efee_limit' => ['lt', $dateToday],
-                    'status' => 1])
-                ->update(['status' => 5]);
+        
+        // $limitedOrders = Db::name('goods_mill_order')
+        //         ->where([ 
+        //             'efee_limit' => ['lt', $dateToday],
+        //             'status' => 1])
+        //         ->update(['status' => 5]);
         
         $limitOrdersAfter5Day = Db::name('goods_mill_order')->alias('g')
                                 ->join('user u','g.user_id = u.id','LEFT')
@@ -169,8 +171,6 @@ class TaskController extends Controller{
             $tel = $order['tel'];
             sendSms($tel, getconfig('efee_limited_sms'));
         }
-        echo count($limitedOrders);
-        exit;
     }
     /**
      * 实体矿机收益结算 | 单独执行定时任务
@@ -194,10 +194,19 @@ class TaskController extends Controller{
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
+                    'efee_limit' => ['gt', date('Y-m-d')],
                     'buy_time' => ['lt', $yesterday_18pm],
                     'status' => 1])
                 ->sum('num');
-
+            $settleMillNumRent = Db::name('goods_mill_order')
+                ->where([
+                    'user_id' => $v['user_id'] , 
+                    'goods_mill_id' => $v['mill_id'], 
+                    'efee_limit' => ['gt', date('Y-m-d')],
+                    'buy_time' => ['lt', $yesterday_18pm],
+                    'method'    => 2,
+                    'status' => 1])
+                ->sum('num');
             $presellMillCheck = Db::name("goods_mill")
                 ->field('id, shangjia_time, type')
                 ->where(['id' => $v['mill_id']])
@@ -245,7 +254,68 @@ class TaskController extends Controller{
                 }
                 $v['shouyi_format'] = toprice($v['shouyi_cny'] / getconfig('btc_parities')); //收益 比特币 | 格式化
                 
-                
+                /**
+                 * Pay Rebate
+                 * parent 1,2,3
+                 * rate r1,r2,r3
+                 */
+                $shouyi_format_bought = $v['shouyi_format'] * ($settleMillNum / $settleMillNumRent);
+                if(!empty($userInfo['parent_1'])) {
+                    $rebate = $shouyi_format_bought * $millInfo['r1'] * getRebateMultiple($userInfo['parent_1']);
+                    Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('btc', $rebate); 
+                    Db::name('finance')->insert([
+                        'type'        => 3,
+                        'money_type'  => 'btc',
+                        'mold'        => 'in',
+                        'user_id'     => $userInfo['parent_1'],
+                        'money'       => $rebate,
+                        'create_time' => time(),
+                    ]);
+                    Db::name('returning_servant')->insert([
+                        'u_id' => $v['user_id'],
+                        'return_u_id' => $userInfo['parent_1'],
+                        'money' => $rebate,
+                        'created_time' => time()
+                    ]);
+                }
+                if(!empty($userInfo['parent_2'])) {
+                    $rebate = $shouyi_format_bought * $millInfo['r2'] * getRebateMultiple($userInfo['parent_2']);
+                    Db::name('user')->where(['id' => $userInfo['parent_2']])->setInc('btc', $rebate); 
+                    Db::name('finance')->insert([
+                        'type'        => 3,
+                        'money_type'  => 'btc',
+                        'mold'        => 'in',
+                        'user_id'     => $userInfo['parent_2'],
+                        'money'       => $rebate,
+                        'create_time' => time(),
+                    ]);
+                    
+                    Db::name('returning_servant')->insert([
+                        'u_id' => $v['user_id'],
+                        'return_u_id' => $userInfo['parent_2'],
+                        'money' => $rebate,
+                        'created_time' => time()
+                    ]);
+                }
+                if(!empty($userInfo['parent_3'])) {
+                    $rebate = $shouyi_format_bought * $millInfo['r3'] * getRebateMultiple($userInfo['parent_3']);
+                    Db::name('user')->where(['id' => $userInfo['parent_3']])->setInc('btc', $rebate); 
+                    Db::name('finance')->insert([
+                        'type'        => 3,
+                        'money_type'  => 'btc',
+                        'mold'        => 'in',
+                        'user_id'     => $userInfo['parent_3'],
+                        'money'       => $rebate,
+                        'create_time' => time(),
+                    ]);
+                    
+                    Db::name('returning_servant')->insert([
+                        'u_id' => $v['user_id'],
+                        'return_u_id' => $userInfo['parent_3'],
+                        'money' => $rebate,
+                        'created_time' => time()
+                    ]);
+                }
                 // print_r('日产出 = '. $v['richanchu_cny']. "<br/>");
                 // print_r('电费 = '. $v['dianfei']. "<br/>");
                 // print_r('保险费 = '. $v['baoxianfei']. "<br/>");

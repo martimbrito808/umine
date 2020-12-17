@@ -120,7 +120,7 @@ class MillController extends BaseController
         foreach($efees as $key => $efee)
         {
             //*x_2*(gonghaobi/1000)*dianfei $info['x_2']*
-            $efees[$key]['amount'] = getMillEfee($info, $efee['days'],$efee['rebate']);
+            $efees[$key]['amount'] = showprice(getMillEfee($this->user_id, $info, $efee['days'], $efee['rebate']));
         }
         return $this->fetch('',compact('info', 'auth','selfUsdt','efees'));
     }
@@ -151,7 +151,7 @@ class MillController extends BaseController
         }
         //upfront efee
         $efee = Db::name('efee_rebate')->find($param['efee_id']);
-        $efee_amount = getMillEfee($millInfo, $efee['days'],$efee['rebate'], $param['num']);
+        $efee_amount = getMillEfee($this->user_id, $millInfo, $efee['days'], $efee['rebate'], $param['num']);
         
         $efee_limit = date('Y-m-d', strtotime('+'.$efee['days'].' day'));
 
@@ -221,64 +221,67 @@ class MillController extends BaseController
             ]);
                 
             // 上级返佣
-            $commMoney_1 = $totalMoney * (getconfig('commission_1') / 100);
-            $commMoney_2 = $totalMoney * (getconfig('commission_2') / 100);
-            $commMoney_3 = $totalMoney * (getconfig('commission_3') / 100);
+            $commMoney_1 = $totalMoney * ($millInfo['rp1'] / 100);
+            $commMoney_2 = $totalMoney * ($millInfo['rp2'] / 100);
+            $commMoney_3 = $totalMoney * ($millInfo['rp3'] / 100);
             if(!empty($userInfo['parent_1'])) {
-                Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('usdt', $commMoney_1); 
+                $rebate = $commMoney_1 * getRebateMultiple($userInfo['parent_1']);
+                Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('usdt', $rebate); 
                 Db::name('finance')->insert([
                     'type'        => 3,
                     'money_type'  => 'usdt',
                     'mold'        => 'in',
                     'user_id'     => $userInfo['parent_1'],
-                    'money'       => $commMoney_1,
+                    'money'       => $rebate,
                     'create_time' => time(),
                 ]);
                 
                 Db::name('returning_servant')->insert([
                     'u_id' => $this->user_id,
                     'return_u_id' => $userInfo['parent_1'],
-                    'money' => $commMoney_1,
+                    'money' => $rebate,
                     'created_time' => time()
                 ]);
             }
             if(!empty($userInfo['parent_2'])) {
-                Db::name('user')->where(['id' => $userInfo['parent_2']])->setInc('usdt', $commMoney_2); 
+                $rebate = $commMoney_2 * getRebateMultiple($userInfo['parent_2']);
+                Db::name('user')->where(['id' => $userInfo['parent_2']])->setInc('usdt', $rebate); 
                 Db::name('finance')->insert([
                     'type'        => 3,
                     'money_type'  => 'usdt',
                     'mold'        => 'in',
                     'user_id'     => $userInfo['parent_2'],
-                    'money'       => $commMoney_2,
+                    'money'       => $rebate,
                     'create_time' => time(),
                 ]);
                 Db::name('returning_servant')->insert([
                     'u_id' => $this->user_id,
                     'return_u_id' => $userInfo['parent_2'],
-                    'money' => $commMoney_2,
+                    'money' => $rebate,
                     'created_time' => time()
                 ]);
             }
             if(!empty($userInfo['parent_3'])) {
-                Db::name('user')->where(['id' => $userInfo['parent_3']])->setInc('usdt', $commMoney_3); 
+                $rebate = $commMoney_3 * getRebateMultiple($userInfo['parent_3']);
+                Db::name('user')->where(['id' => $userInfo['parent_3']])->setInc('usdt', $rebate); 
                 Db::name('finance')->insert([
                     'type'        => 3,
                     'money_type'  => 'usdt',
                     'mold'        => 'in',
                     'user_id'     => $userInfo['parent_3'],
-                    'money'       => $commMoney_3,
+                    'money'       => $rebate,
                     'create_time' => time(),
                 ]);
                 Db::name('returning_servant')->insert([
                     'u_id' => $this->user_id,
                     'return_u_id' => $userInfo['parent_3'],
-                    'money' => $commMoney_3,
+                    'money' => $rebate,
                     'created_time' => time()
                 ]);
             }
             // 提交事务
             Db::commit();   
-                sendRequest(200, '购买成功');
+            sendRequest(200, '购买成功');
         } catch (\Exception $e) {
             // 回滚事务
             Db::rollback();
