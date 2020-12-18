@@ -65,7 +65,7 @@
         <div class="padding-box">
             <div class="index-card">
                 <div class="index-card-top">
-                    <span class="index-card-label">昨日收益(BTC)</span>
+                    <span class="index-card-label">总收益(BTC)</span>
                     {if condition="$data.token"}
                         <a href="/api/index/money_record?token={$data.token}" class="index-card-link">
                             收益记录
@@ -80,10 +80,10 @@
                 </div>
                 <div class="index-card-middle">
                     <p class="index-card-msg">
-                        {:showprice($data.yesterdayshouyi)}
-                        <!--<span class="small-font">≈¥{:showprice($data.totalshouyi_cny, 2)}</span>-->
+                        {:showprice($data.totalshouyi)}
+                        <span class="small-font">≈¥{:showprice($data.totalshouyi_cny, 2)}</span>
                     </p>
-                    <!--<p class="index-card-row">昨日收益：{:showprice($data.yesterdayshouyi)}</p>-->
+                    <p class="index-card-row">昨日收益：{:showprice($data.yesterdayshouyi)}</p>
                 </div>
                 <ul class="index-card-list">
                     <li id="my_mill">

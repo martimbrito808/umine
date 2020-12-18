@@ -39,7 +39,7 @@ class IndexController extends BaseController
         $data['totalshouyi'] = Db::name('user_mill')->where(['user_id' => $this->user_id])->sum('count_earnings');
         $data['totalshouyi_cny'] = $data['totalshouyi'] * getconfig('btc_parities');
         //昨日收益 (真·昨日收益) 'earnings_date' => date('Y-m-d',strtotime('-1day'))
-        $data['yesterdayshouyi'] = Db::name('goods_mill_earnings')->where(['user_id' => $this->user_id, ]) -> sum('price');
+        $data['yesterdayshouyi'] = Db::name('goods_mill_earnings')->where(['user_id' => $this->user_id, 'earnings_date' => date('Y-m-d',strtotime('-1day'))]) -> sum('price');
         //我的矿机列表
         $data['mill_list'] = Db::name('user_mill')->alias('um')
             ->join('goods_mill gm','um.mill_id = gm.id','LEFT')
@@ -93,9 +93,34 @@ class IndexController extends BaseController
         
         $list = Db::name('user_mill')->alias('um')
         ->join('goods_mill m','um.mill_id = m.id','LEFT')
-        ->field('um.*, m.name, m.cover, m.oc_type')
+        ->join('goods_mill_order mo','um.mill_id = mo.goods_mill_id','LEFT')
+        ->join('days d','d.days = m.zhouqi','LEFT')
+        ->field('um.*, m.name, m.cover, m.oc_type, m.suanli, d.label, d.days, m.jieshu_time, mo.zhouqi, mo.buy_time')
         ->where(['um.user_id' => $this->user_id])
+        ->order('buy_time desc')
         ->select();
+        $repeat_id = [];
+        
+        foreach($list as $key => $mill)
+        {
+            $bExist = false;
+            foreach($repeat_id as $id)
+            {
+                if($id == $mill['mill_id']) $bExist = true;
+            }
+            if($bExist)
+            {
+                unset($list[$key]);
+            }
+            else
+            {
+                $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
+                $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
+                $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:0;
+                $repeat_id[] = $mill['mill_id'];
+            }
+        }
+        
         $oc_types = Db::name('oc_types')
         ->order('uid asc')
         ->select();
@@ -116,7 +141,8 @@ class IndexController extends BaseController
         
         $info = Db::name('user_mill')->alias('um')
             ->join('goods_mill m','um.mill_id = m.id','LEFT')
-            ->field('um.*, m.name, m.cover, m.location, m.dianfei, m.baoxianfei, m.guanlifei, m.id = mill_id')
+            ->join('days d','d.days = m.zhouqi','LEFT')
+            ->field('um.*, m.name, m.cover, m.jieshu_time, d.label, m.location, m.dianfei, m.baoxianfei, m.guanlifei, m.id = mill_id')
             ->where(['um.user_id' => $this->user_id,'um.id' => $user_mill_id])
             ->find();
         
@@ -126,8 +152,17 @@ class IndexController extends BaseController
         $info['count_earnings_cny'] = $info['count_earnings'] * getconfig('btc_parities');
         $info['yesterday_earnings_cny'] = $info['yesterday_earnings'] * getconfig('btc_parities');
         $info['suanli'] = Db::name('user')->where(['id' => $this->user_id])->value('suanli');
-    
-    
+
+        $latestOrder = Db::name('goods_mill_order')
+                        ->where([
+                            'user_id' => $info['user_id'] , 
+                            'goods_mill_id' => $info['mill_id']])
+                        ->order('buy_time desc')
+                        ->limit(0,1)
+                        ->select();
+        $info['buy_time'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time']));
+        $info['end_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$latestOrder[0]['zhouqi'].' day'));
+
         //矿机预计今日收益  
         $today = date('Y-m-d',strtotime());
         $before18pm = date('Y-m-d H:i:s', strtotime(date("Y-m-d")) - (6 * 60 * 60));

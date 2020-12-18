@@ -249,7 +249,7 @@
                 <span class="order-amount"> <span class='danjia'>{:showprice($info.price)}</span><span class="fontSmall">USDT</span></span>
             </div>
             <div class="parameter-box">
-                <span class="window-label">电费=当</span>
+                <span class="window-label">电费</span>
                 <div class="parameter-row param-efee">
                     {volist name='efees' id='efee'}
                         <button data-val='{$efee.id}' {if condition="1 eq $efee.id"} class="selected" {/if} amount='{$efee.amount}'>{$efee.days}</button>

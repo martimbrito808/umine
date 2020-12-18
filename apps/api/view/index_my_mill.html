@@ -73,11 +73,23 @@
                 </li>
                 <li>
                     <span>电费</span>
-                    <span>{:showprice($info.dianfei)}USDT</span>
+                    <span>{:showprice($info.dianfei)}元/度</span>
                 </li>
                 <li>
                     <span>管理费</span>
                     <span>{$info.guanlifei}%日产出</span>
+                </li>
+                <li>
+                    <span>购买日期</span>
+                    <span>{$info.buy_time}</span>
+                </li>
+                <li>
+                    <span>有效期</span>
+                    <span>{$info.label}</span>
+                </li>
+                <li>
+                    <span>过期日期</span>
+                    <span>{$info.end_date}</span>
                 </li>
             </ul>
             <a href="/api/my/cost?token={$token}" class="deductions-way">

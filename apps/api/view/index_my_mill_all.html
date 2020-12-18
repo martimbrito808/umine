@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>我的矿机</title>
     <link rel="stylesheet" href="../../public/static/css/reset.css">
+    <script src="../../public/static/js/jquery-3.2.1.js"></script>
     <style>
         body{
     
@@ -35,7 +36,7 @@
         }
         .my-ltc-item{
             position: relative;
-            height: 2.57rem;
+            height: 3.57rem;
             margin-top: .2rem;
             display: flex;
             align-items: center;
@@ -85,6 +86,55 @@
             font-family: SourceHanSansCN-Regular;
             color: #FFFFFF;
         }
+        
+        .category{
+            width: 100%;
+            display: flex;
+            padding: 0.4rem 0;
+        }
+        .category>li{
+            flex: 1;
+        }
+        .category>li>a{
+            width: 100%;
+            line-height: 0.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.3rem;
+            font-weight: bold;
+            color: #8A8C98;
+            position: relative;
+            padding-bottom: 0.2rem;
+        }
+        .border{
+            width: 0.6rem;
+            height: 0.08rem;
+            background: #8A8C98;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -0.3rem;
+        }
+        .category>li>a.active{
+            color: #000000;
+        }
+        .category>li>a.active .border{
+            background: #DEAF5F;
+        }
+        .category-panel{
+            display: none;
+        }
+        .my-ltc-list{
+            display: none;
+        }
+        .category-panel-active{
+            display: block;
+        }
+        .category-sub{
+            padding: 0px;
+            padding-bottom:10px;
+        }
     </style>
 </head>
 <script>
@@ -97,22 +147,50 @@
     <div class="title">我的矿机</div>
 </div>
 <div class="container">
-    
-    {volist name='oc_types' id='oc_type'}
-        <p style="font-size: 500%;margin: .3rem .3rem 0 .3rem;">{$oc_type.label}</p>
-        <ul class="my-ltc-list">
+
+    <ul class="category category-parent">
+        <li>
+            <a data-key="category-panel-0" class="active" href="javascript:void(0)" style="font-size:.34rem">
+                全部
+                <span class="border"></span>
+            </a>
+        </li>
+        {volist name='oc_types' id='oc_type'}
+        <li>
+            <a data-key="category-panel-{$oc_type.id}" href="javascript:void(0)">
+                {$oc_type.label}专区
+                <span class="border"></span>
+            </a>
+        </li>
+        {/volist}
+    </ul>
+    <div class="category-panel category-panel-active" id="category-panel-0">
+        <ul class="category category-sub">
+            <li>
+                <a data-key="active-mills-0" class="active" href="javascript:void(0)">
+                    正在产矿
+                </a>
+            </li>
+            <li>
+                <a data-key="deactive-mills-0" href="javascript:void(0)">
+                    已过期
+                </a>
+            </li>
+        </ul>
+        <ul class="my-ltc-list category-panel-active" id="active-mills-0">
             {volist name="list" id='ll'}
-                {if $ll.oc_type == $oc_type.id}
+                {if $ll.active == 1}
                     <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
                         <li class="my-ltc-item">
                             <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
                             <div class="my-ltc-item-right">
-                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                <p class="my-ltc-item-title">{$ll.name}{$ll.cover}</p>
                                 <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
                                 <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
-                                <p class="my-ltc-item-money">我的算力:</p>
-                                <p class="my-ltc-item-money">购买日期:</p>
-                                <p class="my-ltc-item-money">有效期</p>
+                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
                             </div>
                             <div class="my-ltc-item-flag">
                                 <img class="bz" src="../../public/static/images/bz.png" alt="">
@@ -123,7 +201,119 @@
                 {/if}
             {/volist}
         </ul>
+        <ul class="my-ltc-list" id="deactive-mills-0">
+            {volist name="list" id='ll'}
+                {if $ll.active == 0}
+                    <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                        <li class="my-ltc-item">
+                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                            <div class="my-ltc-item-right">
+                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                            </div>
+                            <div class="my-ltc-item-flag">
+                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                <span>保障中</span>
+                            </div>
+                        </li>
+                    </a>
+                {/if}
+            {/volist}
+        </ul>
+    </div>
+    {volist name='oc_types' id='oc_type'}
+        <div class="category-panel" id="category-panel-{$oc_type.id}">
+            <ul class="category category-sub">
+                <li>
+                    <a data-key="active-mills-{$oc_type.id}" class="active" href="javascript:void(0)">
+                        正在产矿
+                    </a>
+                </li>
+                <li>
+                    <a data-key="deactive-mills-{$oc_type.id}" href="javascript:void(0)">
+                        已过期
+                    </a>
+                </li>
+            </ul>
+            <ul class="my-ltc-list category-panel-active"  id="active-mills-{$oc_type.id}">
+                {volist name="list" id='ll'}
+                    {if $ll.oc_type == $oc_type.id}
+                        {if $ll.active == 1}
+                            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                                <li class="my-ltc-item">
+                                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                    <div class="my-ltc-item-right">
+                                        <p class="my-ltc-item-title">{$ll.name}</p>
+                                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                        <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                        <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                        <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                        <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                    </div>
+                                    <div class="my-ltc-item-flag">
+                                        <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                        <span>保障中</span>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                    {/if}
+                {/volist}
+            </ul>
+            <ul class="my-ltc-list"  id="deactive-mills-{$oc_type.id}">
+                {volist name="list" id='ll'}
+                    {if $ll.oc_type == $oc_type.id}
+                        {if $ll.active == 0}
+                            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                                <li class="my-ltc-item">
+                                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                    <div class="my-ltc-item-right">
+                                        <p class="my-ltc-item-title">{$ll.name}</p>
+                                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                        <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                        <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                        <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                        <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                    </div>
+                                    <div class="my-ltc-item-flag">
+                                        <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                        <span>保障中</span>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                    {/if}
+                {/volist}
+            </ul>
+        </div>
     {/volist}
 </div>
 </body>
+<script>
+    $('.category-parent li a').click(function () {
+        var that = $(this);
+        var key = that.data('key');
+        $('.category-parent li a').removeClass('active');
+        that.addClass('active');
+        $('.category-panel').removeClass('category-panel-active');
+        $('#' + key).addClass('category-panel-active');
+        $('#' + key).find(':first-child').find('li:first-child').find('a:first-child').addClass('active')
+        $('#' + key).find(':nth-child(2)').addClass('category-panel-active')
+    })
+    $('.category-sub li a').click(function () {
+        var that = $(this);
+        var key = that.data('key');
+        $('.category-sub li a').removeClass('active');
+        that.addClass('active');
+        $('.my-ltc-list').removeClass('category-panel-active');
+        $('#' + key).addClass('category-panel-active');
+    })
+</script>
 </html>
