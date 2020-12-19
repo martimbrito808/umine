@@ -194,7 +194,7 @@ class TaskController extends Controller{
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
-                    'efee_limit' => ['gt', date('Y-m-d')],
+                    'efee_limit' => ['>=', date('Y-m-d')],
                     'buy_time' => ['lt', $yesterday_18pm],
                     'status' => 1])
                 ->sum('num');
@@ -202,7 +202,7 @@ class TaskController extends Controller{
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
-                    'efee_limit' => ['gt', date('Y-m-d')],
+                    'efee_limit' => ['>=', date('Y-m-d')],
                     'buy_time' => ['lt', $yesterday_18pm],
                     'method'    => 2,
                     'status' => 1])
@@ -228,8 +228,7 @@ class TaskController extends Controller{
             if($v['dianfei'] < 0) {
                 $v['dianfei'] = 0;
             }
-            $v['guanlifei'] = $v['richanchu_cny'] * ( $millInfo['guanlifei'] / 100 ) * $settleMillNum;  //管理费(￥) = 挖矿产出的*%
-            
+            $v['guanlifei'] = $v['richanchu_cny'] * ( $millInfo['guanlifei'] / 100 );  //管理费(￥) = 挖矿产出的*%
             Db::startTrans();
             try{
                 //扣除手续费
@@ -259,7 +258,7 @@ class TaskController extends Controller{
                  * parent 1,2,3
                  * rate r1,r2,r3
                  */
-                $shouyi_format_bought = $v['shouyi_format'] * ($settleMillNum / $settleMillNumRent);
+                $shouyi_format_bought = $v['shouyi_format'] * (($settleMillNum - $settleMillNumRent) / $settleMillNum);
                 if(!empty($userInfo['parent_1'])) {
                     $rebate = $shouyi_format_bought * $millInfo['r1'] * getRebateMultiple($userInfo['parent_1']);
                     Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('btc', $rebate); 

@@ -21,13 +21,13 @@ class MillController extends BaseController
         $mill_list = Db::name('goodsMill')->alias('gm')
             ->join('ocTypes o','gm.oc_type = o.id','LEFT')
             ->field('o.label as olabel, gm.*')
-            ->where(['status' => 1,'stock' => ['gt','0']])
+            ->where(['status' => 1,'stock' => ['gt','0'],'jieshu_time' => ['>=', date('Y-m-d')]])
             ->order('sort asc, id desc')
             ->select();
         $jieshu_times = [];
         $today = strtotime(date('Y-m-d H:i:s'));
         $days = Db::name('days')
-                ->order('days asc')
+                ->order('order asc')
                 ->select();
         $days_sorted = [];
         foreach($days as $day)
@@ -39,15 +39,22 @@ class MillController extends BaseController
             $mill_list[$key]['rengou_begin'] = date('H:i',strtotime($mill['rengou_begin']));
             $mill_list[$key]['rengou_begin_day'] = date('H:i',strtotime($mill['rengou_begin_day']));
             $mill_list[$key]['zhouqi'] = $days_sorted[$mill['zhouqi']];
-            $jieshu_times[] = ['id' => $mill['id'], 'time' => strtotime($mill['jieshu_time']) - $today];
+            $jieshu_times[] = ['id' => $mill['id'], 'time' => strtotime($mill['jieshu_time'].' 23:59:59') - $today];
 
         }
+        $mill_list_outdated = Db::name('goodsMill')->alias('gm')
+            ->join('ocTypes o','gm.oc_type = o.id','LEFT')
+            ->field('o.label as olabel, gm.*')
+            ->where(['status' => 1,'stock' => ['gt','0'],'jieshu_time' => ['<', date('Y-m-d')]])
+            ->order('sort asc, id desc')
+            ->select();
         $mill_disabled_list = Db::name('goods_mill')->alias('gm')
             ->join('ocTypes o','gm.oc_type = o.id','LEFT')
             ->field('o.label as olabel, gm.*')
-            ->where(['status' => 1, 'stock' => 0])
+            ->where(['status' => 1, 'stock' => 0,])
             ->order('sort asc, id desc')
             ->select();
+        $mill_disabled_list = array_merge($mill_disabled_list,$mill_list_outdated);
         foreach($mill_disabled_list as $key => $mill) 
         {
             $mill_disabled_list[$key]['zhouqi'] = $days_sorted[$mill['zhouqi']];
@@ -152,8 +159,11 @@ class MillController extends BaseController
         //upfront efee
         $efee = Db::name('efee_rebate')->find($param['efee_id']);
         $efee_amount = getMillEfee($this->user_id, $millInfo, $efee['days'], $efee['rebate'], $param['num']);
-        
         $efee_limit = date('Y-m-d', strtotime('+'.$efee['days'].' day'));
+        if($millInfo['dianfei'] <= 0)
+        {
+            $efee_limit = date('Y-m-d', strtotime('+3000 day'));
+        }
 
         $userInfo = Db::name('user')->where(['id' => $this->user_id])->find();
         $totalMoney = $millInfo['price'] * $param['num'] + $efee_amount;

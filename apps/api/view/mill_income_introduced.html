@@ -248,6 +248,7 @@
                 <span class="window-label">订单金额</span>
                 <span class="order-amount"> <span class='danjia'>{:showprice($info.price)}</span><span class="fontSmall">USDT</span></span>
             </div>
+            {if $info.dianfei > 0}
             <div class="parameter-box">
                 <span class="window-label">电费</span>
                 <div class="parameter-row param-efee">
@@ -260,6 +261,7 @@
                 <span class="window-label">金额</span>
                 <span class="order-amount"><span class='efee'>{$efees[0]['amount']}</span><span class="fontSmall">USDT</span></span>
             </div>
+            {/if}
         </div>
         <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
         <div class="window_bottom">
