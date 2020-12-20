@@ -8,21 +8,22 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>个性名片</title>
     <script src="../../public/static/js/myFlexible.js"></script>
+    <script src="../../public/static/js/html2canvas.min.js"></script>
     <link rel="stylesheet" href="../../public/static/css/news.css">
 </head>
 <!-- 个性名片 -->
 
-<body style="background: #FFCD5C url(../../public/static/images/bg3.png) no-repeat;background-size: 100%;">
+<body>
     <header class="unified-header">
         <a href="javascript:history.go(-1)">
             <img src="../../public/static/images/return.png" alt="" class="return-icon">
         </a>
         <h3>个性名片</h3>
-        <a href="javascript:void(0)" class="share-font" id="open">
-            分享
+        <a download="myImage.jpg" href="" id="download-link" class="share-font">
+            保存
         </a>
     </header>
-    <div class="unified-wrapper">
+    <div class="unified-wrapper" id="photo-zone" style="height:calc(100% - 0.9rem);background: #FFCD5C url(../../public/static/images/bg3.png) no-repeat;background-size: 100%;" >
         <div class="card-wrap">
             <img src="../../public/static/images/logo3.png" alt="" class="business_card-img">
             <p class="business_card-row">
@@ -61,13 +62,25 @@
     <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
     <script>
         //底部弹框
-        $('#open').click(function () {
-            $('.open_menu,.mask_layer').slideDown(200).css('display', 'flex');
-        })
+        const download_img = (el) => {    
+            window.scrollTo(0, 0);
+            html2canvas(document.querySelector("#photo-zone")).then(function(canvas) {
+                //document.body.appendChild(canvas);
+                var d=canvas.toDataURL("image/png");
+                el.href = d;
+            });
+        }
         $('.mask_layer,.cancel-btn').click(function () {
             $('.open_menu,.mask_layer').slideUp(200).css('display', 'flex');
         })
-
+        window.onload = () => {
+            html2canvas(document.querySelector("#photo-zone")).then(function(canvas) {
+            //document.body.appendChild(canvas);
+                window.scrollTo(0, 0);
+                var d=canvas.toDataURL("image/png");
+                $('#download-link').attr('href', d)
+            })
+        }
     </script>
 </body>
 
