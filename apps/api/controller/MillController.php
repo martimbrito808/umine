@@ -24,6 +24,17 @@ class MillController extends BaseController
             ->where(['status' => 1,'stock' => ['gt','0'],'jieshu_time' => ['>=', date('Y-m-d')]])
             ->order('sort asc, id desc')
             ->select();
+        $mill_list_outimed = [];
+        $nowTime = date('H:i:s');
+        foreach($mill_list as $key => $mill)
+        {
+
+            if( ( $nowTime < $mill['rengou_begin'] || $nowTime > $mill['rengou_end'] ) && ( $nowTime < $mill['rengou_begin_day'] || $nowTime > $mill['rengou_end_day']) )
+            {
+                $mill_list_outimed[] = $mill;
+                unset($mill_list[$key]);
+            }
+        }
         $jieshu_times = [];
         $today = strtotime(date('Y-m-d H:i:s'));
         $days = Db::name('days')
@@ -55,6 +66,7 @@ class MillController extends BaseController
             ->order('sort asc, id desc')
             ->select();
         $mill_disabled_list = array_merge($mill_disabled_list,$mill_list_outdated);
+        $mill_disabled_list = array_merge($mill_disabled_list,$mill_list_outimed);
         foreach($mill_disabled_list as $key => $mill) 
         {
             $mill_disabled_list[$key]['zhouqi'] = $days_sorted[$mill['zhouqi']];
@@ -231,9 +243,9 @@ class MillController extends BaseController
             ]);
                 
             // 上级返佣
-            $commMoney_1 = $totalMoney * ($millInfo['rp1'] / 100);
-            $commMoney_2 = $totalMoney * ($millInfo['rp2'] / 100);
-            $commMoney_3 = $totalMoney * ($millInfo['rp3'] / 100);
+            $commMoney_1 = ($totalMoney - $efee_amount) * ($millInfo['rp1'] / 100);
+            $commMoney_2 = ($totalMoney - $efee_amount) * ($millInfo['rp2'] / 100);
+            $commMoney_3 = ($totalMoney - $efee_amount) * ($millInfo['rp3'] / 100);
             if(!empty($userInfo['parent_1'])) {
                 $rebate = $commMoney_1 * getRebateMultiple($userInfo['parent_1']);
                 Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('usdt', $rebate); 

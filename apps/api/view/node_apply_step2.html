@@ -173,7 +173,7 @@
             </div>
             <div class="input-item">
                 <span class="input-label">应付:</span>
-                <span class="money" id='money'>{$data.money}{$data.money_type}</span>
+                <span class="money" id='money'>{$data.money}{:shiftCurrencyLabel($data.money_type)}</span>
             </div>
             <button type="button" class="sub-btn" id='sub-btn'>提交</button>
         </form>
