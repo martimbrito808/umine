@@ -25,27 +25,27 @@
             <div class="form-box">
                 <p class="form-box-title">提现地址</p>
                 <p class="form-row">
-                    <input type="text" id='address' placeholder="请输入{$type}提现地址" />
+                    <input type="text" id='address' placeholder="请输入{:shiftCurrencyLabel($type)}提现地址" />
                     <button><img src="../../public/static/images/head_icon.png" alt=""></button>
                 </p>
             </div>
             <div class="form-box">
                 <p class="form-box-title">
                     <span>提现数量</span>
-                    <span>余额：<span class="brown">{$money.selfmoney} {$type}</span></span>
+                    <span>余额：<span class="brown">{$money.selfmoney} {:shiftCurrencyLabel($type)}</span></span>
                 </p>
                 <p class="form-row">
                     <input type="text" id='money' placeholder="提现数量" />
                 </p>
             </div>
-            <label class="form-box-label">手续费：{$money.withdrawal_fee} {$type}</label>
+            <label class="form-box-label">手续费：{$money.withdrawal_fee} {:shiftCurrencyLabel($type)}</label>
             <div class="form-btnBox">
                 <button id='sub'>确定</button>
             </div>
             <p class="warm-prompt">
                 温馨提示：<br />
-                · 最小提币数量为：{$money.mincash} {$type}<br />
-                · 每笔提现提现手续费为：{$money.withdrawal_fee} {$type}<br />
+                · 最小提币数量为：{$money.mincash} {:shiftCurrencyLabel($type)}<br />
+                · 每笔提现提现手续费为：{$money.withdrawal_fee} {:shiftCurrencyLabel($type)}<br />
             </p>
         </div>
     </div>

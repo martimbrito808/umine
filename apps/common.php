@@ -8,6 +8,27 @@ error_reporting(E_ERROR | E_PARSE);
  * 计算数组笛卡尔积
  * [[1,2,2,3],[3,3,2,2]]
  */
+function shiftCurrencyLabel($param)
+{
+    $type = strtolower($param);
+    $label = '';
+    switch($type)
+    {
+        case 'euf':
+            $label = 'LTC';
+            break;
+        case 'ethu':
+            $label = 'FIL';
+            break;
+        case 'er':
+            $label = 'GBTC';
+            break;
+        default:
+            $label = $param;
+    }
+
+    return $label;
+}
 function dikaer($arr, $break = '')
 {
     $arr1 = array();

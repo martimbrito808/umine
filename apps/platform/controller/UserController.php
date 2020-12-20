@@ -67,7 +67,49 @@ class UserController extends BaseController
             return layData('当前数据为空', array(), 0);
         }
     }
-
+    /**
+     * 会员推荐结构图
+     */
+    public function relation()
+    {
+        $usersRoot  = Db::name('user')
+        ->where(['parent_1' => 0])
+        ->order('id desc')
+        ->select();
+        $data = [];
+        foreach($usersRoot as $root)
+        {
+            $data[] = $this->retriveRealtionStack($root['id']);
+        }
+        print_r($data);exit;
+        return view();
+    }
+    private function retriveRealtionStack($user_id)
+    {
+        $user = Db::name('user')
+        ->find($user_id);
+        $isEndUser = count(Db::name('user')
+        ->whereOr(['parent_1' => $user_id])
+        ->order('id desc')
+        ->select()) == 0;
+        if(!$isEndUser)
+        {
+            $childs = Db::name('user')
+            ->whereOr(['parent_1' => $user_id])
+            ->order('id desc')
+            ->select();
+            $children = [];
+            foreach($childs as $child)
+            {
+                $children[] = ['title' => $user['tel'],'children' => $this->retriveRealtionStack($child['id'])];
+            }
+            return ['title' => $user['tel'],'children' => $children];
+        }
+        else
+        {
+            return ['title' => $user['tel']];
+        }
+    }
     /**
      * 添加/编辑
      */

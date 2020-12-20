@@ -1,0 +1,54 @@
+{include file="public:header" /}
+<style type="text/css">
+.margin{margin:10px 10px 0px 10px;}
+.layui-tab-content h2{font-size:22px;font-weight:700;padding:10px 0;}
+.layui-tab-content p{font-size:12px;}
+.layui-tab-content{overflow:hidden;}
+</style>
+<div class="main-layout" id='main-layout'>
+	<!--侧边栏-->
+	<div class="main-layout-side">{include file="public:navbar" /}</div>
+	<!--右侧内容-->
+	<div class="main-layout-container">
+		<!--头部-->
+		<div class="main-layout-header">{include file="public:top" /}</div>
+		<!--主体内容-->
+		<div class="main-layout-body">
+			<div class="wrap-container welcome-container">				
+        <div id="test1"></div>
+			</div>
+		</div>
+	</div>
+	<!--遮罩-->
+	<div class="main-mask"></div>
+</div>
+<script type="text/javascript" src="__EXTEND__/echarts/js/echarts.min.js"></script>
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="__EXTEND__/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/layer.js" type="text/javascript" charset="utf-8"></script>
+<script src="__JS__/admins.js" type="text/javascript" charset="utf-8"></script>
+<script>
+  layui.use('tree', function(){
+    var tree = layui.tree;
+   
+    //渲染
+    var inst1 = tree.render({
+      elem: '#test1'  //绑定元素
+      ,data: [{
+        title: '江西' //一级菜单
+        ,children: [{
+          title: '南昌' //二级菜单
+          ,children: [{
+            title: '高新区' //三级菜单
+            //…… //以此类推，可无限层级
+          }]
+        }]
+      },{
+        title: '陕西' //一级菜单
+        ,children: [{
+          title: '西安' //二级菜单
+        }]
+      }]
+    });
+  });
+  </script>
