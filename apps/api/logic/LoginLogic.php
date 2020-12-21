@@ -122,6 +122,11 @@ class LoginLogic extends Model {
                 Db::name('sms_send')->where('tel',$param['phone'])->where('type',1)->where('status',1)->update(['status'=>2]);
                 $token = zencrypt(['id'=>$list['id']]);
                 $data['token'] = $token;
+                Db::name('user_login_log')->insert([
+                    'user_id' => $list['id'],
+                    'login_ip' => get_client_ip(),
+                    'login_date' => date('Y-m-d H:i:s')
+                ]);
                 return ['code'=>200,'msg'=>'登录成功','data'=>$data];
             }else{
                 return ['code'=>201,'msg'=>'密码错误'];

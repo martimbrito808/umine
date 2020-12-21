@@ -79,12 +79,12 @@ class UserController extends BaseController
         $data = [];
         foreach($usersRoot as $root)
         {
-            $data[] = $this->retriveRealtionStack($root['id']);
+            $data[] = $this->retriveRealtionStack($root['id'],0);
         }
-        print_r($data);exit;
-        return view();
+        
+        return view('',compact('data'));
     }
-    private function retriveRealtionStack($user_id)
+    private function retriveRealtionStack($user_id, $count)
     {
         $user = Db::name('user')
         ->find($user_id);
@@ -101,13 +101,13 @@ class UserController extends BaseController
             $children = [];
             foreach($childs as $child)
             {
-                $children[] = ['title' => $user['tel'],'children' => $this->retriveRealtionStack($child['id'])];
+                $children[] = $this->retriveRealtionStack($child['id'], ($count + 1));
             }
-            return ['title' => $user['tel'],'children' => $children];
+            return ['title' => $count.','.$user['tel'],'children' => $children];
         }
         else
         {
-            return ['title' => $user['tel']];
+            return ['title' => $count.','.$user['tel']];
         }
     }
     /**
