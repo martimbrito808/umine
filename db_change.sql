@@ -50,3 +50,7 @@ ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `r1` FLOAT NOT NULL DEFAULT '5' AFTER `rp3`,
 	ADD COLUMN `r2` FLOAT NOT NULL DEFAULT '3' AFTER `r1`,
 	ADD COLUMN `r3` FLOAT NOT NULL DEFAULT '1' AFTER `r2`;
+
+/* Rebate time*/
+ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `rebate_at` INT(11) NOT NULL DEFAULT '1' AFTER `zhouqi`;

@@ -73,7 +73,7 @@
                 </li>
                 <li>
                     <span>电费</span>
-                    <span>{:showprice($info.dianfei)}元/度</span>
+                    <span>{:showprice($info.dianfei, 2)}元/度</span>
                 </li>
                 <li>
                     <span>管理费</span>
@@ -84,7 +84,19 @@
                     <span>{$info.buy_time}</span>
                 </li>
                 <li>
-                    <span>有效期</span>
+                    <span>开挖日期</span>
+                    <span>{$info.earning_date}</span>
+                </li>
+                <li>
+                    <span>电费剩余</span>
+                    <span>{$info.efee_date_balance}</span>
+                </li>
+                <li>
+                    <span> 续缴电费</span>
+                    <span>{$info.buy_time}</span>
+                </li>
+                <li>
+                    <span>产权</span>
                     <span>{$info.label}</span>
                 </li>
                 <li>

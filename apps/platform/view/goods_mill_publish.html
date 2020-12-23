@@ -62,6 +62,14 @@
 					</div>
 				</div>
 
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">多少天后开挖：</label>
+					<div class="layui-input-inline">
+						<input type="number" lay-verify="required" min="1"  name="rebate_at" id="rebate_at" value="{:isset($rows['rebate_at']) ? $rows['rebate_at'] : ''}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+
 				<div class="layui-form-item">
 					<label class="layui-form-label">产品周期（天）购买：</label>
 					<div class="layui-input-block">
@@ -224,7 +232,7 @@
 				<div class="row">
 					<div class="col-md-6">
 						<div class="layui-form-item">
-							<label class="layui-form-label">电费（元/度）：</label>
+							<label class="layui-form-label">管理费（元/度）：</label>
 							<div class="layui-input-block">
 								<input type="text" name="dianfei" required lay-verify="required" value="{:isset($rows['dianfei']) ? $rows['dianfei'] : ''}" autocomplete="off" class="layui-input">
 							</div>
@@ -403,14 +411,14 @@
 				</div>
 
 				<div class="layui-form-item">
-					<label class="layui-form-label">保险费：</label>
+					<label class="layui-form-label">套保费：</label>
 					<div class="layui-input-inline">
 						<textarea name="s_4"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_4']) ? $rows['s_4'] : ''}</textarea>
 					</div>
 				</div>
 
 				<div class="layui-form-item">
-					<label class="layui-form-label">管理费：</label>
+					<label class="layui-form-label">风险提示：</label>
 					<div class="layui-input-inline">
 						<textarea name="s_5"  cols="69" rows="6" style="resize:none;">{:isset($rows['s_5']) ? $rows['s_5'] : ''}</textarea>
 					</div>

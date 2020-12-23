@@ -190,14 +190,20 @@ class TaskController extends Controller{
             
         foreach($info as $k => $v) {
             //当前矿机昨天18点之前购买的数量
-            $settleMillNum = Db::name('goods_mill_order')
+            $settleMillNum = Db::name('goods_mill_order')->alias('gmo')
+                ->join('goods_mill gm','gmo.goods_mill_id = gm.id','LEFT')
+                ->field('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY)')
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
                     'efee_limit' => ['>=', date('Y-m-d')],
                     'buy_time' => ['lt', $yesterday_18pm],
-                    'status' => 1])
-                ->sum('num');
+                    'gmo.status' => 1,
+                    ])
+                ->where('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY) >= "'.date('Y-m-d').'"')->select();//->sum('num');
+            print_r($settleMillNum);
+            echo $settleMillNum;
+            exit;
             $settleMillNumRent = Db::name('goods_mill_order')
                 ->where([
                     'user_id' => $v['user_id'] , 

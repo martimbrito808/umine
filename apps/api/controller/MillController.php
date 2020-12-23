@@ -104,7 +104,45 @@ class MillController extends BaseController
         $auth['token'] = input('param.token');
         
         $selfUsdt = Db::name('user')->where('id',$this->user_id)->value('usdt');
-        $info = Db::name('goods_mill')->where('id',$id)->find();
+        $info = Db::name('goods_mill')->alias('gm')
+                ->join('ocTypes o','gm.oc_type = o.id','LEFT')
+                ->field('o.label as olabel, gm.*')
+                ->where('gm.id',$id)->find();
+        $days = Db::name('days')
+        ->order('order asc')
+        ->select();
+        $days_sorted = [];
+        foreach($days as $day)
+        {
+            $days_sorted[$day['days']] = $day['label'];
+        }
+        $info['zhouqi_label'] = $days_sorted[$info['zhouqi']];
+        $info['category_label'] = '';
+        switch($info['category'])
+        {
+            case 1:
+                $info['category_label'] = '实体矿机';
+                break;
+            case 2:
+                $info['category_label'] = '云算力';
+                break;
+            case 3:
+                $info['category_label'] = '租赁矿机';
+                break;
+        }
+        $info['category_tab_label'] = '';
+        switch($info['category'])
+        {
+            case 1:
+                $info['category_tab_label'] = '矿机介绍';
+                break;
+            case 2:
+                $info['category_tab_label'] = '运算力介绍';
+                break;
+            case 3:
+                $info['category_tab_label'] = '租赁介绍';
+                break;
+        }
         $info['buy'] = false;
         $info['start_day'] = date('Y年m月d日起',strtotime('+'.($info['zhouqi'] + 1).' day'));
         if( $info['stock'] > 0) {
@@ -139,7 +177,8 @@ class MillController extends BaseController
         foreach($efees as $key => $efee)
         {
             //*x_2*(gonghaobi/1000)*dianfei $info['x_2']*
-            $efees[$key]['amount'] = showprice(getMillEfee($this->user_id, $info, $efee['days'], $efee['rebate']));
+            $efees[$key]['amount'] = showprice(getMillEfee($this->user_id, $info, $efee['days'], $efee['rebate']), 2);
+            $efees[$key]['rebate_label'] = $efee['rebate'] * 0.1;
         }
         return $this->fetch('',compact('info', 'auth','selfUsdt','efees'));
     }

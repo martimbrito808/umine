@@ -15,6 +15,90 @@
         .unified-header{
             z-index: 99;
         }
+        .efee-panel {
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-gap: 10px;
+        }
+        .efee-card{
+            width: 100%;
+            border-radius: 0.5em;
+            position : relative;
+            color: #999999;
+            height: 1.5rem;
+        }
+        
+        .efee-card .container{
+            padding : 0.3rem;
+            width: 100%;
+            height: 100%;
+            background: #F8F8F8;
+            border-radius: 0.2rem;
+            cursor: pointer;
+        }
+        .efee-card .container .header{
+            text-align: center;
+            font-size: 14px;
+            font-weight: 200;
+            padding-bottom: 0.1rem;
+        }
+        .efee-card .container .body{
+            text-align: center;
+            font-size: 12px;
+        }
+        .efee-card .ribbon{
+            position: absolute;
+            content: '9.8';
+            background: #F8A52D;
+            text-align: center;
+            padding: 0.2em 0.5em;
+            color: white;
+            font-size: 10px;
+            border-bottom-left-radius: 0.5em;
+            border-top-right-radius: 0.5em; 
+            right: 0;
+            top:0;
+        }
+        
+        .efee-card-active .container{
+            background: #F8A52D;
+        }
+        .efee-card-active .container *{
+            color: white;
+        }
+        .efee-card-active .ribbon{
+            background: white;
+            color: #F8A52D;
+        }
+        .btn-close-bottom-window{
+            position: absolute;
+            right: 42px;
+            top: 20px;
+            width: 32px;
+            height: 32px;
+            opacity: 0.3;
+        }
+        .btn-close-bottom-window:hover{
+            opacity: 1;
+        }
+        
+        .btn-close-bottom-window:before, .btn-close-bottom-window:after {
+            position: absolute;
+            left: 15px;
+            content: ' ';
+            height: 23px;
+            width: 2px;
+            background-color: #333;
+        }
+        .btn-close-bottom-window:before {
+            transform: rotate(45deg);
+        }
+        .btn-close-bottom-window:after {
+            transform: rotate(-45deg);
+        }
+        .window_top{
+            padding-bottom: 0.1rem;
+        }
     </style>
 </head>
 <!-- 收益介绍 -->
@@ -30,17 +114,12 @@
         <div class="income-imgBox">
             <img src="{:getfile($info.cover_2)}" alt="" class="income-img">
         </div>
-        <div class='mill-timeboard'>
-            <p>抢购时间:</p>
-            <p>{$info.rengou_begin} - {$info.rengou_end}</p>
-            <p>{$info.rengou_begin_day} - {$info.rengou_end_day}</p>
-            <br>
-        </div>
         <div class="income-box">
             <h3 class="income-num">{:showprice($info.price)}<span class="income-font">USDT</span></h3>
             <p class="income-row">
+                <span class="income-label">{$info.olabel}</span>
                 <span class="income-label">{$info.type == 1 ? '现货' : '预售'}</span>
-                <span class="income-name">{$info.name}</span>
+                <span class="income-name" style="width:4.5rem">{$info.name}</span>
             </p>
             <ul class="income-msgList">
                 <li>
@@ -52,13 +131,13 @@
                     <span class="income-msg_text">{$info.guanlifei}%日产出</span>
                 </li>
                 <li>
-                    <span class="income-msg_name">保险费</span>
+                    <span class="income-msg_name">套保费</span>
                     <span class="income-msg_text">{:showprice($info.baoxianfei,2)}元</span>
                     <span class="income-msg_font">(新机器免保费)</span>
                 </li>
                 <li>
-                    <span class="income-msg_name">功耗比</span>
-                    <span class="income-msg_text">{$info.gonghaobi}W/M</span>
+                    <span class="income-msg_name">产权</span>
+                    <span class="income-msg_text">{$info.zhouqi_label}</span>
                 </li>
                 <li>
                     <span class="income-msg_name">预计回报率</span>
@@ -69,8 +148,8 @@
                     <span class="income-msg_font" style="font-weight: bold;">{:showprice($info.richanchu)} BTC</span>
                 </li>
                 <li>
-                    <span class="income-msg_name">开挖日期：</span>
-                    <span class="income-msg_text" style="font-weight: bold;">{$info.start_day}</span>
+                    <span class="income-msg_name">今日购买（多少天）后开挖：</span>
+                    <span class="income-msg_text" style="font-weight: bold;">{$info.rebate_at}天</span>
                 </li>
             </ul>
             <ul class="income-timeList">
@@ -92,12 +171,12 @@
                     <img src="../../public/static/images/right_icon5.png" alt="">
                 </a>
             </div>
-            <span class="income-tag">实体矿机</span>
+            <span class="income-tag">{$info.category_label}</span>
         </div>
         <ul class="introduce-tab">
             <li>
                 <a data-key="first" href="javascript:void(0)" class="active">
-                    矿机介绍
+                    {$info.category_tab_label}
                     <span class="border-bottom"></span>
                 </a>
             </li>
@@ -113,9 +192,9 @@
                 <div class="introduce-row">
                     <p class="align-row">
                         <img src="../../public/static/images/icon9.png" alt="">
-                        实体矿机
+                        {$info.category_label}
                     </p>
-                    <p class="introduce-msg">此矿机为<span class="emphasis">实体矿机</span>，购买后永久拥有产权。</p>
+                    <p class="introduce-msg">此矿机为<span class="emphasis">{$info.category_label}</span>，购买后{$info.zhouqi_label}拥有产权。</p>
                 </div>
                 <div class="introduce-row">
                     <p class="align-row">
@@ -227,6 +306,7 @@
             <div class="window_top_row">
                 <span class="window-tag">{$info.type == 1 ? '现货' : '预售'}</span>
                 <h3>{$info.name}</h3>
+                <button class="btn-close-bottom-window"></button>
             </div>
             <div class="parameter-box">
                 <span class="window-label">购买数量</span>
@@ -250,25 +330,42 @@
             </div>
             {if $info.dianfei > 0}
             <div class="parameter-box">
-                <span class="window-label">电费</span>
-                <div class="parameter-row param-efee">
+                <span class="window-label">预缴电费</span>
+                <div class="parameter-row  efee-panel">
                     {volist name='efees' id='efee'}
-                        <button data-val='{$efee.id}' {if condition="1 eq $efee.id"} class="selected" {/if} amount='{$efee.amount}'>{$efee.days}</button>
+                        <div data-val='{$efee.id}' amount='{$efee.amount}' class="efee-card">
+                            <div class="container">
+                                <p class="header">预缴{$efee.days}天</p>
+                                <p class="body">{$efee.amount} USDT/台</p>  
+                            </div>
+                            {if $efee.rebate > 0}
+                                <p class="ribbon">{$efee.rebate_label}折</p>
+                            {/if}
+                        </div>
                     {/volist}
                 </div>
             </div>
+            <!--
             <div class="window_row_between">
                 <span class="window-label">金额</span>
                 <span class="order-amount"><span class='efee'>{$efees[0]['amount']}</span><span class="fontSmall">USDT</span></span>
             </div>
+            -->
+            {/if}
+            {if $info.dianfei <= 0}
             {/if}
         </div>
         <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
         <div class="window_bottom">
             <input type="hidden" id="mill_id" value="{$info.id}" />
             <input type="hidden" id="num" value="" />
-            <input type="hidden" id="efee_id" value="1" />
-            <input type="hidden" id="efee_amount" value="{$efees[0]['amount']}" />
+            {if $info.dianfei <= 0}
+                <input type="hidden" id="efee_id" value="1" />
+            {/if}
+            {if $info.dianfei > 0}
+                <input type="hidden" id="efee_id" value="0" />
+            {/if}
+            <input type="hidden" id="efee_amount" value="0" />
             <button id='buynow'>购买</button>
         </div>
     </div>
@@ -293,7 +390,10 @@
         $('.mask_layer,.cancel-btn').click(function () {
             $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
         })
-
+        $('.btn-close-bottom-window').click(() => {
+            console.log('hi')
+            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+        })
         //购买数量选择
         $('.param-num button').click(function () {
             var that = $(this);
@@ -307,12 +407,12 @@
             getEfee();
         });
         //购买数量选择
-        $('.param-efee button').click(function () {
+        $('.efee-card').click(function () {
             var that = $(this);
             var id = that.data('val');
             var amount = that.attr('amount');
-            that.siblings().removeClass('selected');
-            that.addClass('selected');
+            that.siblings().removeClass('efee-card-active');
+            that.addClass('efee-card-active');
             $('#efee_id').val(id)
             $('#efee_amount').val(amount);
             getEfee();
@@ -337,6 +437,11 @@
                 return false;
             }
             if(lock == true) {
+                return false;
+            }
+            if(efee_id == 0 || efee_id == undefined)
+            {
+                mui.toast('请选择预缴电费')
                 return false;
             }
             lock = true;

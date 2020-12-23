@@ -142,7 +142,7 @@ class IndexController extends BaseController
         $info = Db::name('user_mill')->alias('um')
             ->join('goods_mill m','um.mill_id = m.id','LEFT')
             ->join('days d','d.days = m.zhouqi','LEFT')
-            ->field('um.*, m.name, m.cover, m.jieshu_time, d.label, m.location, m.dianfei, m.baoxianfei, m.guanlifei, m.id = mill_id')
+            ->field('um.*, m.name, m.cover, m.jieshu_time, d.label, m.location, m.dianfei, m.baoxianfei, m.guanlifei, m.rebate_at, m.id = mill_id')
             ->where(['um.user_id' => $this->user_id,'um.id' => $user_mill_id])
             ->find();
         
@@ -162,7 +162,9 @@ class IndexController extends BaseController
                         ->select();
         $info['buy_time'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time']));
         $info['end_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$latestOrder[0]['zhouqi'].' day'));
-
+        $info['earning_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$info['rebate_at'].' day'));
+        $diff = floor( abs(strtotime($latestOrder[0]['efee_limit']) - strtotime(date('Y-m-d'))) / (60*60*24) );
+        $info['efee_date_balance'] = $diff.'天';
         //矿机预计今日收益  
         $today = date('Y-m-d',strtotime());
         $before18pm = date('Y-m-d H:i:s', strtotime(date("Y-m-d")) - (6 * 60 * 60));
