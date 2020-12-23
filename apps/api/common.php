@@ -19,8 +19,10 @@ function getMillEfee($user_id,$mill, $days, $rebate = 0, $num = 1)
     $suanli = Db::name('user')->where('id',$user_id)->value('suanli');
     // - $suanli * $num 
     // $fee = ( ( $mill['gonghaobi'] / 100.00 ) * $mill['dianfei'] * 24 * $num ) * $days; //电力(￥) = 当日持有算力*（功耗比/1000）* 电价 * 24 * 矿机数量
-    $fee = $mill['x_3'] * 24 / 1000.0 * $mill['dianfei'] / getConfig('fiat_deal_out');
-    $fee -= $fee * $rebate / 100.00;
+    $fee = $num * $mill['x_3'] * 24 / 1000.0 * $mill['dianfei'] / getConfig('fiat_deal_out') * $mill['suanli'] / $mill['x_2'] * $days;
+    if($rebate == 0)
+        $rebate = 100;
+    $fee = $fee * $rebate / 100.00;
 
     return $fee;
 }

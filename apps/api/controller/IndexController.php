@@ -99,26 +99,12 @@ class IndexController extends BaseController
         ->where(['um.user_id' => $this->user_id])
         ->order('buy_time desc')
         ->select();
-        $repeat_id = [];
         
         foreach($list as $key => $mill)
         {
-            $bExist = false;
-            foreach($repeat_id as $id)
-            {
-                if($id == $mill['mill_id']) $bExist = true;
-            }
-            if($bExist)
-            {
-                unset($list[$key]);
-            }
-            else
-            {
-                $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
-                $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
-                $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:0;
-                $repeat_id[] = $mill['mill_id'];
-            }
+            $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
+            $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
+            $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:0;
         }
         
         $oc_types = Db::name('oc_types')

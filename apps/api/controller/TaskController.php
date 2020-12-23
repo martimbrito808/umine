@@ -200,10 +200,7 @@ class TaskController extends Controller{
                     'buy_time' => ['lt', $yesterday_18pm],
                     'gmo.status' => 1,
                     ])
-                ->where('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY) >= "'.date('Y-m-d').'"')->select();//->sum('num');
-            print_r($settleMillNum);
-            echo $settleMillNum;
-            exit;
+                ->where('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY) >= "'.date('Y-m-d').'"')->sum('num');
             $settleMillNumRent = Db::name('goods_mill_order')
                 ->where([
                     'user_id' => $v['user_id'] , 

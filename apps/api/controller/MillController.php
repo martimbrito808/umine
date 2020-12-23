@@ -223,9 +223,11 @@ class MillController extends BaseController
         }
         
         $method = 1;
+        $finance_type = 6;
         if($millInfo['category'] == 3)
         {
             $method = 2;
+            $finance_type = 26;
         }
         // 1.减少用户余额
         // 2.减少矿机表库存
@@ -273,7 +275,7 @@ class MillController extends BaseController
                     'efee_limit'    => $efee_limit,
                 ]);
             Db::name('finance')->insert([
-                'type'          => 6,
+                'type'          => $finance_type,
                 'money_type'    => 'usdt',
                 'mold'          => 'out',
                 'user_id'       => $this->user_id,

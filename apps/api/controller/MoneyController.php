@@ -410,7 +410,7 @@ class MoneyController extends BaseController
             'usdt'=>toprice($usdt-$param['num'])
         ];
         $arr = [
-            'type' =>8,
+            'type' =>18,
             'money_type' =>'usdt',
             'mold' =>'out',
             'user_id' =>$this->user_id,
