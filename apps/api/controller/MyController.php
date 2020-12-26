@@ -33,6 +33,7 @@ class MyController extends BaseController
             $userInfo['username'] = $userInfo['tel'];
         }
         $rate = getExchangeRate();
+        //$rate = 1;
         $userInfo['btc'] = $userInfo['btc'] + $userInfo['usdt'] * $rate;
         $userInfo['cny'] = showPrice($userInfo['btc'] * getconfig('btc_parities'));
         $this->assign('data',$data);
@@ -335,6 +336,7 @@ class MyController extends BaseController
               $sendurl = $smsapi."sms?u=".$user."&p=".$pass."&m=18610382626&c=".urlencode($content);
               $result =file_get_contents($sendurl);
               Db::name('transaction_order')->where('id',$param['id'])->update(['status'=>2,'pay_time'=>time()]);
+              $user = Db::name('user')->where('id',$this->user_id)->find();
               $update_price = $user['usdt']-toprice($pay_price['num']);
               Db::name('user')->where('id',$this->user_id)->update(['usdt'=>$update_price]);
               Db::commit();

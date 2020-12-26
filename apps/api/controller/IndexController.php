@@ -95,22 +95,59 @@ class IndexController extends BaseController
         ->join('goods_mill m','um.mill_id = m.id','LEFT')
         ->join('goods_mill_order mo','um.mill_id = mo.goods_mill_id','LEFT')
         ->join('days d','d.days = m.zhouqi','LEFT')
-        ->field('um.*, m.name, m.cover, m.oc_type, m.suanli, d.label, d.days, m.jieshu_time, mo.zhouqi, mo.buy_time')
-        ->where(['um.user_id' => $this->user_id])
+        ->field('um.*, mo.num as onum, m.ipfs_type, m.category, m.name, m.cover, m.oc_type, m.suanli, d.label, d.days, m.jieshu_time, mo.zhouqi, mo.buy_time')
+        ->where([
+            'um.user_id' => $this->user_id,
+            'mo.user_id' => $this->user_id,
+        ])
         ->order('buy_time desc')
         ->select();
-        
+        $list_sorted = [];
         foreach($list as $key => $mill)
         {
-            $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
-            $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
-            $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:0;
+            $bExist = false;
+            foreach($list_sorted as $key1 => $item)
+            {
+                if(date('Y-m-d', strtotime($item['buy_time'])) == date('Y-m-d', strtotime($mill['buy_time'])) && $item['mill_id'] == $mill['mill_id'])
+                {
+                    $list_sorted[$key1]['mill_num'] += $item['onum'];
+                    $bExist = true;
+                }
+            }
+            if(!$bExist)
+            {
+                $list[$key]['mill_num'] = $mill['onum'];
+                $list[$key]['buy_time_t'] = $mill['buy_time'];
+                $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
+                $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
+                $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:1;
+                $list_sorted[] = $list[$key];
+            }
         }
         
         $oc_types = Db::name('oc_types')
         ->order('uid asc')
         ->select();
-        return $this->fetch('',compact('list','token','oc_types'));
+        
+        $category2_btc = [
+            [
+                'id' => 1,
+                'name' => '实体矿机购买'
+            ],
+            [
+                'id' => 2,
+                'name' => '云算力购买'
+            ],
+            [
+                'id' => 3,
+                'name' => '云算力租赁'
+            ],
+        ];
+        $ipfs_types = Db::name('ipfs_types')
+        ->order('uid asc')
+        ->select();
+        $list = $list_sorted;
+        return $this->fetch('',compact('list','token','oc_types', 'category2_btc', 'ipfs_types'));
     }
     
     
@@ -121,6 +158,7 @@ class IndexController extends BaseController
     {
         $token = input('param.token', '');
         $user_mill_id = input('id','');
+        $buy_time = input('buy_time', '');
         if(empty($user_mill_id)) {
             sendRequest(201, '非法请求');
         }
@@ -129,8 +167,10 @@ class IndexController extends BaseController
             ->join('goods_mill m','um.mill_id = m.id','LEFT')
             ->join('days d','d.days = m.zhouqi','LEFT')
             ->field('um.*, m.name, m.cover, m.jieshu_time, d.label, m.location, m.dianfei, m.baoxianfei, m.guanlifei, m.rebate_at, m.id = mill_id')
-            ->where(['um.user_id' => $this->user_id,'um.id' => $user_mill_id])
-            ->find();
+            ->where([
+                'um.user_id' => $this->user_id,
+                'um.id' => $user_mill_id,
+            ])->find();
         
         if(empty($user_mill_id)) {
             sendRequest(201, '未查询到次矿机信息，请稍后再试');
@@ -146,9 +186,15 @@ class IndexController extends BaseController
                         ->order('buy_time desc')
                         ->limit(0,1)
                         ->select();
-        $info['buy_time'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time']));
+        $info['buy_time'] = date('Y-m-d', strtotime($buy_time));
         $info['end_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$latestOrder[0]['zhouqi'].' day'));
         $info['earning_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$info['rebate_at'].' day'));
+        //get num
+        $machineNum = Db::name('goods_mill_order')
+                        ->where(['user_id' => $info['user_id'] , 'goods_mill_id' => $info['mill_id']])
+                        ->whereRaw('Date(buy_time)="'.$info['buy_time'].'"')
+                        ->sum('num');
+        //
         $diff = floor( abs(strtotime($latestOrder[0]['efee_limit']) - strtotime(date('Y-m-d'))) / (60*60*24) );
         $info['efee_date_balance'] = $diff.'天';
         //矿机预计今日收益  
@@ -204,10 +250,63 @@ class IndexController extends BaseController
             ->where(['will_id' => $info['mill_id'], 'user_id' => $this->user_id])
             ->order('id desc')
             ->select();
-        
-        return $this->fetch('',compact('info','token','shouyilist'));
+        $efees = Db::name('efee_rebate')->select();
+        $mill = Db::name('goods_mill')->find($info['mill_id']);
+        foreach($efees as $key => $efee)
+        {
+            //*x_2*(gonghaobi/1000)*dianfei $info['x_2']*
+            $efees[$key]['amount'] = showprice(getMillEfee($this->user_id, $mill, $efee['days'], $efee['rebate'], $machineNum), 2);
+            $efees[$key]['rebate_label'] = $efee['rebate'] * 0.1;
+        }
+        return $this->fetch('',compact('info','token','shouyilist', 'efees', 'machineNum', 'buy_time'));
     }
-    
+    public function buy_efee()
+    {
+        $mill_id = input('mill_id');
+        $efee_id = input('efee_id');
+        $buy_time = date('Y-m-d', strtotime(input('buy_time')));
+        $user_id = $this->user_id;
+        $machineNum = $orders = Db::name('goods_mill_order')
+                    ->where([
+                        'user_id' => $user_id, 
+                        'goods_mill_id' => $mill_id
+                    ])
+                    ->whereRaw('Date(buy_time)="'.$buy_time.'"')
+                    ->sum('num');
+        $mill = Db::name('goods_mill')->find($mill_id);
+        $efee = Db::name('efee_rebate')->find($efee_id);
+        $efee_amount = getMillEfee($user_id, $mill, $efee['days'], $efee['rebate'], $machineNum);
+        
+        $order = Db::name('goods_mill_order')
+                ->where([
+                    'user_id' => $user_id, 
+                    'goods_mill_id' => $mill_id
+                ])
+                ->whereRaw('Date(buy_time)="'.$buy_time.'"')
+                ->select()[0];
+        $efee_limit = date('Y-m-d', strtotime($order['efee_limit'].' +'.$efee['days'].' day'));
+        Db::name('goods_mill_order')
+        ->where([
+            'user_id' => $user_id, 
+            'goods_mill_id' => $mill_id
+        ])
+        ->whereRaw('Date(buy_time)="'.$buy_time.'"')
+        ->update(['efee_limit'=>$efee_limit]);
+        Db::name('user')
+        ->where(['id' => $user_id])
+        ->dec('usdt', $efee_amount)
+        ->update();
+        $response = [
+            'mill' => $mill,
+            'efee' => $efee,
+            'amount' => $efee_amount,
+            'machineNum' => $machineNum,
+            'buy_time' => $buy_time,
+            'user_id' => $user_id,
+        ];
+        sendRequest(200, '购买成功');
+        return $response;
+    }
     /**
      * 矿机上下架
      */

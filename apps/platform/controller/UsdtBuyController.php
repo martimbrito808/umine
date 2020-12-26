@@ -125,7 +125,7 @@ class UsdtBuyController extends BaseController
                             'money'         => toprice($info['num']),
                             'mold'          => 'in',
                             'money_type'    => 'usdt',
-                            'type'          => 9,
+                            'type'          => 19,
                             'create_time'   => time()
                         ]);
                 }

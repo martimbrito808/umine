@@ -122,18 +122,36 @@
         .category>li>a.active .border{
             background: #DEAF5F;
         }
-        .category-panel{
+        .panel{
             display: none;
+            padding: 0 15px;
         }
-        .my-ltc-list{
-            display: none;
-        }
-        .category-panel-active{
+        .panel-active{
             display: block;
         }
-        .category-sub{
+        .category2,.category3{
             padding: 0px;
             padding-bottom:10px;
+        }
+        category2{
+            padding: 0px;
+            padding-bottom:10px;
+        }
+        .category2{  
+            white-space: nowrap;
+            overflow: scroll;
+        }
+        
+        .category2 > li {
+            background: #e2e2e2;
+            margin-right: 10px;
+            padding: 5px 10px;
+            margin: auto 5px;
+            border-radius: 6px;
+        }
+        .category2 > li > a{
+            padding-bottom: 0px;
+            font-size: .2rem !important;
         }
     </style>
 </head>
@@ -146,105 +164,220 @@
     <a href="javascript:history.go(-1)" class="back"><img src="../../public/static/images/back.png" alt=""></a>
     <div class="title">我的矿机</div>
 </div>
-<div class="container">
 
-    <ul class="category category-parent">
+<div class="container">
+    <ul class="category category1">
+      {volist name='oc_types' id='oc_type'}
         <li>
-            <a data-key="category-panel-0" class="active" href="javascript:void(0)" style="font-size:.34rem">
-                全部
-                <span class="border"></span>
-            </a>
-        </li>
-        {volist name='oc_types' id='oc_type'}
-        <li>
-            <a data-key="category-panel-{$oc_type.id}" href="javascript:void(0)">
+            <a data-key="panel1-{$oc_type.id}" oc-type='{$oc_type.id}' {if condition="1 eq $oc_type.id"} class="active" {/if} href="javascript:void(0)">
                 {$oc_type.label}专区
                 <span class="border"></span>
             </a>
         </li>
-        {/volist}
+      {/volist}
     </ul>
-    <div class="category-panel category-panel-active" id="category-panel-0">
-        <ul class="category category-sub">
-            <li>
-                <a data-key="active-mills-0" class="active" href="javascript:void(0)">
-                    正在产矿
-                </a>
-            </li>
-            <li>
-                <a data-key="deactive-mills-0" href="javascript:void(0)">
-                    已过期
-                </a>
-            </li>
-        </ul>
-        <ul class="my-ltc-list category-panel-active" id="active-mills-0">
-            {volist name="list" id='ll'}
-                {if $ll.active == 1}
-                    <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
-                        <li class="my-ltc-item">
-                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
-                            <div class="my-ltc-item-right">
-                                <p class="my-ltc-item-title">{$ll.name}{$ll.cover}</p>
-                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
-                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
-                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
-                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
-                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
-                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
-                            </div>
-                            <div class="my-ltc-item-flag">
-                                <img class="bz" src="../../public/static/images/bz.png" alt="">
-                                <span>保障中</span>
-                            </div>
-                        </li>
-                    </a>
-                {/if}
-            {/volist}
-        </ul>
-        <ul class="my-ltc-list" id="deactive-mills-0">
-            {volist name="list" id='ll'}
-                {if $ll.active == 0}
-                    <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
-                        <li class="my-ltc-item">
-                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
-                            <div class="my-ltc-item-right">
-                                <p class="my-ltc-item-title">{$ll.name}</p>
-                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
-                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
-                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
-                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
-                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
-                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
-                            </div>
-                            <div class="my-ltc-item-flag">
-                                <img class="bz" src="../../public/static/images/bz.png" alt="">
-                                <span>保障中</span>
-                            </div>
-                        </li>
-                    </a>
-                {/if}
-            {/volist}
-        </ul>
-    </div>
     {volist name='oc_types' id='oc_type'}
-        <div class="category-panel" id="category-panel-{$oc_type.id}">
-            <ul class="category category-sub">
+        {if $oc_type.id != 3}
+            <div class="panel panel1 {if condition='1 eq $oc_type.id'} panel-active {/if}" id="panel1-{$oc_type.id}">
+                <ul class="category category2">
+                    <li>
+                        <a data-key="panel20-{$oc_type.id}" class="active" href="javascript:void(0)">
+                            全部
+                        </a>
+                    </li>
+                    {volist name='category2_btc' id='category2'}
+                        <li>
+                            <a data-key="panel2{$category2.id}-{$oc_type.id}" href="javascript:void(0)">
+                                {$category2.name}
+                            </a>
+                        </li>
+                    {/volist}
+                </ul>
+                
+                <div id="panel20-{$oc_type.id}" class="panel panel2 panel-active">
+                    <ul class="category category3">
+                        <li>
+                            <a data-key="panel30-{$oc_type.id}" class="active" href="javascript:void(0)">
+                                正在产矿
+                            </a>
+                        </li>
+                        <li>
+                            <a data-key="panel31-{$oc_type.id}" href="javascript:void(0)">
+                                已过期
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="panel panel3 panel-active"  id="panel30-{$oc_type.id}">
+                        {volist name="list" id='ll'}
+                            {if $ll.oc_type == $oc_type.id}
+                                {if $ll.active == 1}
+                                    <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                        <li class="my-ltc-item">
+                                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                            <div class="my-ltc-item-right">
+                                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                            </div>
+                                            <div class="my-ltc-item-flag">
+                                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                                <span>保障中</span>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/if}
+                        {/volist}
+                    </ul>
+            
+                    <ul class="panel panel3"  id="panel31-{$oc_type.id}">
+                        {volist name="list" id='ll'}
+                            {if $ll.oc_type == $oc_type.id}
+                                {if $ll.active == 0}
+                                    <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                        <li class="my-ltc-item">
+                                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                            <div class="my-ltc-item-right">
+                                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                            </div>
+                                            <div class="my-ltc-item-flag">
+                                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                                <span>保障中</span>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/if}
+                        {/volist}
+                    </ul>
+                </div>
+
+                {volist name='category2_btc' id='category2'}
+                <div id="panel2{$category2.id}-{$oc_type.id}" class="panel panel2 ">
+                    <ul class="category category3">
+                        <li>
+                            <a data-key="panel30-{$oc_type.id}" class="active" href="javascript:void(0)">
+                                正在产矿
+                            </a>
+                        </li>
+                        <li>
+                            <a data-key="panel31-{$oc_type.id}" href="javascript:void(0)">
+                                已过期
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <ul class="panel panel3 panel-active"  id="panel30-{$oc_type.id}">
+                        {volist name="list" id='ll'}
+                            {if $ll.oc_type == $oc_type.id}
+                            {if $ll.category == $category2.id}
+                                {if $ll.active == 1}
+                                    <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                        <li class="my-ltc-item">
+                                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                            <div class="my-ltc-item-right">
+                                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                            </div>
+                                            <div class="my-ltc-item-flag">
+                                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                                <span>保障中</span>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                                {/if}
+                            {/if}
+                        {/volist}
+                    </ul>
+            
+                    <ul class="panel panel3"  id="panel31-{$oc_type.id}">
+                        {volist name="list" id='ll'}
+                            {if $ll.oc_type == $oc_type.id}
+                            {if $ll.category == $category2.id}
+                                {if $ll.active == 0}
+                                    <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                        <li class="my-ltc-item">
+                                            <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                            <div class="my-ltc-item-right">
+                                                <p class="my-ltc-item-title">{$ll.name}</p>
+                                                <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                                <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                                <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                                <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                                <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                                <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                            </div>
+                                            <div class="my-ltc-item-flag">
+                                                <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                                <span>保障中</span>
+                                            </div>
+                                        </li>
+                                    </a>
+                                {/if}
+                            {/if}
+                            {/if}
+                        {/volist}
+                    </ul>
+                </div>
+                {/volist}
+            </div>
+        {/if}
+    {/volist}
+    
+    
+
+    <div class="panel panel1 " id="panel1-3">
+        <ul class="category category2">
+            <li>
+                <a data-key="panel20-3" class="active" href="javascript:void(0)">
+                    全部
+                </a>
+            </li>
+            {volist name='ipfs_types' id='category2'}
                 <li>
-                    <a data-key="active-mills-{$oc_type.id}" class="active" href="javascript:void(0)">
+                    <a data-key="panel2{$category2.id}-3" href="javascript:void(0)">
+                        {$category2.label}
+                    </a>
+                </li>
+            {/volist}
+        </ul>
+        
+        <div id="panel20-3" class="panel panel2 panel-active">
+            <ul class="category category3">
+                <li>
+                    <a data-key="panel30-3" class="active" href="javascript:void(0)">
                         正在产矿
                     </a>
                 </li>
                 <li>
-                    <a data-key="deactive-mills-{$oc_type.id}" href="javascript:void(0)">
+                    <a data-key="panel31-3" href="javascript:void(0)">
                         已过期
                     </a>
                 </li>
             </ul>
-            <ul class="my-ltc-list category-panel-active"  id="active-mills-{$oc_type.id}">
+            
+            <ul class="panel panel3 panel-active"  id="panel30-3">
                 {volist name="list" id='ll'}
-                    {if $ll.oc_type == $oc_type.id}
+                    {if $ll.oc_type == 3}
                         {if $ll.active == 1}
-                            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                            <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
                                 <li class="my-ltc-item">
                                     <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
                                     <div class="my-ltc-item-right">
@@ -266,11 +399,12 @@
                     {/if}
                 {/volist}
             </ul>
-            <ul class="my-ltc-list"  id="deactive-mills-{$oc_type.id}">
+    
+            <ul class="panel panel3"  id="panel31-3">
                 {volist name="list" id='ll'}
-                    {if $ll.oc_type == $oc_type.id}
+                    {if $ll.oc_type == 3}
                         {if $ll.active == 0}
-                            <a href="/api/index/my_mill?id={$ll.id}&token={$token}"> 
+                            <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
                                 <li class="my-ltc-item">
                                     <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
                                     <div class="my-ltc-item-right">
@@ -293,27 +427,123 @@
                 {/volist}
             </ul>
         </div>
-    {/volist}
-</div>
+  
+        {volist name='ipfs_types' id='category2'}
+        <div id="panel2{$category2.id}-3" class="panel panel2 ">
+            <ul class="category category3">
+                <li>
+                    <a data-key="panel30-3" class="active" href="javascript:void(0)">
+                        正在产矿
+                    </a>
+                </li>
+                <li>
+                    <a data-key="panel31-3" href="javascript:void(0)">
+                        已过期
+                    </a>
+                </li>
+            </ul>
+            
+            <ul class="panel panel3 panel-active"  id="panel30-3">
+                {volist name="list" id='ll'}
+                    {if $ll.oc_type == 3}
+                    {if $ll.ipfs_type == $category2.id}
+                        {if $ll.active == 1}
+                            <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                <li class="my-ltc-item">
+                                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                    <div class="my-ltc-item-right">
+                                        <p class="my-ltc-item-title">{$ll.name}</p>
+                                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                        <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                        <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                        <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                        <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                    </div>
+                                    <div class="my-ltc-item-flag">
+                                        <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                        <span>保障中</span>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                        {/if}
+                    {/if}
+                {/volist}
+            </ul>
+    
+            <ul class="panel panel3"  id="panel31-3">
+                {volist name="list" id='ll'}
+                    {if $ll.oc_type ==3}
+                    {if $ll.ipfs_type == $category2.id}
+                        {if $ll.active == 0}
+                            <a href="/api/index/my_mill?id={$ll.id}&buy_time={$ll.buy_time_t}&token={$token}"> 
+                                <li class="my-ltc-item">
+                                    <img class="my-ltc-item-img" src="{:getfile($ll.cover)}" alt="">
+                                    <div class="my-ltc-item-right">
+                                        <p class="my-ltc-item-title">{$ll.name}</p>
+                                        <p class="my-ltc-item-num">矿机数量：{$ll.mill_num}</p>
+                                        <p class="my-ltc-item-money">昨日收益：{:showprice($ll.yesterday_earnings)}</p>
+                                        <p class="my-ltc-item-money">我的算力: {$ll.suanli}</p>
+                                        <p class="my-ltc-item-money">购买日期: {$ll.buy_time}</p>
+                                        <p class="my-ltc-item-money">有效期: {$ll.label}</p>
+                                        <p class="my-ltc-item-money">过期日期: {$ll.end_date}</p>
+                                    </div>
+                                    <div class="my-ltc-item-flag">
+                                        <img class="bz" src="../../public/static/images/bz.png" alt="">
+                                        <span>保障中</span>
+                                    </div>
+                                </li>
+                            </a>
+                        {/if}
+                    {/if}
+                    {/if}
+                {/volist}
+            </ul>
+        </div>
+        {/volist}
+    </div>
+
+  </div>
+
 </body>
 <script>
-    $('.category-parent li a').click(function () {
+    $('.category1 li a').click(function () {
         var that = $(this);
         var key = that.data('key');
-        $('.category-parent li a').removeClass('active');
+        const ocType = $(this).attr('oc-type')
+        console.log(ocType)
+        $('.category1 li a').removeClass('active');
         that.addClass('active');
-        $('.category-panel').removeClass('category-panel-active');
-        $('#' + key).addClass('category-panel-active');
-        $('#' + key).find(':first-child').find('li:first-child').find('a:first-child').addClass('active')
-        $('#' + key).find(':nth-child(2)').addClass('category-panel-active')
+        $('.panel1').removeClass('panel-active');
+        $('#' + key).addClass('panel-active');
+
+        $('#' + key).find(".category2").find('a').removeClass('active')
+        $('#' + key).find(".category2").find(':first-child').find('a').addClass('active')
+        $('#' + key).find('.panel2').removeClass('panel-active')
+        $('#' + key).find('.panel2').first().addClass('panel-active')
     })
-    $('.category-sub li a').click(function () {
+    $('.category2 li a').click(function () {
         var that = $(this);
         var key = that.data('key');
-        $('.category-sub li a').removeClass('active');
+        $('.category2 li a').removeClass('active');
         that.addClass('active');
-        $('.my-ltc-list').removeClass('category-panel-active');
-        $('#' + key).addClass('category-panel-active');
+        $('.panel2').removeClass('panel-active');
+        $('#' + key).addClass('panel-active');
+        console.log()
+        $('#' + key).find(".category3").find('a').removeClass('active')
+        $('#' + key).find(".category3").find(':first-child').find('a').addClass('active')
+        $('#' + key).find('.panel3').removeClass('panel-active')
+        $('#' + key).find('.panel3').first().addClass('panel-active')
+    })
+    $('.category3 li a').click(function () {
+        var that = $(this);
+        var key = that.data('key');
+        $('.category3 li a').removeClass('active');
+        that.addClass('active');
+        $('.panel3').removeClass('panel-active')
+        $('#' + key).addClass('panel-active');
+        console.log(key)
     })
 </script>
 </html>

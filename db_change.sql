@@ -54,3 +54,5 @@ ALTER TABLE `shop_goods_mill`
 /* Rebate time*/
 ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `rebate_at` INT(11) NOT NULL DEFAULT '1' AFTER `zhouqi`;
+
+	INSERT INTO `ethereumuniswap_`.`shop_finance_types` (`id`, `label`) VALUES ('36', '购买云算力');

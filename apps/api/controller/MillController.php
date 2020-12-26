@@ -229,6 +229,10 @@ class MillController extends BaseController
             $method = 2;
             $finance_type = 26;
         }
+        if($millInfo['category' == 2])
+        {
+            $finance_type = 36;
+        }
         // 1.减少用户余额
         // 2.减少矿机表库存
         // 3.写入到用户矿机表
