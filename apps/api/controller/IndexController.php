@@ -95,7 +95,7 @@ class IndexController extends BaseController
         ->join('goods_mill m','um.mill_id = m.id','LEFT')
         ->join('goods_mill_order mo','um.mill_id = mo.goods_mill_id','LEFT')
         ->join('days d','d.days = m.zhouqi','LEFT')
-        ->field('um.*, mo.num as onum, m.ipfs_type, m.category, m.name, m.cover, m.oc_type, m.suanli, d.label, d.days, m.jieshu_time, mo.zhouqi, mo.buy_time')
+        ->field('um.*, mo.num as onum, m.ipfs_type, m.category, rebate_at, m.name, m.cover, m.oc_type, m.suanli, d.label, d.days, m.jieshu_time, mo.zhouqi, mo.buy_time')
         ->where([
             'um.user_id' => $this->user_id,
             'mo.user_id' => $this->user_id,
@@ -116,15 +116,20 @@ class IndexController extends BaseController
             }
             if(!$bExist)
             {
+                $list[$key]['mill_num2'] =  $list[$key]['mill_num'];
                 $list[$key]['mill_num'] = $mill['onum'];
                 $list[$key]['buy_time_t'] = $mill['buy_time'];
                 $list[$key]['buy_time'] = date('Y-m-d', strtotime($mill['buy_time']));
                 $list[$key]['end_date'] = date('Y-m-d', strtotime($mill['buy_time'].' +'.$mill['zhouqi'].' day'));
-                $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:1;
+                $list[$key]['active'] = date('Y-m-d') <= $list[$key]['end_date']?1:0;
+                $list[$key]['earning_date'] = date('Y-m-d',strtotime($mill['buy_time'].' +'.$mill['rebate_at'].' day'));
                 $list_sorted[] = $list[$key];
             }
         }
-        
+        foreach($list_sorted as $key => $mill)
+        {
+            $list_sorted[$key]['yesterday_earnings'] = $mill['yesterday_earnings'] * $mill['mill_num'] / $mill['mill_num2'];
+        }
         $oc_types = Db::name('oc_types')
         ->order('uid asc')
         ->select();

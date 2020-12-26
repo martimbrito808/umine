@@ -185,14 +185,19 @@ class TaskController extends Controller{
         $info = Db::name('user_mill')->alias('um')
             ->join('user u','um.user_id = u.id','LEFT')
             ->field('um.*, u.username, u.tel')
-            ->where('um.status = 1 AND u.status = 1 AND ( um.last_earnings_date< :yesterday OR um.last_earnings_date IS NULL )',['yesterday' => strtotime($yesterday)])
+            ->where('um.status = 1 
+                    AND u.status = 1 
+                    AND ( 
+                            um.last_earnings_date< :yesterday 
+                            OR 
+                            um.last_earnings_date IS NULL 
+                        )',
+                ['yesterday' => strtotime($yesterday)])
             ->select();
-            
         foreach($info as $k => $v) {
             //当前矿机昨天18点之前购买的数量
             $settleMillNum = Db::name('goods_mill_order')->alias('gmo')
                 ->join('goods_mill gm','gmo.goods_mill_id = gm.id','LEFT')
-                ->field('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY)')
                 ->where([
                     'user_id' => $v['user_id'] , 
                     'goods_mill_id' => $v['mill_id'], 
@@ -200,7 +205,8 @@ class TaskController extends Controller{
                     'buy_time' => ['lt', $yesterday_18pm],
                     'gmo.status' => 1,
                     ])
-                ->where('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY) >= "'.date('Y-m-d').'"')->sum('num');
+                ->where('DATE_ADD(gmo.buy_time, INTERVAL gm.rebate_at DAY) <= "'.date('Y-m-d').'"')->sum('num');
+
             $settleMillNumRent = Db::name('goods_mill_order')
                 ->where([
                     'user_id' => $v['user_id'] , 
@@ -255,7 +261,7 @@ class TaskController extends Controller{
                     $v['shouyi_cny'] = $v['richanchu_cny'] - $v['dianfei'] - $v['baoxianfei'] - $v['guanlifei'];
                 }
                 $v['shouyi_format'] = toprice($v['shouyi_cny'] / getconfig('btc_parities')); //收益 比特币 | 格式化
-                
+
                 /**
                  * Pay Rebate
                  * parent 1,2,3
