@@ -110,7 +110,7 @@ class IndexController extends BaseController
             {
                 if(date('Y-m-d', strtotime($item['buy_time'])) == date('Y-m-d', strtotime($mill['buy_time'])) && $item['mill_id'] == $mill['mill_id'])
                 {
-                    $list_sorted[$key1]['mill_num'] += $item['onum'];
+                    $list_sorted[$key1]['mill_num'] += $mill['onum'];
                     $bExist = true;
                 }
             }
@@ -180,6 +180,16 @@ class IndexController extends BaseController
         if(empty($user_mill_id)) {
             sendRequest(201, '未查询到次矿机信息，请稍后再试');
         }
+        $info['buy_time'] = date('Y-m-d', strtotime($buy_time));
+        //get num
+        $machineNum = Db::name('goods_mill_order')
+                        ->where(['user_id' => $info['user_id'] , 'goods_mill_id' => $info['mill_id']])
+                        ->whereRaw('Date(buy_time)="'.$info['buy_time'].'"')
+                        ->sum('num');
+
+        $rate = $machineNum / $info['mill_num'];
+        $info['count_earnings'] *= $rate;
+        $info['yesterday_earnings'] *= $rate;
         $info['count_earnings_cny'] = $info['count_earnings'] * getconfig('btc_parities');
         $info['yesterday_earnings_cny'] = $info['yesterday_earnings'] * getconfig('btc_parities');
         $info['suanli'] = Db::name('user')->where(['id' => $this->user_id])->value('suanli');
@@ -191,14 +201,10 @@ class IndexController extends BaseController
                         ->order('buy_time desc')
                         ->limit(0,1)
                         ->select();
-        $info['buy_time'] = date('Y-m-d', strtotime($buy_time));
+        
         $info['end_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$latestOrder[0]['zhouqi'].' day'));
         $info['earning_date'] = date('Y-m-d', strtotime($latestOrder[0]['buy_time'].' +'.$info['rebate_at'].' day'));
-        //get num
-        $machineNum = Db::name('goods_mill_order')
-                        ->where(['user_id' => $info['user_id'] , 'goods_mill_id' => $info['mill_id']])
-                        ->whereRaw('Date(buy_time)="'.$info['buy_time'].'"')
-                        ->sum('num');
+
         //
         $diff = floor( abs(strtotime($latestOrder[0]['efee_limit']) - strtotime(date('Y-m-d'))) / (60*60*24) );
         $info['efee_date_balance'] = $diff.'天';
@@ -234,7 +240,7 @@ class IndexController extends BaseController
             if($mill['dianfei'] < 0) {
                 $mill['dianfei'] = 0;
             }
-            $mill['guanlifei'] = $mill['richanchu_cny'] * ( $millInfo['guanlifei'] / 100 ) * $settleMillNum;  //管理费(￥) = 挖矿产出的*%
+            $mill['guanlifei'] = $mill['richanchu_cny'] * ( $millInfo['guanlifei'] / 100 );  //管理费(￥) = 挖矿产出的*%
             
             //扣除手续费
             if($userInfo['deduction'] == 1) {
