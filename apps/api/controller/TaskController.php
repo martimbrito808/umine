@@ -269,7 +269,7 @@ class TaskController extends Controller{
                  */
                 $shouyi_format_bought = $v['shouyi_format'] * (($settleMillNum - $settleMillNumRent) / $settleMillNum);
                 if(!empty($userInfo['parent_1'])) {
-                    $rebate = $shouyi_format_bought * $millInfo['r1'] * getRebateMultiple($userInfo['parent_1']);
+                    $rebate = $shouyi_format_bought * $millInfo['r1'] * getRebateMultiple($userInfo['parent_1']) / 100;
                     Db::name('user')->where(['id' => $userInfo['parent_1']])->setInc('btc', $rebate); 
                     Db::name('finance')->insert([
                         'type'        => 3,
@@ -287,7 +287,7 @@ class TaskController extends Controller{
                     ]);
                 }
                 if(!empty($userInfo['parent_2'])) {
-                    $rebate = $shouyi_format_bought * $millInfo['r2'] * getRebateMultiple($userInfo['parent_2']);
+                    $rebate = $shouyi_format_bought * $millInfo['r2'] * getRebateMultiple($userInfo['parent_2']) / 100;
                     Db::name('user')->where(['id' => $userInfo['parent_2']])->setInc('btc', $rebate); 
                     Db::name('finance')->insert([
                         'type'        => 3,
@@ -306,7 +306,7 @@ class TaskController extends Controller{
                     ]);
                 }
                 if(!empty($userInfo['parent_3'])) {
-                    $rebate = $shouyi_format_bought * $millInfo['r3'] * getRebateMultiple($userInfo['parent_3']);
+                    $rebate = $shouyi_format_bought * $millInfo['r3'] * getRebateMultiple($userInfo['parent_3']) / 100;
                     Db::name('user')->where(['id' => $userInfo['parent_3']])->setInc('btc', $rebate); 
                     Db::name('finance')->insert([
                         'type'        => 3,

@@ -197,10 +197,12 @@
                     <span>产权</span>
                     <span>{$info.label}</span>
                 </li>
-                <li>
-                    <span>过期日期</span>
-                    <span>{$info.end_date}</span>
-                </li>
+                {if $info.days <= 1080}
+                    <li>
+                        <span>过期日期</span>
+                        <span>{$info.end_date}</span>
+                    </li>
+                {/if}
             </ul>
             <a href="/api/my/cost?token={$token}" class="deductions-way">
                 抵扣方式

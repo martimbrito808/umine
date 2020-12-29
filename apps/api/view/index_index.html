@@ -136,9 +136,9 @@
             <!-- Swiper -->
             <div class="swiper-container swiper-container-horizontal">
                 <div class="swiper-wrapper">
-                    {volist name='data.mill_list' id='ml'}
+                    {volist name='data.list_result' id='ml'}
                         <div class="swiper-slide">
-                            <a href='/api/index/my_mill?id={$ml.id}&token={$data.token}'> 
+                            <a href='/api/index/my_mill?id={$ml.id}&buy_time={$ml.buy_time}&token={$data.token}'> 
                                 <div class="mill-card">
                                     <img src="{:getfile($ml.cover)}" alt="" class="mill-card-img">
                                     <div class="mill-card-sidebar">
