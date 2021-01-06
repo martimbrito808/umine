@@ -102,8 +102,10 @@ class MillController extends BaseController
     {
         $id = input('param.id','');
         $auth['token'] = input('param.token');
-        
+        //$gbtcRate = getExchangeRate();
+        $gbtcRate = 0.00001;
         $selfUsdt = Db::name('user')->where('id',$this->user_id)->value('usdt');
+        $selfGbtc = Db::name('user')->where('id',$this->user_id)->value('er');
         $info = Db::name('goods_mill')->alias('gm')
                 ->join('ocTypes o','gm.oc_type = o.id','LEFT')
                 ->field('o.label as olabel, gm.*')
@@ -180,7 +182,13 @@ class MillController extends BaseController
             $efees[$key]['amount'] = showprice(getMillEfee($this->user_id, $info, $efee['days'], $efee['rebate']), 2);
             $efees[$key]['rebate_label'] = $efee['rebate'] * 0.1;
         }
-        return $this->fetch('',compact('info', 'auth','selfUsdt','efees'));
+        /**
+         * Price
+         */
+        $info['price_usdt'] = $info['price'] * $info['usdt_gbtc_rate'] / 100.00;
+        $info['price_gbtc'] = $info['price'] * (100.00 - $info['usdt_gbtc_rate']) / 100.00 * $gbtcRate;
+        $payMethods = Db::name('pay_methods')->order('id asc')->select();
+        return $this->fetch('',compact('info', 'auth','selfUsdt','efees', 'selfGbtc', 'payMethods'));
     }
     
     /**
@@ -216,12 +224,37 @@ class MillController extends BaseController
             $efee_limit = date('Y-m-d', strtotime('+3000 day'));
         }
 
+        //get Exchange Rate
+        $payMethod = Db::name('pay_methods')->find($param['pmethod']);
+        $exchangeRateDefault = getExchangeRate(1,$payMethod['exchange_label']);
+        $exchangeRateGBTC = getExchangeRate(1,'BNT');;
         $userInfo = Db::name('user')->where(['id' => $this->user_id])->find();
+        /**
+         * calc Total
+         * USDT
+         * Default
+         * Gbtc
+        */
         $totalMoney = $millInfo['price'] * $param['num'] + $efee_amount;
-        if($userInfo['usdt'] < ($totalMoney)) {
-             sendRequest(201, '余额不足，请先充值');
+        $totalDefault = $totalMoney * $millInfo['usdt_gbtc_rate'] / 100.00 * $exchangeRateDefault;
+        $totalGbtc = $totalMoney * (100 - $millInfo['usdt_gbtc_rate']) / 100.00 * $exchangeRateGBTC;
+        // $confirmData = [
+        //     'totalMoney' => $totalMoney,
+        //     'totalDefault' => $totalDefault,
+        //     'totalGbtc' => $totalGbtc,
+        //     'balanceDefault' => $userInfo[$payMethod['unit']],
+        //     'balanceGbtc' => $userInfo['er'],
+        //     'exchangeRateDefault' => $exchangeRateDefault,
+        //     'label' => $payMethod['exchange_label'],
+        //     'rate' => (100 - $millInfo['usdt_gbtc_rate']),
+        // ];
+        //sendRequest(201, $confirmData);
+        if($userInfo[$payMethod['unit']] < ($totalDefault)) {
+             sendRequest(201, $payMethod['name'].'余额不足，请先充值');
         }
-        
+        if($userInfo['er'] < ($totalGbtc)) {
+            sendRequest(201, 'GBTC 余额不足，请先充值');
+        }
         $method = 1;
         $finance_type = 6;
         if($millInfo['category'] == 3)
@@ -242,10 +275,13 @@ class MillController extends BaseController
         try{
             Db::name('user')
                 ->where(['id' => $this->user_id])
-                ->dec('usdt', $totalMoney + $total_efee)
+                ->dec($payMethod['unit'], $totalDefault)
                 ->inc('suanli', $millInfo['suanli']*$param['num'])
                 ->update();
-            
+            Db::name('user')
+                ->where(['id' => $this->user_id])
+                ->dec('er', $totalGbtc)
+                ->update();
             Db::name('goods_mill')
                 ->where(['id' => $param['mill_id']])
                 ->setDec('stock', $param['num']);
@@ -280,10 +316,18 @@ class MillController extends BaseController
                 ]);
             Db::name('finance')->insert([
                 'type'          => $finance_type,
-                'money_type'    => 'usdt',
+                'money_type'    => $payMethod['unit'],
                 'mold'          => 'out',
                 'user_id'       => $this->user_id,
-                'money'         => $totalMoney,
+                'money'         => $totalDefault,
+                'create_time'   => time(),
+            ]);
+            Db::name('finance')->insert([
+                'type'          => $finance_type,
+                'money_type'    => 'gbtc',
+                'mold'          => 'out',
+                'user_id'       => $this->user_id,
+                'money'         => $totalGbtc,
                 'create_time'   => time(),
             ]);
                 

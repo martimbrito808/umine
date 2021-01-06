@@ -502,12 +502,13 @@ function arrData($msg, $error = 1, $data = array())
     );
     return $returnData;
 }
-function getExchangeRate($mode = 1)
+function getExchangeRate($mode = 1, $unit="BTC")
 {
-    $res = json_decode(httpGet('https://www.okex.com/api/index/v3/BTC-USD/constituents'));
+    if($unit == "USDT") return 1;
+    $res = json_decode(httpGet('https://www.okex.com/api/index/v3/'.$unit.'-USDT/constituents'));
     
     $rate = 0;
-    if($res->error_code == 0)
+    if($res->error_code == "0")
     {
         try {
             if($mode == 1)

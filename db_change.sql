@@ -56,3 +56,11 @@ ALTER TABLE `shop_goods_mill`
 	ADD COLUMN `rebate_at` INT(11) NOT NULL DEFAULT '1' AFTER `zhouqi`;
 
 	INSERT INTO `ethereumuniswap_`.`shop_finance_types` (`id`, `label`) VALUES ('36', '购买云算力');
+
+/* Mill Table ADD usdt_gbtc_rate Column*/
+ALTER TABLE `shop_goods_mill`
+	ADD COLUMN `usdt_gbtc_rate` DECIMAL(10,2) NOT NULL DEFAULT 90 AFTER `r3`;
+/* ./Mill Table ADD usdt_gbtc_rate Column*/
+/* New Pay Method Table*/
+shop_pay_method
+/* ./New Pay Method Table*/

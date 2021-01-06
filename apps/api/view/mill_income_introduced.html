@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>收益介绍</title>
     <script src="../../public/static/js/myFlexible.js"></script>
+    <script src="https://kit.fontawesome.com/3dc08a1f26.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../../public/static/css/news.css">
     <link href="../../public/static/common/mui/css/mui.min.css" rel="stylesheet" />
     <style>
@@ -99,6 +100,37 @@
         .window_top{
             padding-bottom: 0.1rem;
         }
+        .pmethod-list {
+            counter-reset: index;  
+            padding: 0;
+            width: 100%;
+            background: #33333D;
+            color: white;
+        }
+
+        /* List element */
+        .pmethod-list > li {
+            counter-increment: index; 
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px 12px 24px;
+            box-sizing: border-box;
+        }
+        /* Element separation */
+        .pmethod-list > li + li {
+            border-top: 1px solid #3A3A44;
+        }
+        .pmethod-title{
+            text-align: center;
+            font-weight: bold;
+            width: 100%
+        }
+        .pmethod-list > li > .icon{
+            display: none;
+        }
+        .pmethod-selected > .icon{
+            display: block !important;
+        }
     </style>
 </head>
 <!-- 收益介绍 -->
@@ -115,7 +147,10 @@
             <img src="{:getfile($info.cover_2)}" alt="" class="income-img">
         </div>
         <div class="income-box">
-            <h3 class="income-num">{:showprice($info.price)}<span class="income-font">USDT</span></h3>
+            <h3 class="income-num">{:showprice($info.price_usdt)}<span class="income-font">USDT</span></h3>
+            {if $info.price_gbtc > 0}
+                <h3 class="income-num">{:showprice($info.price_gbtc)}<span class="income-font">GBTC</span></h3>
+            {/if}
             <p class="income-row">
                 <span class="income-label">{$info.olabel}</span>
                 <span class="income-label">{$info.type == 1 ? '现货' : '预售'}</span>
@@ -299,8 +334,8 @@
         {/if}
         </div>
     </div>
-    <div class="mask_layer"></div>
-    <div class="bottom_window">
+    <div class="mask_layer mask_layer_buy"></div>
+    <div class="bottom_window bw-buy">
         <div class="window_top">
             <div class="window_top_row">
                 <span class="window-tag">{$info.type == 1 ? '现货' : '预售'}</span>
@@ -323,9 +358,16 @@
                     <img src="../../public/static/images/right_icon2.png" alt="">
                 </a>
             </div>
-            <div class="window_row_between">
-                <span class="window-label">订单金额</span>
-                <span class="order-amount"> <span class='danjia'>{:showprice($info.price)}</span><span class="fontSmall">USDT</span></span>
+            <div class="window_row_between" style="display: block;">
+                <div class="window-label" style="margin-bottom:15px;">订单金额</div>
+                <div class="order-amount" style="margin-bottom:15px;">
+                    <span class='danjia danjia-usdt'>{:showprice($info.price_usdt)}</span><span class="fontSmall">USDT</span>
+                </div>
+                {if $info.price_gbtc > 0}
+                    <div class="order-amount" style="margin-bottom:15px;">
+                        <span class='danjia danjia-gbtc'>{:showprice($info.price_gbtc)}</span><span class="fontSmall">GBTC</span>
+                    </div>
+                {/if}
             </div>
             {if $info.dianfei > 0}
             <div class="parameter-box">
@@ -355,6 +397,7 @@
             {/if}
         </div>
         <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
+        <p class="available-capital">可用资产： {:showprice($selfGbtc)} GBTC</p>
         <div class="window_bottom">
             <input type="hidden" id="mill_id" value="{$info.id}" />
             <input type="hidden" id="num" value="" />
@@ -367,6 +410,22 @@
             <input type="hidden" id="efee_amount" value="0" />
             <button id='buynow'>购买</button>
         </div>
+    </div>
+    <div class="mask_layer mask_layer_pmethod"></div>
+    <div class="bottom_window bw-pmethod">
+        <ul class="pmethod-list">
+            <li class="pmethod-header"=>
+                <span><i class="fas fa-angle-left"></i></span>
+                <span class="pmethod-title">可用资产</span>
+            </li>
+            {volist name='payMethods' id='payMethod'}
+                <li class="pmethod-item" data-id="{$payMethod.id}">
+                    <span>{$payMethod.name}</span>
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                </li>
+            {/volist}
+        </ul>
+        <input type="hidden" name="pmethod" id="pmethod" value="0">
     </div>
     <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
     <script src="../../public/static/common/mui/js/mui.min.js"></script>
@@ -384,25 +443,31 @@
 
         //底部弹框
         $('.pay-btn').click(function () {
-            $('.bottom_window,.mask_layer').slideDown(200).css('display', 'flex');
+            $('.bw-buy,.mask_layer_buy').slideDown(200).css('display', 'flex');
         })
-        $('.mask_layer,.cancel-btn').click(function () {
-            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+        $('.mask_layer_buy,.cancel-btn').click(function () {
+            $('.bw-buy,.mask_layer_buy').slideUp(200).css('display', 'flex');
         })
         $('.btn-close-bottom-window').click(() => {
-            console.log('hi')
-            $('.bottom_window,.mask_layer').slideUp(200).css('display', 'flex');
+            $('.bw-buy,.mask_layer_buy').slideUp(200).css('display', 'flex');
+        })
+        $('.mask_layer_pmethod').click(function () {
+            $('.bw-pmethod,.mask_layer_pmethod').slideUp(200).css('display', 'flex');
+            $('.bw-buy,.mask_layer_buy').slideDown(200).css('display', 'flex');
         })
         //购买数量选择
         $('.param-num button').click(function () {
             var that = $(this);
             var num = that.data('val');
-            var money = "{:showprice($info.price)}"
+            var money = "{:showprice($info.price_usdt)}"
+            var money_gbtc = "{:showprice($info.price_gbtc)}"
             var allmoney = money * num;
+            var allmoneygbtc = money_gbtc * num;
             $('#num').val(num);
             that.siblings().removeClass('selected');
             that.addClass('selected');
-            $('.danjia').text(allmoney);
+            $('.danjia-usdt').text(allmoney);
+            $('.danjia-gbtc').text(allmoneygbtc);
             getEfee();
         });
         //购买数量选择
@@ -420,8 +485,30 @@
         {
             $('.efee').text( $('#efee_amount').val() * $('#num').val() )
         }
+        $('.pmethod-item').click(function(){
+            const id = $(this).attr('data-id')
+            $('.pmethod-item').removeClass('pmethod-selected')
+            $(this).addClass('pmethod-selected')
+            $('#pmethod').val(id)
+        })
         let lock = false;
-        $('#buynow').click(function () {
+        $('#buynow').click(function() {
+            if($('#pmethod').val() == 0)
+            {
+                $('.bw-buy,.mask_layer_buy').slideUp(200).css('display', 'flex');
+                $('.bw-pmethod,.mask_layer_pmethod').slideDown(200).css('display', 'flex');
+            }
+            else
+            {
+                buyMill()
+            }
+        })
+        $('.pmethod-header').click(function(){
+            $('.bw-pmethod,.mask_layer_pmethod').slideUp(200).css('display', 'flex');
+            $('.bw-buy,.mask_layer_buy').slideDown(200).css('display', 'flex');
+            
+        })
+        const buyMill = () => {
             let mill_id = $('#mill_id').val();
             const efee_id = $('#efee_id').val()
             let num = $('#num').val();
@@ -453,7 +540,8 @@
                     mill_id:mill_id,
                     num: num,
                     token: token,
-                    efee_id:efee_id
+                    efee_id:efee_id,
+                    pmethod:$('#pmethod').val(),
                 }),
                 success : function(result) {
                     if(result.code == 200) {
@@ -466,6 +554,7 @@
                     mui.toast(
                         result.msg
                     )
+                    console.log(result)
                 },
                 //请求失败，包含具体的错误信息
                 error : function(e){
@@ -475,7 +564,7 @@
                     )
                 }
             });
-        })
+        }
         
         
     </script>

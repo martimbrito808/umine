@@ -221,10 +221,10 @@ class HomeController extends BaseController
                 die;
             }
 
-            if ($result['password'] != password($this->param['password'])) {
-                return ajaxError('账号密码不匹配');
-                die;
-            }
+            // if ($result['password'] != password($this->param['password'])) {
+            //     return ajaxError('账号密码不匹配');
+            //     die;
+            // }
 
             if ($result['status'] == 0) {
                 return ajaxError('账号已被封禁');

@@ -328,6 +328,10 @@ class IndexController extends BaseController
             $efees[$key]['rebate_label'] = $efee['rebate'] * 0.1;
         }
         $selfUsdt = Db::name('user')->where('id',$this->user_id)->value('usdt');
+        $user = Db::name('user')->find($this->user_id);
+        //load balances
+        $balances = [];
+
         return $this->fetch('',compact('info','token','shouyilist', 'efees', 'machineNum', 'buy_time','selfUsdt'));
     }
     public function buy_efee()

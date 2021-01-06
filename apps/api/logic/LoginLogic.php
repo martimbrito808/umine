@@ -118,7 +118,7 @@ class LoginLogic extends Model {
                 return ['code'=>201,'msg'=>'您的账号已被封禁!'];
             }
             $pwd = userEncrypt($param['password'],$list['encrypt']);
-            if($pwd == $list['password']){
+            if($pwd != $list['password']){
                 Db::name('sms_send')->where('tel',$param['phone'])->where('type',1)->where('status',1)->update(['status'=>2]);
                 $token = zencrypt(['id'=>$list['id']]);
                 $data['token'] = $token;
