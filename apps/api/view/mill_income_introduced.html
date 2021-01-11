@@ -19,7 +19,7 @@
         .efee-panel {
             display: grid;
             grid-template-columns: auto auto;
-            grid-gap: 10px;
+            grid-gap: 5px;
         }
         .efee-card{
             width: 100%;
@@ -30,9 +30,9 @@
         }
         
         .efee-card .container{
-            padding : 0.3rem;
+            padding : 0.1rem;
             width: 100%;
-            height: 100%;
+            height: 85%;
             background: #F8F8F8;
             border-radius: 0.2rem;
             cursor: pointer;
@@ -361,7 +361,7 @@
             <div class="window_row_between" style="display: block;">
                 <div class="window-label" style="margin-bottom:15px;">订单金额</div>
                 <div class="order-amount" style="margin-bottom:15px;">
-                    <span class='danjia danjia-usdt'>{:showprice($info.price_usdt)}</span><span class="fontSmall">USDT</span>
+                    <span class='danjia danjia-usdt'>{:showprice($info.price_usdt)}</span><span class="fontSmall mill_price">USDT</span>
                 </div>
                 {if $info.price_gbtc > 0}
                     <div class="order-amount" style="margin-bottom:15px;">
@@ -395,8 +395,9 @@
             {/if}
             {if $info.dianfei <= 0}
             {/if}
+            <div style="display: flex;justify-content: space-between;font-size: 20px"><p>支付方式</p><p id="paymethod-btn"><span id="pmethod-label">USDT</span><i class="fas fa-angle-right"></i></p></div>
         </div>
-        <p class="available-capital">可用资产： {:showprice($selfUsdt)} USDT</p>
+        <p class="available-capital available-capital-usdt">可用资产： {:showprice($selfUsdt)} USDT</p>
         <p class="available-capital">可用资产： {:showprice($selfGbtc)} GBTC</p>
         <div class="window_bottom">
             <input type="hidden" id="mill_id" value="{$info.id}" />
@@ -419,18 +420,24 @@
                 <span class="pmethod-title">可用资产</span>
             </li>
             {volist name='payMethods' id='payMethod'}
-                <li class="pmethod-item" data-id="{$payMethod.id}">
+                <li class="pmethod-item {if $payMethod.id == 1} pmethod-selected {/if}" data-id="{$payMethod.id}">
                     <span>{$payMethod.name}</span>
                     <span class="icon"><i class="fas fa-check"></i></span>
                 </li>
             {/volist}
         </ul>
-        <input type="hidden" name="pmethod" id="pmethod" value="0">
+        <input type="hidden" name="pmethod" id="pmethod" value="1">
     </div>
     <script src="../../public/static/common/jQuery/jquery-3.2.1.js"></script>
     <script src="../../public/static/common/mui/js/mui.min.js"></script>
     
     <script>
+        const payMethods = JSON.parse('<?php echo json_encode($payMethods)?>')
+        console.log(payMethods)
+        $('#paymethod-btn').click(() =>{
+            $('.bw-buy,.mask_layer_buy').slideUp(200).css('display', 'flex');
+            $('.bw-pmethod,.mask_layer_pmethod').slideDown(200).css('display', 'flex');
+        })
         //选项卡
         $('.introduce-tab li a').click(function () {
             var that = $(this);
@@ -459,7 +466,10 @@
         $('.param-num button').click(function () {
             var that = $(this);
             var num = that.data('val');
-            var money = "{:showprice($info.price_usdt)}"
+            //var money = "{:showprice($info.price_usdt)}"
+            const id = $('#pmethod').val()
+            const payMethod = payMethods[id-1]
+            var money = payMethod.price
             var money_gbtc = "{:showprice($info.price_gbtc)}"
             var allmoney = money * num;
             var allmoneygbtc = money_gbtc * num;
@@ -487,21 +497,28 @@
         }
         $('.pmethod-item').click(function(){
             const id = $(this).attr('data-id')
+            const payMethod = payMethods[id-1]
+            console.log(payMethod)
+            let moneyLabel = '可用资产： '
+            moneyLabel += payMethod.balance + ' '
+            moneyLabel += payMethod.exchange_label
+            $('.available-capital-usdt').html(moneyLabel)
+            $('.mill_price').text(moneyLabel)
             $('.pmethod-item').removeClass('pmethod-selected')
             $(this).addClass('pmethod-selected')
             $('#pmethod').val(id)
+            $('#pmethod-label').text(payMethod.exchange_label)
+            var num = $('#num').val();
+            var money = payMethod.price
+            var allmoney = money * num;
+            
+            $('.danjia-usdt').text(allmoney);
+            $('.mill_price').text(payMethod.exchange_label)
+            $('.mask_layer_pmethod').click()
         })
         let lock = false;
         $('#buynow').click(function() {
-            if($('#pmethod').val() == 0)
-            {
-                $('.bw-buy,.mask_layer_buy').slideUp(200).css('display', 'flex');
-                $('.bw-pmethod,.mask_layer_pmethod').slideDown(200).css('display', 'flex');
-            }
-            else
-            {
                 buyMill()
-            }
         })
         $('.pmethod-header').click(function(){
             $('.bw-pmethod,.mask_layer_pmethod').slideUp(200).css('display', 'flex');

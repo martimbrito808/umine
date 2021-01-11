@@ -187,7 +187,19 @@ class MillController extends BaseController
          */
         $info['price_usdt'] = $info['price'] * $info['usdt_gbtc_rate'] / 100.00;
         $info['price_gbtc'] = $info['price'] * (100.00 - $info['usdt_gbtc_rate']) / 100.00 * $gbtcRate;
+        $user = Db::name('user')->find($this->user_id);
         $payMethods = Db::name('pay_methods')->order('id asc')->select();
+        foreach($payMethods as $key => $paym)
+        {
+            $unit = $paym['unit'];
+            if($key == 6 || $key == 7)
+            {
+                $unit = 'usdt';
+            }
+            $payMethods[$key]['balance'] = $user[$unit];
+            $payMethods[$key]['rate'] = getExchangeRate(1,$paym['exchange_label']);
+            $payMethods[$key]['price'] = showprice($info['price_usdt']) * getExchangeRate(1,$paym['exchange_label']);
+        }
         return $this->fetch('',compact('info', 'auth','selfUsdt','efees', 'selfGbtc', 'payMethods'));
     }
     
